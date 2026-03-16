@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +20,7 @@ import { TransportationComponent } from './pages/transportation/transportation.c
 import { MedicationReminderComponent } from './pages/medication-reminder/medication-reminder.component';
 import { MealDeliveryComponent } from './pages/meal-delivery/meal-delivery.component';
 import { PrescriptionDeliveryComponent } from './pages/prescription-delivery/prescription-delivery.component';
+import { ChatAssistantComponent } from './shared/chat-assistant/chat-assistant.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +39,15 @@ import { PrescriptionDeliveryComponent } from './pages/prescription-delivery/pre
     TransportationComponent,
     MedicationReminderComponent,
     MealDeliveryComponent,
-    PrescriptionDeliveryComponent
+    PrescriptionDeliveryComponent,
+    ChatAssistantComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

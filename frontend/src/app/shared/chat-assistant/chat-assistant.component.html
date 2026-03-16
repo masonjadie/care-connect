@@ -1,0 +1,53 @@
+<div class="ai-overlay" [class.active]="isOverlayActive$ | async"></div>
+
+<div class="chat-container">
+  <!-- Chat Window -->
+  <div class="chat-window" [class.open]="isOpen" aria-live="polite">
+    <div class="chat-header">
+      <div class="header-info">
+        <div class="avatar-container">
+          <img src="assets/images/ai-avatar.png" alt="CareConnect AI Avatar" class="bot-avatar">
+          <span class="online-dot"></span>
+        </div>
+        <div class="header-text">
+          <h3>CareConnect AI</h3>
+          <span class="status">Online • Ready to help</span>
+        </div>
+      </div>
+      <button class="close-btn" (click)="toggleChat()" aria-label="Close Chat">×</button>
+    </div>
+
+    <div class="chat-messages" #scrollMe>
+      <div *ngFor="let msg of messages$ | async" 
+           [class]="'message ' + (msg.sender === 'ai' ? 'ai-msg' : 'user-msg')">
+        <div class="message-bubble">
+          {{ msg.text }}
+        </div>
+        <span class="msg-time">{{ msg.timestamp | date:'shortTime' }}</span>
+      </div>
+    </div>
+
+    <div class="quick-actions" *ngIf="(messages$ | async)?.length === 1">
+      <button (click)="quickAction('How do I book a ride?')">🚗 Book a Ride</button>
+      <button (click)="quickAction('How to use SOS?')">🚨 SOS Help</button>
+      <button (click)="quickAction('Help with meals')">🍲 Meal Delivery</button>
+    </div>
+
+    <form class="chat-input" (submit)="sendMessage(); $event.preventDefault()">
+      <input type="text" 
+             [(ngModel)]="userInput" 
+             name="chatInput"
+             placeholder="Type your question..."
+             autocomplete="off">
+      <button type="submit" [disabled]="!userInput.trim()">
+        <span>➤</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Trigger Button -->
+  <button class="chat-trigger" (click)="toggleChat()" [class.hidden]="isOpen" aria-label="Open AI Assistant">
+    <span class="pulse"></span>
+    <span class="icon">💬</span>
+  </button>
+</div>
