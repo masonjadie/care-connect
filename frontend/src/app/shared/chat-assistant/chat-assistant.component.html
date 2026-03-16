@@ -6,7 +6,7 @@
     <div class="chat-header">
       <div class="header-info">
         <div class="avatar-container">
-          <img src="assets/images/ai-avatar.png" alt="CareConnect AI Avatar" class="bot-avatar">
+          <img src="assets/images/ai-avatar-lady.png" alt="CareConnect Assistant Avatar" class="bot-avatar">
           <span class="online-dot"></span>
         </div>
         <div class="header-text">
@@ -20,8 +20,23 @@
     <div class="chat-messages" #scrollMe>
       <div *ngFor="let msg of messages$ | async" 
            [class]="'message ' + (msg.sender === 'ai' ? 'ai-msg' : 'user-msg')">
+        
+        <!-- Avatar for AI Messages -->
+        <div class="msg-avatar" *ngIf="msg.sender === 'ai'">
+          <img src="assets/images/ai-avatar-lady.png" alt="Assistant">
+        </div>
+
         <div class="message-bubble">
-          {{ msg.text }}
+          <p>{{ msg.text }}</p>
+          
+          <!-- Action Buttons for faster interaction -->
+          <div class="message-buttons" *ngIf="msg.buttons && msg.buttons.length > 0">
+            <button *ngFor="let btn of msg.buttons" 
+                    (click)="quickAction(btn)"
+                    class="action-btn">
+              {{ btn }}
+            </button>
+          </div>
         </div>
         <span class="msg-time">{{ msg.timestamp | date:'shortTime' }}</span>
       </div>
@@ -48,6 +63,6 @@
   <!-- Trigger Button -->
   <button class="chat-trigger" (click)="toggleChat()" [class.hidden]="isOpen" aria-label="Open AI Assistant">
     <span class="pulse"></span>
-    <span class="icon">💬</span>
+    <img src="assets/images/ai-avatar-lady.png" alt="Assistant" class="trigger-avatar">
   </button>
 </div>

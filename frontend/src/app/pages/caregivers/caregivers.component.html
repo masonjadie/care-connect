@@ -9,19 +9,31 @@
       <div class="caregiver-grid">
         <article class="caregiver-card" *ngFor="let caregiver of caregivers">
           <div class="card-top">
-            <h3>{{ caregiver.name }}</h3>
-            <span class="rating">⭐ {{ caregiver.rating || 0 }}/5</span>
+            <div class="avatar-wrapper">
+              <img *ngIf="caregiver.id <= 3; else initials" 
+                   [src]="caregiver.name.includes('Nadine') || caregiver.name.includes('Althea') ? 'assets/images/ai-avatar-lady.png' : 'assets/images/ai-avatar.png'" 
+                   [alt]="caregiver.name">
+              <ng-template #initials>
+                <div class="avatar-placeholder">{{ caregiver.name.substring(0, 1) }}</div>
+              </ng-template>
+            </div>
+            <div class="name-info">
+              <h3>{{ caregiver.name }}</h3>
+              <span class="rating">⭐ {{ caregiver.rating || 4.5 }}/5</span>
+            </div>
           </div>
+          
           <p class="specialty">{{ caregiver.specialty }}</p>
+          
           <div class="caregiver-meta">
-            <p><strong>Experience:</strong> {{ caregiver.experienceYears }} years</p>
-            <p><strong>Availability:</strong> {{ caregiver.availability }}</p>
-            <p><strong>Certification:</strong> {{ caregiver.certification }}</p>
-            <p><strong>Location:</strong> {{ caregiver.location }}</p>
-            <p><strong>Contact:</strong> {{ caregiver.phone }}</p>
-            <p><strong>Email:</strong> {{ caregiver.email }}</p>
+            <p><strong>Experience</strong> <span>{{ caregiver.experienceYears }} years</span></p>
+            <p><strong>Availability</strong> <span>{{ caregiver.availability }}</span></p>
+            <p><strong>Location</strong> <span>{{ caregiver.location }}</span></p>
+            <p><strong>Certification</strong> <span>{{ caregiver.certification }}</span></p>
           </div>
+          
           <p class="bio">{{ caregiver.bio }}</p>
+          
           <button class="btn-secondary">Request Caregiver</button>
         </article>
       </div>

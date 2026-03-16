@@ -6,7 +6,8 @@ export interface Message {
   text: string;
   sender: 'user' | 'ai';
   timestamp: Date;
-  highlightSelector?: string; // CSS selector to highlight
+  highlightSelector?: string;
+  buttons?: string[]; // New: Action buttons for seniors
 }
 
 @Injectable({
@@ -15,24 +16,26 @@ export interface Message {
 export class ChatService {
   private messagesSubject = new BehaviorSubject<Message[]>([]);
   private isOverlayActiveSubject = new BehaviorSubject<boolean>(false);
+  private lastIntent: string | null = null; // Track context for seniors Marc
   
   messages$ = this.messagesSubject.asObservable();
   isOverlayActive$ = this.isOverlayActiveSubject.asObservable();
 
   private defaultMessages: Message[] = [
     {
-      text: "Hello! I'm your CareConnect assistant. How can I help you navigate our services today?",
+      text: "Hey! 👋 I'm your CareConnect assistant here to help you. How can I assist you today? 😊",
       sender: 'ai',
-      timestamp: new Date()
+      timestamp: new Date(),
+      buttons: ['Book a Ride', 'Manage Medications', 'Meal Delivery', 'Find a Caregiver']
     }
   ];
 
   private intentMap: { [key: string]: string[] } = {
-    'sos': ['sos', 'emergency', 'help', 'ambulance', 'alert', 'scared', 'hurt', 'police'],
-    'ride': ['ride', 'drive', 'transport', 'car', 'pickup', 'doctor', 'visit', 'go to', 'travel'],
+    'sos': ['sos', 'emergency', 'help', 'ambulance', 'alert', 'scared', 'hurt', 'police', 'call now', 'panic'],
+    'ride': ['ride', 'drive', 'transport', 'car', 'pickup', 'doctor', 'visit', 'go to', 'travel', 'book a ride'],
     'caregiver': ['caregiver', 'nurse', 'assistant', 'support worker', 'homemaker', 'companion'],
-    'meal': ['meal', 'food', 'hungry', 'dinner', 'lunch', 'eat', 'delivery', 'diet', 'nutrition'],
-    'medication': ['medication', 'pill', 'medicine', 'prescription', 'pharmacy', 'refill', 'reminder', 'drug'],
+    'meal': ['meal', 'food', 'hungry', 'dinner', 'lunch', 'eat', 'delivery', 'diet', 'nutrition', 'sugar', 'diabetic', 'diabetes', 'foos', 'blood pressure', 'salt', 'sodium'],
+    'medication': ['medication', 'pill', 'medicine', 'prescription', 'pharmacy', 'refill', 'reminder', 'drug', 'tablets', 'meds'],
     'about': ['about', 'who are you', 'how this works', 'info', 'company'],
     'appearance': ['dark mode', 'theme', 'color', 'background', 'night', 'bright', 'light'],
     'font': ['font', 'text', 'size', 'magnify', 'bigger', 'smaller', 'read', 'see'],
@@ -42,14 +45,14 @@ export class ChatService {
   private knowledgeBase: { [key: string]: string } = {
     'sos': "In an emergency, click the red 'Emergency SOS' button or say 'SOS' aloud. You'll be connected to emergency services and your contacts will be notified.",
     'help': "I can help you with booking rides, managing medications, or finding caregivers. What do you need assistance with?",
-    'ride': "I can help you with that! You mentioned needing a drive or transport. You can 'Book a Ride' through our transportation service (highlighted). We offer senior-friendly drivers for doctor visits.",
-    'caregiver': "Our 'Find a Caregiver' service connects you with verified nursing and support professionals for your specific needs.",
-    'meal': "Nutritional Meals Delivery can be scheduled daily. We offer special dietary plans for seniors, including diabetic-friendly and low-sodium options.",
-    'medication': "Use our 'Medication Reminder' to set alerts for your pills. You can also use 'Prescription Fill & Delivery' to have them sent to your door.",
+    'ride': "We offer senior-friendly drivers for doctor visits. To sign up: 1. Click 'Login' (highlighted). 2. Go to 'Services' -> 'Book a Ride'. 3. Enter your destination.",
+    'caregiver': "Our 'Find a Caregiver' service connects you with verified nursing and support professionals. To sign up: Click 'Login' then visit the 'Caregivers' page.",
+    'meal': "Nutritional Meals are delivered daily. To sign up: 1. Click 'Login'. 2. Visit 'Services' -> 'Meal Delivery'. 3. Choose your plan.",
+    'medication': "Never miss a pill! To sign up: 1. Click 'Login'. 2. Visit 'Medication Reminder'. 3. Add your prescriptions.",
     'about': "CareConnect Hub is dedicated to helping seniors live independently. We've been serving the community for over 10 years.",
     'appearance': "You can toggle dark mode using the moon icon in the navbar. It's great for reducing eye strain!",
     'font': "Use the A- and A+ buttons in the navbar to change the text size. We support up to 150% magnification.",
-    'pet': "I can definitely help you with that! Look at the green 'Find Service Animal' button I'm highlighting for you. Click it to see our available support animals.",
+    'pet': "To get a companion: 1. Click 'Find Service Animal' (highlighted). 2. Browse animals. 3. Click 'Inquire' to start.",
     'sign up': "The sign-up process is simple! First, click the 'Login' button in the top right. I'll highlight it for you now."
   };
 
@@ -66,59 +69,104 @@ export class ChatService {
     this.messagesSubject.next(this.defaultMessages);
   }
 
-  sendMessage(text: string) {
-    const userMessage: Message = {
+  sendMessage(text: string, isFromAI = false) {
+    const newMessage: Message = {
       text,
-      sender: 'user',
+      sender: isFromAI ? 'ai' : 'user',
       timestamp: new Date()
     };
 
-    const currentMessages = this.messagesSubject.value;
-    this.messagesSubject.next([...currentMessages, userMessage]);
+    if (!isFromAI) {
+      const currentMessages = this.messagesSubject.value;
+      this.messagesSubject.next([...currentMessages, newMessage]);
 
-    this.getAIResponse(text).subscribe(response => {
-      const aiMessage: Message = {
-        text: response.text,
-        sender: 'ai',
-        timestamp: new Date(),
-        highlightSelector: response.highlight
-      };
-      
-      if (response.highlight) {
-        this.applyHighlight(response.highlight);
-      } else {
-        this.clearHighlight();
-      }
+      this.getAIResponse(text).subscribe(response => {
+        const aiMessage: Message = {
+          text: response.text,
+          sender: 'ai',
+          timestamp: new Date(),
+          highlightSelector: response.highlight,
+          buttons: response.buttons
+        };
+        
+        if (response.highlight) {
+          this.applyHighlight(response.highlight);
+        } else {
+          this.clearHighlight();
+        }
 
-      this.messagesSubject.next([...this.messagesSubject.value, aiMessage]);
-    });
+        this.messagesSubject.next([...this.messagesSubject.value, aiMessage]);
+      });
+    } else {
+      this.messagesSubject.next([...this.messagesSubject.value, newMessage]);
+    }
   }
 
-  private getAIResponse(userText: string): Observable<{text: string, highlight?: string}> {
+  private getAIResponse(userText: string): Observable<{text: string, highlight?: string, buttons?: string[]}> {
     const text = userText.toLowerCase();
-    let response = "I'm not sure I understand. Could you rephrase that? You can ask about 'SOS', 'rides', 'meals', or 'medications'.";
+    let response = "I'm not sure I understand. Would you like to check one of these services?";
     let highlight: string | undefined;
+    let buttons: string[] = ['Book a Ride', 'Manage Medications', 'Meal Delivery', 'Find a Caregiver'];
 
-    // Check intents first
+    // 1. Emergency/SOS takes highest priority
+    if (text.includes('sos') || text.includes('emergency') || text.includes('call now') || text.includes('help')) {
+      this.lastIntent = 'sos';
+      return of({
+        text: "🚨 I'm notifying emergency services and your primary contact immediately. Please stay calm. Would you like me to dial for you?",
+        highlight: '.btn-sos',
+        buttons: ['YES - Call 911', 'I am okay now']
+      }).pipe(delay(800));
+    }
+
+    // 2. Check for specific services/intents
     for (const intent in this.intentMap) {
       if (this.intentMap[intent].some(keyword => text.includes(keyword))) {
+        this.lastIntent = intent;
         response = this.knowledgeBase[intent];
         highlight = this.highlights[intent];
-        break;
+        buttons = ['How to sign up', 'Go back'];
+        
+        // Context-aware refinements for seniors
+        if (text.includes('see diabetic meals')) {
+          response = "I've highlighted the 'Diabetic Friendly' filter for you on the meal page. Click it to see all our low-glycemic options!";
+          highlight = '.category-tabs button:nth-child(3)'; // Assuming 3rd tab is Diabetic
+          buttons = ['How to sign up', 'Help with something else'];
+        } else if (text.includes('see low sodium meals')) {
+          response = "I've highlighted the 'Low Sodium' filter. Click it to view meals with heart-healthy salt levels!";
+          highlight = '.category-tabs button:nth-child(2)'; // Assuming 2nd tab is Low Sodium
+          buttons = ['How to sign up', 'Help with something else'];
+        } else if (text.includes('sugar') || text.includes('diabetic')) {
+          response = "We have specific 'Diabetic Friendly' meal plans designed for low-glycemic needs. Would you like to see those options?";
+          buttons = ['See Diabetic Meals', 'How to sign up'];
+        } else if (text.includes('salt') || text.includes('sodium') || text.includes('blood pressure')) {
+          response = "Our 'Low Sodium' meal category is perfect for managing heart health and blood pressure. Shall I show you the menu?";
+          buttons = ['See Low Sodium Meals', 'How to sign up'];
+        }
+        
+        // Customize buttons for specific intents
+        if (intent === 'font') buttons = ['Make text bigger', 'Make text smaller', 'Done'];
+        if (intent === 'appearance') buttons = ['Switch Theme', 'Okay'];
+        
+        return of({ text: response, highlight, buttons }).pipe(delay(1000));
       }
     }
-
-    // Direct knowledge base check for specific phrases
-    for (const key in this.knowledgeBase) {
-      if (text.includes(key)) {
-        response = this.knowledgeBase[key];
-        highlight = this.highlights[key] || highlight;
-        break;
-      }
+    
+    // 3. Handle "How to sign up" with context
+    if (text.includes('sign up') || text.includes('how to') || text.includes('tell me more')) {
+       if (this.lastIntent && this.knowledgeBase[this.lastIntent]) {
+         response = this.knowledgeBase[this.lastIntent];
+         highlight = this.highlights[this.lastIntent] || highlight;
+         buttons = ['I understand', 'Help with something else'];
+       } else {
+         response = "To sign up for any of our services, you'll first need to click the 'Login' button (highlighted). Which service are you interested in?";
+         highlight = '.login-btn';
+         buttons = ['Book a Ride', 'Manage Medications', 'Meal Delivery', 'Find a Caregiver'];
+       }
+       return of({ text: response, highlight, buttons }).pipe(delay(1000));
     }
 
-    // Simulate network delay
-    return of({ text: response, highlight }).pipe(delay(1000));
+    // Default Fallback
+    return of({ text: response, highlight, buttons }).pipe(delay(1000));
   }
 
   private applyHighlight(selector: string) {

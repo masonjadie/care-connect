@@ -119,14 +119,18 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-self: flex-end; // Shift down to avoid blocking lady's face
+  margin-top: 40px;
 }
 
 .appointment-card {
-  background: var(--bg-card);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 25px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 
   .card-header {
     display: flex;
@@ -138,6 +142,7 @@
       margin: 0;
       font-size: 1.2rem;
       color: var(--primary-color);
+      font-weight: 700;
     }
 
     .icon {
@@ -321,5 +326,13 @@
 
   .hero-text h1 {
     font-size: 1.75rem;
+  }
+}
+
+/* Dark Theme Glassmorphism */
+[data-theme='dark'] {
+  .appointment-card {
+    background: rgba(30, 30, 30, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 }

@@ -31,7 +31,7 @@ export class MealDeliveryComponent implements OnInit {
       protein: '32g',
       price: 14.50,
       tags: ['Omega-3', 'Gluten Free'],
-      image: 'salmon-gradient'
+      image: 'meals/roasted-salmon.png'
     },
     {
       id: 2,
@@ -42,7 +42,7 @@ export class MealDeliveryComponent implements OnInit {
       protein: '12g',
       price: 11.00,
       tags: ['Fiber Rich', 'Fresh'],
-      image: 'salad-gradient'
+      image: 'meals/mediterranean-salad.png'
     },
     {
       id: 3,
@@ -53,7 +53,7 @@ export class MealDeliveryComponent implements OnInit {
       protein: '28g',
       price: 13.00,
       tags: ['Low Fat', 'Filling'],
-      image: 'turkey-gradient'
+      image: 'meals/turkey-meatloaf.png'
     },
     {
       id: 4,
@@ -64,7 +64,7 @@ export class MealDeliveryComponent implements OnInit {
       protein: '24g',
       price: 12.50,
       tags: ['No Sugar Added', 'High Protein'],
-      image: 'stirfry-gradient'
+      image: 'meals/chicken-stirfry.png'
     },
     {
       id: 5,
@@ -75,7 +75,7 @@ export class MealDeliveryComponent implements OnInit {
       protein: '15g',
       price: 9.50,
       tags: ['Plant Based', 'Low Calorie'],
-      image: 'soup-gradient'
+      image: 'meals/roasted-salmon.png' // Fallback for failed soup image
     }
   ];
 
