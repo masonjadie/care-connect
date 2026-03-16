@@ -1,0 +1,64 @@
+<header class="navbar">
+
+  <!-- LOGO -->
+  <div class="logo" routerLink="/home" style="cursor: pointer;">
+    <span class="logo-icon">💙</span>
+    CareConnect <span class="hub">Hub</span>
+  </div>
+
+  <!-- NAV LINKS -->
+  <button class="mobile-toggle" (click)="toggleMenu()" [class.active]="menuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav class="nav-links" [class.open]="menuOpen">
+    <a routerLink="/home" *ngIf="!isRouteActive('/home') && !isRouteActive('/')">Home</a>
+    <a routerLink="/services" *ngIf="!isRouteActive('/services')">Services</a>
+    <a routerLink="/emergency" *ngIf="!isRouteActive('/emergency')" class="nav-emergency">🚨 SOS Help</a>
+    <a routerLink="/about" *ngIf="!isRouteActive('/about')">About Us</a>
+  </nav>
+
+  <!-- LOGIN / USER BUBBLE -->
+  <div class="nav-right">
+    <!-- Accessibility Controls -->
+    <div class="a11y-controls">
+      <button class="a11y-btn" (click)="decreaseFont()" title="Decrease Font Size" aria-label="Decrease Font Size">A-</button>
+      <button class="a11y-btn" (click)="increaseFont()" title="Increase Font Size" aria-label="Increase Font Size">A+</button>
+      
+      <!-- Voice Recognition Toggle -->
+      <button class="a11y-btn" [class.active-mic]="voiceActive" 
+              (click)="toggleVoice()" 
+              [attr.title]="voiceActive ? 'Stop Voice Commands' : 'Start Voice Commands'"
+              [attr.aria-label]="voiceActive ? 'Stop Voice Commands' : 'Start Voice Commands'">
+        {{ voiceActive ? '🎙️' : '🎤' }}
+      </button>
+
+      <!-- Screen Reader (TTS) -->
+      <button class="a11y-btn" (click)="handleReadToggle()"
+              [attr.title]="isSpeaking ? 'Stop Reading' : 'Read Page Content'"
+              [attr.aria-label]="isSpeaking ? 'Stop Reading' : 'Read Page Content'">
+        {{ isSpeaking ? '🛑' : '🔊' }}
+      </button>
+
+      <button class="a11y-btn theme-toggle" (click)="toggleTheme()" 
+              [attr.title]="(currentTheme$ | async) === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'"
+              [attr.aria-label]="(currentTheme$ | async) === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+        {{ (currentTheme$ | async) === 'light' ? '🌙' : '☀️' }}
+      </button>
+    </div>
+
+    <ng-container *ngIf="userName; else loginBtn">
+      <div class="user-greeting">
+        <span class="avatar">👤</span>
+        <span class="user-name">{{ userName }}</span>
+      </div>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </ng-container>
+    <ng-template #loginBtn>
+      <button class="login-btn" routerLink="/auth">Login</button>
+    </ng-template>
+  </div>
+
+</header>

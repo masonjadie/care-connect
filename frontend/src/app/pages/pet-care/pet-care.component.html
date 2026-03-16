@@ -1,0 +1,64 @@
+<div class="pet-care-container">
+    <header class="section-header">
+        <h1>Service Animal Care & Support</h1>
+        <p>Enhancing quality of life through specialized therapeutic animal services and service animal care for seniors.</p>
+    </header>
+
+    <div class="services-grid">
+        <div class="service-card" *ngFor="let service of services">
+            <div class="service-icon">{{service.icon}}</div>
+            <div class="service-content">
+                <h2>{{service.title}}</h2>
+                <p>{{service.description}}</p>
+                <ul class="feature-list">
+                    <li *ngFor="let feature of service.features">
+                        <span class="check">✓</span> {{feature}}
+                    </li>
+                </ul>
+                <button class="btn-inquire">Learn More</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="matching-guide">
+        <div class="guide-header">
+            <span class="badge">Medical Wisdom</span>
+            <h2>Find Your Perfect Match</h2>
+            <p>Different health conditions require different specialized skills. Use our guide to understand which medical companion is right for you.</p>
+        </div>
+        <div class="match-grid">
+            <div class="match-card" *ngFor="let match of conditionMatches">
+                <div class="condition-chip">{{match.condition}}</div>
+                <h3>{{match.petType}}</h3>
+                <p>{{match.benefit}}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pet-caregivers-section">
+        <div class="registration-header">
+            <h2>Join our Service Animal Network</h2>
+            <p>Are you a certified therapy animal handler or service animal specialist? Register to help our community.</p>
+        </div>
+        
+        <form class="pet-reg-form">
+            <div class="form-grid">
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Email Address">
+                <input type="text" placeholder="Specialization (e.g., Service Dog Trainer)">
+                <input type="text" placeholder="Location">
+            </div>
+            <textarea placeholder="Describe your experience and the animals you work with..." rows="4"></textarea>
+            <button class="btn-primary-large">Register as Pet Specialist</button>
+        </form>
+    </section>
+
+    <section class="info-banner">
+        <div class="banner-content">
+            <h2>The Power of Paws</h2>
+            <p>Studies show that interactions with therapy animals can lower blood pressure and significantly reduce feelings of loneliness among seniors.</p>
+        </div>
+    </section>
+
+    <app-auth-overlay></app-auth-overlay>
+</div>

@@ -1,0 +1,53 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Your Care Dashboard</h1>
+    <p>Monitor your health and stay connected with your support network.</p>
+  </header>
+
+  <div class="info-sections">
+    <!-- HEALTH TIPS -->
+    <div class="card health-tips">
+      <div class="card-header">
+        <h3>Health Tips & Articles</h3>
+        <span class="icon">📚</span>
+      </div>
+      <div class="health-content">
+        <p>Get daily advice on nutrition, exercise, and mental well-being for seniors.</p>
+        <button class="btn-read">Explore Library</button>
+      </div>
+    </div>
+
+    <!-- EMERGENCY CONTACTS -->
+    <div class="card emergency-contacts">
+      <div class="card-header">
+        <h3>Emergency Contacts</h3>
+        <span class="icon">📞</span>
+      </div>
+      <div class="contact-grid">
+        <div class="contact" *ngFor="let contact of contacts">
+          <span class="phone-icon">📞</span>
+          <div class="contact-info">
+            <p class="name">{{contact.name}}</p>
+            <p class="relation">{{contact.relation}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY REMINDERS -->
+    <div class="card reminders">
+      <div class="card-header">
+        <h3>Daily Reminders</h3>
+        <span class="icon">⏰</span>
+      </div>
+      <div class="reminder-list">
+        <div class="reminder" *ngFor="let reminder of reminders">
+          <div class="reminder-time">{{reminder.time}}</div>
+          <div class="reminder-details">
+            <p class="title">{{reminder.title}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

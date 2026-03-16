@@ -1,0 +1,70 @@
+<div class="home-container">
+  <section class="hero">
+    <div class="hero-bg">
+      <img src="assets/images/hero_bg.png" alt="Elderly woman smiling with caregiver" />
+    </div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Welcome to CareConnect Hub</h1>
+        <p>
+          Support and care at your fingertips. We connect seniors with the services they need to
+          live independently and safely.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-service orange" routerLink="/caregivers">👩‍⚕️ Find a Caregiver</button>
+          <button class="btn-service green" routerLink="/pet-care">🦮 Find Service Animal</button>
+          <button class="btn-service teal" routerLink="/transportation">🚗 Book a Ride</button>
+          <button class="btn-service blue" routerLink="/meal-delivery">🍲 Nutritional Meals Delivery</button>
+          <button class="btn-service purple" routerLink="/medication-reminder">💊 Medication Reminder</button>
+          <button class="btn-service rose" routerLink="/prescription-delivery">💉 Prescription Fill & Delivery</button>
+        </div>
+      </div>
+
+      <div class="hero-cards">
+        <div class="appointment-card">
+          <div class="card-header">
+            <h3>Upcoming Appointments</h3>
+            <span class="icon">📅</span>
+          </div>
+          <div class="appointment-item">
+            <p><strong>Doctor Visit</strong><br />Mon, Aug 15 at 10:00 AM</p>
+          </div>
+          <div class="appointment-item">
+            <p><strong>Physical Therapy</strong><br />Wed, Aug 17 at 2:00 PM</p>
+          </div>
+          <button class="btn-secondary">Manage All</button>
+        </div>
+
+        <button class="btn-sos" routerLink="/emergency">🚨 Emergency SOS</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-grid">
+    <div class="feature-card">
+      <div class="icon-circle blue">📚</div>
+      <h3>Health Tips and Articles</h3>
+      <p>Stay active and healthy with daily advice tailored for your wellbeing.</p>
+      <button class="btn-text">Read More →</button>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-circle red">📞</div>
+      <h3>Emergency Contacts</h3>
+      <div class="contact-list">
+        <p *ngFor="let contact of contacts"><strong>{{ contact.name }}</strong> ({{ contact.relation }})</p>
+      </div>
+      <button class="btn-add" (click)="addContact()">+ Add Contact</button>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-circle purple">⏰</div>
+      <h3>Daily Reminders</h3>
+      <div class="reminder-list">
+        <p><span>💊</span> Blood Pressure - 8:00 AM</p>
+        <p><span>🏃</span> Stretching - 3:00 PM</p>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,100 @@
+<div class="emergency-container">
+
+  <div class="emergency-header">
+    <h1>Emergency Support</h1>
+    <p>If you are in immediate danger, please use the button below or call local emergency services.</p>
+  </div>
+
+  <div class="emergency-grid">
+    <!-- LEFT COLUMN: SOS & STATUS -->
+    <div class="main-emergency-actions">
+      <div class="sos-wrapper">
+        <button class="emergency-btn" (click)="openSOS()">
+          🚨 EMERGENCY SOS
+        </button>
+        <p class="btn-hint">Clicking will notify all emergency contacts immediately.</p>
+      </div>
+
+      <div class="status-card">
+        <div class="status-header">
+          <span class="status-dot pulsing"></span>
+          <h3>Live Safety Status</h3>
+        </div>
+        <div class="status-info">
+          <div class="info-item">
+            <span class="label">Location:</span>
+            <span class="value">{{locationInfo.address}}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Coordinates:</span>
+            <span class="value">{{locationInfo.coords}}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Alert Status:</span>
+            <span class="value" [class.active-sos]="alertSent">
+              {{alertSent ? '🚨 SOS ACTIVE' : '✅ System Ready'}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: RESOURCES & TIPS -->
+    <div class="emergency-info-sidebar">
+      <section class="info-block">
+        <h3>Local Resources</h3>
+        <div class="resource-list">
+          <div class="resource-item" *ngFor="let resource of emergencyResources">
+            <span class="res-icon">{{resource.icon}}</span>
+            <div class="res-details">
+              <strong>{{resource.title}}</strong>
+              <a href="tel:{{resource.number}}" class="res-number">{{resource.number}}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-block tips">
+        <h3>Immediate Actions</h3>
+        <div class="tip-item" *ngFor="let tip of survivalTips">
+          <strong>{{tip.title}}</strong>
+          <p>{{tip.text}}</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <div class="modal-icon">⚠️</div>
+      <h2>Confirm SOS Alert</h2>
+      <p>Are you sure you want to trigger an emergency alert? This will send your location to your rescue contacts.</p>
+      <div class="modal-buttons">
+        <button class="confirm" (click)="triggerSOS()">Yes, Get Help</button>
+        <button class="cancel" (click)="closeSOS()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERT MESSAGE -->
+  <div class="alert-overlay" *ngIf="alertSent">
+    <div class="alert-box">
+      <div class="alert-header">
+        <span class="pulse-icon">🚨</span>
+        <h3>SOS Alerts Dispatched!</h3>
+      </div>
+      <p>The following contacts have been notified of your location and status:</p>
+      <div class="contact-grid">
+        <div class="contact-card" *ngFor="let contact of contacts">
+          <strong>{{contact.name}}</strong>
+          <span class="relation">{{contact.relation}}</span>
+          <span class="phone">{{contact.phone}}</span>
+        </div>
+      </div>
+      <button class="btn-dismiss" (click)="alertSent = false">I am now safe</button>
+    </div>
+  </div>
+
+  <app-auth-overlay></app-auth-overlay>
+</div>

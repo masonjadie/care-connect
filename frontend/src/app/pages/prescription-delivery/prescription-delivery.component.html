@@ -1,0 +1,199 @@
+<div class="prescription-container">
+  <header class="page-header">
+    <div class="header-icon">💊</div>
+    <h1>Prescription Fill & Delivery</h1>
+    <p>Skip the pharmacy lines. Submit your prescription and have your medications delivered directly to your door — fast, safe, and hassle-free.</p>
+  </header>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps-grid">
+      <div class="step-card" *ngFor="let item of howItWorks">
+        <div class="step-number">{{ item.step }}</div>
+        <div class="step-icon">{{ item.icon }}</div>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.desc }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="benefits-section">
+    <h2>Why Choose Us?</h2>
+    <div class="benefits-grid">
+      <div class="benefit-card" *ngFor="let b of benefits">
+        <span class="benefit-icon">{{ b.icon }}</span>
+        <div>
+          <h4>{{ b.title }}</h4>
+          <p>{{ b.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Request Form -->
+  <section class="form-section">
+    <div class="form-card">
+      <h2>Submit Prescription Request</h2>
+      <p class="form-subtext">Fill in your details below and a pharmacist will follow up within 30 minutes.</p>
+
+      <div class="alert success" *ngIf="successMessage">
+        ✅ {{ successMessage }}
+      </div>
+
+      <form [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">
+
+        <!-- Patient Details -->
+        <div class="form-section-title">Patient Information</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Patient Full Name *</label>
+            <input type="text" formControlName="patientName" placeholder="John Doe"
+              [class.invalid]="submitted && f['patientName'].errors" />
+          </div>
+          <div class="form-group">
+            <label>Date of Birth *</label>
+            <input type="date" formControlName="dateOfBirth"
+              [class.invalid]="submitted && f['dateOfBirth'].errors" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prescribing Doctor *</label>
+            <input type="text" formControlName="doctorName" placeholder="Dr. Jane Smith"
+              [class.invalid]="submitted && f['doctorName'].errors" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" formControlName="phone" placeholder="10-digit number"
+              [class.invalid]="submitted && f['phone'].errors" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Delivery Address *</label>
+          <input type="text" formControlName="deliveryAddress" placeholder="123 Main St, City, State, ZIP"
+            [class.invalid]="submitted && f['deliveryAddress'].errors" />
+        </div>
+
+        <div class="form-group">
+          <label>Special Instructions (optional)</label>
+          <textarea formControlName="notes" rows="3" placeholder="Allergies, preferred brands, timing, etc."></textarea>
+        </div>
+
+        <!-- Auto-Refill Section -->
+        <div class="toggle-section">
+          <div class="toggle-header">
+            <div class="toggle-info">
+              <span class="toggle-icon">♻️</span>
+              <div>
+                <h3>Enable Auto-Refill</h3>
+                <p>Automatically refill your prescription on a set schedule so you never miss a dose.</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" formControlName="autoRefill" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-body" *ngIf="f['autoRefill'].value">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Medication Duration *</label>
+                <div class="input-with-select">
+                  <input type="number" formControlName="medicationDuration" placeholder="e.g. 30"
+                    min="1" [class.invalid]="submitted && f['medicationDuration'].errors" />
+                  <select formControlName="durationUnit">
+                    <option *ngFor="let unit of durationUnits" [value]="unit">{{ unit }}</option>
+                  </select>
+                </div>
+                <span class="field-hint">Total duration you need to take this medication</span>
+              </div>
+              <div class="form-group">
+                <label>Refill Frequency</label>
+                <select formControlName="refillFrequency" class="full-select">
+                  <option *ngFor="let freq of refillFrequencies" [value]="freq">{{ freq }}</option>
+                </select>
+                <span class="field-hint">How often should we refill and deliver?</span>
+              </div>
+            </div>
+
+            <div class="refill-summary">
+              <span>📅</span>
+              <p>Your medication will auto-refill <strong>{{ f['refillFrequency'].value }}</strong> for
+                <strong>{{ f['medicationDuration'].value || '—' }} {{ f['durationUnit'].value }}</strong>.
+                You'll be notified before each refill.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recurring Payment Section -->
+        <div class="toggle-section" [class.locked]="!f['autoRefill'].value">
+          <div class="toggle-header">
+            <div class="toggle-info">
+              <span class="toggle-icon">💳</span>
+              <div>
+                <h3>Set Up Recurring Payment</h3>
+                <p>Securely save your payment details to be billed automatically on each refill cycle.</p>
+                <span class="requires-refill" *ngIf="!f['autoRefill'].value">⚠️ Enable Auto-Refill first to set up recurring payment.</span>
+              </div>
+            </div>
+            <label class="toggle-switch" [class.disabled]="!f['autoRefill'].value">
+              <input type="checkbox" formControlName="enableRecurringPayment" [disabled]="!f['autoRefill'].value" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-body payment-body" *ngIf="recurringPaymentEnabled">
+            <div class="secure-badge">🔒 256-bit SSL Encrypted · HIPAA Compliant</div>
+
+            <div class="form-group">
+              <label>Cardholder Name *</label>
+              <input type="text" formControlName="cardholderName" placeholder="John Doe"
+                [class.invalid]="submitted && f['cardholderName'].errors" />
+            </div>
+
+            <div class="form-group">
+              <label>Card Number *</label>
+              <input type="text" formControlName="cardNumber" placeholder="•••• •••• •••• ••••"
+                maxlength="19" [class.invalid]="submitted && f['cardNumber'].errors" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Expiry Date *</label>
+                <input type="text" formControlName="expiryDate" placeholder="MM / YY"
+                  [class.invalid]="submitted && f['expiryDate'].errors" />
+              </div>
+              <div class="form-group">
+                <label>CVV *</label>
+                <input type="text" formControlName="cvv" placeholder="•••" maxlength="4"
+                  [class.invalid]="submitted && f['cvv'].errors" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Billing Address *</label>
+              <input type="text" formControlName="billingAddress" placeholder="Same as delivery or different address"
+                [class.invalid]="submitted && f['billingAddress'].errors" />
+            </div>
+
+            <div class="payment-note">
+              💡 You will only be charged after each successful refill delivery. You can cancel anytime from your account settings.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-note">
+          📎 Our pharmacist will contact you to collect your prescription image/document securely.
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Request</button>
+      </form>
+    </div>
+  </section>
+</div>

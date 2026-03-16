@@ -1,0 +1,409 @@
+.prescription-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 60px;
+
+  .header-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+  }
+
+  h1 { font-size: 2.6rem; margin-bottom: 12px; }
+
+  p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+}
+
+// How It Works
+.how-it-works {
+  margin-bottom: 70px;
+
+  h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .step-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .step-icon { font-size: 2.5rem; margin-bottom: 15px; }
+
+    h3 { margin-bottom: 10px; font-size: 1.2rem; }
+    p { color: var(--text-muted); line-height: 1.5; font-size: 0.95rem; }
+  }
+}
+
+// Benefits
+.benefits-section {
+  background: #f8fafc;
+  padding: 50px 40px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 70px;
+
+  h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+
+  .benefit-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--radius-md);
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 4px solid var(--primary-color);
+
+    .benefit-icon { font-size: 2rem; flex-shrink: 0; }
+    
+    h4 { margin-bottom: 6px; font-size: 1.1rem; }
+    p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0; }
+  }
+}
+
+// Form
+.form-section {
+  .form-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 50px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+
+    h2 { font-size: 1.8rem; margin-bottom: 10px; }
+    .form-subtext { color: var(--text-muted); margin-bottom: 35px; }
+  }
+
+  .alert.success {
+    padding: 15px 20px;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    border-radius: var(--radius-md);
+    margin-bottom: 25px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #475569;
+      margin-bottom: 8px;
+    }
+
+    input, textarea {
+      padding: 12px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      transition: var(--transition-smooth);
+      background: #f8fafc;
+
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+      }
+
+      &.invalid { border-color: var(--danger-red); }
+    }
+
+    textarea { resize: vertical; }
+  }
+
+  .form-note {
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+  }
+
+  .btn-submit {
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: var(--transition-smooth);
+
+    &:hover {
+      background: #244a85;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(44, 90, 160, 0.3);
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .how-it-works .steps-grid { grid-template-columns: 1fr; }
+  .step-card::after { display: none !important; }
+  .benefits-section .benefits-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .page-header h1 { font-size: 2rem; }
+  .form-section .form-card { padding: 30px 20px; }
+  .form-section .form-row { grid-template-columns: 1fr; }
+  .toggle-section .toggle-header { flex-direction: column; gap: 15px; align-items: flex-start; }
+}
+
+// Form section title separator
+.form-section-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+// Toggle sections (auto-refill & payment)
+.toggle-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-lg);
+  margin-bottom: 25px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &.locked {
+    opacity: 0.65;
+  }
+
+  .toggle-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 25px;
+    cursor: default;
+
+    .toggle-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+
+      .toggle-icon { font-size: 1.8rem; flex-shrink: 0; }
+
+      h3 { margin: 0 0 4px; font-size: 1.1rem; }
+      p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
+
+      .requires-refill {
+        display: block;
+        color: #b45309;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .toggle-body {
+    padding: 25px;
+    border-top: 1px solid #e2e8f0;
+    background: white;
+  }
+}
+
+// Toggle switch component
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  &.disabled { cursor: not-allowed; }
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .slider { background: var(--primary-color); }
+    &:checked + .slider::before { transform: translateX(24px); }
+  }
+
+  .slider {
+    position: absolute;
+    inset: 0;
+    background: #cbd5e1;
+    border-radius: 28px;
+    transition: 0.3s;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 4px;
+      bottom: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+  }
+}
+
+// Input with inline select (duration + unit)
+.input-with-select {
+  display: flex;
+  gap: 0;
+
+  input {
+    flex: 1;
+    border-radius: var(--radius-md) 0 0 var(--radius-md) !important;
+    border-right: none !important;
+  }
+
+  select {
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: #f8fafc;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    cursor: pointer;
+
+    &:focus { outline: none; border-color: var(--primary-color); }
+  }
+}
+
+.full-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  background: #f8fafc;
+  font-size: 1rem;
+  color: var(--text-dark);
+  cursor: pointer;
+
+  &:focus { outline: none; border-color: var(--primary-color); }
+}
+
+.field-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: block;
+}
+
+// Refill summary banner
+.refill-summary {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #1e40af;
+  margin-top: 10px;
+
+  span { font-size: 1.3rem; flex-shrink: 0; }
+  p { margin: 0; }
+}
+
+// Payment form
+.secure-badge {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.payment-note {
+  background: #fefce8;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  font-size: 0.85rem;
+  color: #92400e;
+  line-height: 1.5;
+  margin-top: 10px;
+}

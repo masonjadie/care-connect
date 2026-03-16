@@ -1,0 +1,30 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# Angular
+.angular/
+dist/
+/out-tsc
+/bazel-out
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment & Private
+.env
+.env.local
+.env.*.local
+*.pfx
+*.certificate
+
+# System
+.DS_Store
+Thumbs.db

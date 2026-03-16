@@ -1,0 +1,104 @@
+<section class="caregivers-page">
+  <div class="caregivers-shell">
+    <header class="section-header">
+      <h1>Find a Caregiver</h1>
+      <p>View caregiver details and register as a caregiver to join our support network.</p>
+    </header>
+
+    <div class="caregiver-layout">
+      <div class="caregiver-grid">
+        <article class="caregiver-card" *ngFor="let caregiver of caregivers">
+          <div class="card-top">
+            <h3>{{ caregiver.name }}</h3>
+            <span class="rating">⭐ {{ caregiver.rating || 0 }}/5</span>
+          </div>
+          <p class="specialty">{{ caregiver.specialty }}</p>
+          <div class="caregiver-meta">
+            <p><strong>Experience:</strong> {{ caregiver.experienceYears }} years</p>
+            <p><strong>Availability:</strong> {{ caregiver.availability }}</p>
+            <p><strong>Certification:</strong> {{ caregiver.certification }}</p>
+            <p><strong>Location:</strong> {{ caregiver.location }}</p>
+            <p><strong>Contact:</strong> {{ caregiver.phone }}</p>
+            <p><strong>Email:</strong> {{ caregiver.email }}</p>
+          </div>
+          <p class="bio">{{ caregiver.bio }}</p>
+          <button class="btn-secondary">Request Caregiver</button>
+        </article>
+      </div>
+
+      <aside class="caregiver-register">
+        <ng-container *ngIf="!myProfile; else profileView">
+          <h3>Register as a Caregiver</h3>
+          <p>Fill out this form and your profile will appear in caregiver listings.</p>
+          <div class="already-registered">
+            <p><strong>Already a caregiver?</strong> <a routerLink="/auth" class="login-link">Log in here</a> to manage
+              your profile.</p>
+          </div>
+
+          <form [formGroup]="caregiverForm" (ngSubmit)="submitCaregiverForm()">
+            <input type="text" formControlName="name" placeholder="Full name" />
+            <input type="email" formControlName="email" placeholder="Email address" />
+            <input type="password" formControlName="password" placeholder="Password for login" />
+            <input type="text" formControlName="phone" placeholder="Phone number" />
+            <input type="text" formControlName="specialty" placeholder="Specialty" />
+            <input type="number" formControlName="experienceYears" placeholder="Years of experience" />
+            <input type="text" formControlName="certification" placeholder="Certification" />
+            <input type="text" formControlName="location" placeholder="Location" />
+            <input type="text" formControlName="availability" placeholder="Availability" />
+            <textarea formControlName="bio" rows="4" placeholder="Short caregiving bio"></textarea>
+
+            <p class="error" *ngIf="caregiverErrorMessage">{{ caregiverErrorMessage }}</p>
+            <p class="success" *ngIf="caregiverSuccessMessage">{{ caregiverSuccessMessage }}</p>
+
+            <button class="register-btn" type="submit" [disabled]="caregiverSubmitting">
+              {{ caregiverSubmitting ? 'Submitting...' : 'Register as Caregiver' }}
+            </button>
+          </form>
+        </ng-container>
+
+        <ng-template #profileView>
+          <div class="my-profile-card">
+            <div class="profile-header">
+              <div class="header-main">
+                <h3>Your Caregiver Profile</h3>
+                <span class="status-badge">✅ Registered</span>
+              </div>
+              <p class="subtitle">This is how your information appears in caregiver details.</p>
+            </div>
+            
+            <div class="profile-details">
+              <div class="detail-item">
+                <span class="label">Name:</span>
+                <span class="value">{{ myProfile?.name }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Specialty:</span>
+                <span class="value">{{ myProfile?.specialty }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Experience:</span>
+                <span class="value">{{ myProfile?.experienceYears }} years</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Location:</span>
+                <span class="value">{{ myProfile?.location }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Availability:</span>
+                <span class="value">{{ myProfile?.availability }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Certification:</span>
+                <span class="value">{{ myProfile?.certification }}</span>
+              </div>
+              <div class="detail-item bio-item">
+                <span class="label">Your Bio:</span>
+                <p class="value bio-text">{{ myProfile?.bio }}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </aside>
+    </div>
+  </div>
+</section>

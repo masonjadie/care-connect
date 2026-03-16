@@ -1,0 +1,32 @@
+<div class="services-container">
+    <header class="services-header">
+        <h1>Our Support Services</h1>
+        <p>Comprehensive care solutions designed to help you maintain independence and peace of mind.</p>
+    </header>
+
+    <div class="services-grid">
+        <div class="service-card" *ngFor="let service of services" [ngClass]="service.color">
+            <div class="service-icon">{{service.icon}}</div>
+            <div class="service-content">
+                <h2>{{service.title}}</h2>
+                <p>{{service.description}}</p>
+                <ul class="feature-list">
+                    <li *ngFor="let feature of service.features">
+                        <span class="check">✓</span> {{feature}}
+                    </li>
+                </ul>
+                <button class="btn-inquire">Inquire Now</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Need a Custom Care Plan?</h2>
+            <p>Our specialists are here to help you design the perfect support system for your needs.</p>
+            <button class="btn-primary" routerLink="/emergency">Contact Support</button>
+        </div>
+    </section>
+
+    <app-auth-overlay></app-auth-overlay>
+</div>

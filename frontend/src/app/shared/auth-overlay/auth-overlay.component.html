@@ -1,0 +1,10 @@
+<div class="auth-overlay" *ngIf="!isLoggedIn">
+  <div class="overlay-content">
+    <h2>Access Restricted</h2>
+    <p>Please login or register to view full details and interact with this service.</p>
+    <div class="overlay-actions">
+      <button class="btn-primary" routerLink="/auth">Login / Register</button>
+      <button class="btn-secondary" routerLink="/home">Go Back</button>
+    </div>
+  </div>
+</div>

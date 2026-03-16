@@ -1,0 +1,136 @@
+/* Global variables for accessibility and premium aesthetic */
+:root {
+  /* Color Palette - Light (Default) */
+  --primary-color: #2c5aa0;
+  --primary-light: #e6f0ff;
+  --secondary-color: #2fb6b6;
+  --accent-orange: #ff8c2f;
+  --accent-purple: #6c63ff;
+  --accent-green: #10b981;
+  --danger-red: #e53935;
+  
+  --text-primary: #2d3748;
+  --text-muted: #718096;
+  --bg-app: #f7fafc;
+  --bg-card: #ffffff;
+  --bg-navbar: #ffffff;
+  
+  --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  --border-color: #e2e8f0;
+  
+  /* Shared Defaults */
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Accessibility Defaults */
+  --font-scale: 1;
+  --base-line-height: 1.6;
+
+  /* Breakpoints */
+  --bp-mobile: 480px;
+  --bp-tablet: 768px;
+  --bp-laptop: 1024px;
+}
+
+/* Dark Theme Overrides */
+[data-theme='dark'] {
+  --primary-color: #63b3ed;
+  --primary-light: #2c5aa0;
+  --secondary-color: #4fd1d1;
+  --accent-orange: #f6ad55;
+  --accent-purple: #9f7aea;
+  --accent-green: #68d391;
+  --danger-red: #fc8181;
+
+  --text-primary: #f7fafc;
+  --text-muted: #a0aec0;
+  --bg-app: #121212;
+  --bg-card: #1e1e1e;
+  --bg-navbar: #1a202c;
+
+  --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  --border-color: #2d3748;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Dynamic font size for accessibility */
+  font-size: calc(16px * var(--font-scale));
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: var(--base-line-height);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Keyboard Accessibility: High-visibility focus rings */
+:focus-visible {
+  outline: 3px solid var(--accent-orange) !important;
+  outline-offset: 3px !important;
+}
+
+/* Skip-to-content link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  z-index: 1000;
+  transition: top 0.3s;
+  
+  &:focus {
+    top: 10px;
+  }
+}
+
+h1, h2, h3, h4 {
+  color: var(--primary-color);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-smooth);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Modern Card Pattern */
+.accessible-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow);
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}

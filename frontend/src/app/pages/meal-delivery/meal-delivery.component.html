@@ -1,0 +1,82 @@
+<div class="meal-delivery-container">
+  <header class="page-header">
+    <h1>Nutritious Meal Delivery</h1>
+    <p>Enjoy chef-prepared, balanced meals delivered straight to your door. Tailored to your health needs.</p>
+  </header>
+
+  <div class="content-layout">
+    <!-- Sidebar -->
+    <aside class="info-sidebar">
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🚛</span>
+        <div>
+          <h4>Daily Delivery</h4>
+          <p>Meals are delivered between 11:00 AM and 1:00 PM every day.</p>
+        </div>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🥗</span>
+        <div>
+          <h4>Fresh Ingredients</h4>
+          <p>We source local, organic produce and high-quality proteins.</p>
+        </div>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">📋</span>
+        <div>
+          <h4>Dietary Experts</h4>
+          <p>All menus are approved by certified nutritionists.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <section class="filter-section">
+        <div class="category-tabs">
+          <button 
+            *ngFor="let cat of categories" 
+            [class.active]="selectedCategory === cat"
+            (click)="filterByCategory(cat)">
+            {{ cat }}
+          </button>
+        </div>
+      </section>
+
+      <div class="alert success" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="meal-grid">
+        <div class="meal-card" *ngFor="let meal of filteredMeals">
+          <div class="meal-image" [ngClass]="meal.image">
+            <div class="image-overlay"></div>
+          </div>
+          <div class="meal-badge" [ngClass]="meal.category.toLowerCase().replace(' ', '-')">
+            {{ meal.category }}
+          </div>
+          <div class="meal-content">
+            <div class="meal-main">
+              <h3>{{ meal.name }}</h3>
+              <p class="description">{{ meal.description }}</p>
+            </div>
+            
+            <div class="nutritional-info">
+              <span>🔥 {{ meal.calories }} kcal</span>
+              <span>💪 {{ meal.protein }} protein</span>
+            </div>
+
+            <div class="meal-tags">
+              <span class="tag" *ngFor="let tag of meal.tags">{{ tag }}</span>
+            </div>
+
+            <div class="meal-footer">
+              <span class="price">${{ meal.price | number:'1.2-2' }}</span>
+              <button class="btn-order" (click)="requestMeal(meal.name)">Order Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

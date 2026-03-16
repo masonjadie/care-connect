@@ -1,0 +1,61 @@
+<div class="medication-container">
+  <header class="page-header">
+    <h1>Medication Reminders</h1>
+    <p>Keep track of your health with personalized medication schedules and safety guides.</p>
+  </header>
+
+  <div class="layout-grid">
+    <section class="schedule-section">
+      <div class="status-card">
+        <div class="card-icon">🔔</div>
+        <div class="status-text">
+          <h3>Next Due</h3>
+          <p><strong>Metformin (500mg)</strong> in 4 hours (6:00 PM)</p>
+        </div>
+        <button class="btn-check">Mark as Taken</button>
+      </div>
+
+      <div class="med-grid">
+        <div class="med-card" *ngFor="let med of medications" [ngClass]="med.color">
+          <div class="med-header">
+            <h3>{{ med.name }}</h3>
+            <span class="dosage">{{ med.dosage }}</span>
+          </div>
+          <div class="med-info">
+            <p><strong>Frequency:</strong> {{ med.frequency }}</p>
+            <p><strong>Next Dose:</strong> {{ med.nextDose }}</p>
+          </div>
+          <div class="med-actions">
+            <button class="btn-edit">Edit Details</button>
+          </div>
+        </div>
+
+        <div class="add-card">
+          <button class="btn-add">
+            <span class="plus">+</span>
+            <span>Add Medication</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="safety-card">
+        <h3>Safety Tips</h3>
+        <ul class="tips-list">
+          <li *ngFor="let tip of safetyTips">
+            <span class="check">✓</span>
+            {{ tip }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="pharmacy-card">
+        <h3>Quick Contacts</h3>
+        <p><strong>Neighborhood Pharmacy</strong><br />(555) 123-4567</p>
+        <p><strong>Dr. Sarah Johnson</strong><br />(555) 987-6543</p>
+        <button class="btn-call">Call Doctor</button>
+      </div>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+.auth-page {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(140deg, #f4f9ff, #fffef8);
+}
+
+.auth-card {
+  width: min(460px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 12px 30px rgba(15, 58, 95, 0.12);
+}
+
+h1 {
+  margin: 0;
+}
+
+p {
+  margin-top: 0.6rem;
+  color: #546274;
+}
+
+.mode-toggle {
+  margin: 1.3rem 0 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #eef4fa;
+  border-radius: 10px;
+  padding: 0.2rem;
+}
+
+.mode-toggle button {
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 0.6rem 0.5rem;
+  cursor: pointer;
+  color: #37506f;
+  font-weight: 600;
+}
+
+.mode-toggle button.active {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.field {
+  margin-bottom: 0.95rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  color: #3a4a60;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #d7e0eb;
+  border-radius: 10px;
+  padding: 0.72rem 0.8rem;
+  font-size: 0.95rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3d8bfd;
+}
+
+.submit-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: #1a73e8;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #b42318;
+  font-size: 0.9rem;
+  margin-bottom: 0.7rem;
+}
+
+.success {
+  color: #067647;
+  font-size: 0.9rem;
+  margin-bottom: 0.7rem;
+}

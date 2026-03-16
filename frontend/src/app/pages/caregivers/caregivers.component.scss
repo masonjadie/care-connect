@@ -1,0 +1,288 @@
+.caregivers-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px 20px;
+}
+
+.caregivers-shell {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  padding: 24px;
+}
+
+.section-header {
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 8px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+}
+
+.caregiver-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.caregiver-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.caregiver-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 18px;
+  background: #fbfdff;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.rating {
+  font-size: 0.9rem;
+  color: #1e3a8a;
+  background: #eff6ff;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.specialty {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin: 8px 0 12px;
+}
+
+.caregiver-meta p {
+  margin: 0 0 8px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.bio {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.btn-secondary {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 8px;
+}
+
+.caregiver-register {
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 18px;
+  background: #f8fbff;
+
+  h3 {
+    margin: 0 0 10px;
+  }
+
+  p {
+    margin: 0 0 14px;
+    color: var(--text-muted);
+  }
+
+  .already-registered {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #dbeafe;
+
+    p {
+      margin: 0;
+      color: #334155;
+    }
+
+    .login-link {
+      color: var(--primary-color);
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    background: #ffffff;
+  }
+}
+
+.register-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: var(--secondary-color);
+  color: #ffffff;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.error {
+  color: #b42318;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.success {
+  color: #067647;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.my-profile-card {
+  background: white;
+  padding: 30px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--primary-light);
+
+  .profile-header {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f1f5f9;
+
+    .header-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .status-badge {
+        background: #ecfdf5;
+        color: #059669;
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+      }
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+  }
+
+  .profile-details {
+    .detail-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+
+      .label {
+        font-weight: 700;
+        color: var(--text-dark);
+        min-width: 100px;
+      }
+
+      .value {
+        color: #475569;
+      }
+
+      &.bio-item {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
+
+        .bio-text {
+          line-height: 1.6;
+          background: #f8fafc;
+          padding: 15px;
+          border-radius: 12px;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .caregivers-page {
+    padding: 24px 15px;
+  }
+
+  .caregiver-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .caregiver-grid {
+    grid-template-columns: repeat(2, 1fr);
+    order: 2;
+  }
+
+  .caregiver-register {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .caregivers-shell {
+    padding: 20px 15px;
+  }
+
+  .caregiver-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-profile-card {
+    padding: 20px;
+    
+    .profile-header .header-main h3 {
+      font-size: 1.25rem;
+    }
+    
+    .profile-details .detail-item {
+      flex-direction: column;
+      gap: 4px;
+      
+      .label {
+        min-width: auto;
+      }
+    }
+  }
+}

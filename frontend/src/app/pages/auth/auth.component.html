@@ -1,0 +1,35 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <h1>Welcome</h1>
+    <p>Login or create an account to continue.</p>
+
+    <div class="mode-toggle">
+      <button type="button" [class.active]="mode === 'login'" (click)="setMode('login')">Login</button>
+      <button type="button" [class.active]="mode === 'register'" (click)="setMode('register')">Register</button>
+    </div>
+
+    <form [formGroup]="authForm" (ngSubmit)="submit()">
+      <div class="field" *ngIf="mode === 'register'">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" formControlName="name" placeholder="Enter your full name" />
+      </div>
+
+      <div class="field">
+        <label for="identifier">Email or Username</label>
+        <input id="identifier" type="text" formControlName="identifier" placeholder="Enter email or username" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="Minimum 6 characters" />
+      </div>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+
+      <button class="submit-btn" type="submit" [disabled]="loading">
+        {{ loading ? 'Please wait...' : (mode === 'login' ? 'Login' : 'Create Account') }}
+      </button>
+    </form>
+  </div>
+</section>
