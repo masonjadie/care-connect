@@ -5,13 +5,8 @@ import { RouterModule } from '@angular/router';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { ContactUsComponent } from './contact-us/contact-us.component';
-import { SitemapComponent } from './sitemap/sitemap.component';
-
 @NgModule({
   declarations: [
-    ContactUsComponent,
-    SitemapComponent
   ],
   imports: [
     CommonModule,
