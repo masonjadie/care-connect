@@ -252,12 +252,14 @@
 }
 
 @media (max-width: 768px) {
-  .transportation-container {
-    padding: 20px 15px;
+  .medication-container {
+    padding: 20px 10px;
   }
 
-  .page-header h1 {
-    font-size: 2rem;
+  .page-header {
+    margin-bottom: 30px;
+    h1 { font-size: 1.8rem; }
+    p { font-size: 0.95rem; }
   }
 
   .status-card {
@@ -266,6 +268,16 @@
     padding: 30px 20px;
     
     .btn-check { width: 100%; }
+  }
+
+  .med-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .med-card {
+    padding: 20px;
   }
 }
 
