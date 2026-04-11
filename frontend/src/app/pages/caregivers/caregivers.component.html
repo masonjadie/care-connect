@@ -12,7 +12,7 @@
           <div class="card-top">
             <div class="avatar-wrapper">
               <img *ngIf="caregiver.id <= 3; else initials" 
-                   [src]="caregiver.name.includes('Nadine') || caregiver.name.includes('Althea') || caregiver.name.includes('Sarah') ? 'assets/images/ai-avatar-lady.png' : 'assets/images/ai-avatar.png'" 
+                   [src]="caregiver.name.includes('Nadine') || caregiver.name.includes('Althea') || caregiver.name.includes('Sarah') ? 'assets/images/ai-avatar-lady.webp' : 'assets/images/ai-avatar.png'" 
                    [alt]="caregiver.name"
                    loading="lazy"
                    width="80"
