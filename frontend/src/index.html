@@ -17,14 +17,44 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <style>
-    :root { --bg-app: #f7fafc; --primary-color: #2c5aa0; }
-    body { background-color: var(--bg-app); margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; overflow-x: hidden; }
-    .nav-skeleton { height: 100px; background: white; border-bottom: 1px solid #e2e8f0; width: 100%; position: fixed; top: 0; z-index: 10; }
+    :root {
+      --bg-app: #f7fafc;
+      --bg-card: #ffffff;
+      --bg-navbar: #ffffff;
+      --primary-color: #2c5aa0;
+      --primary-light: #e6f0ff;
+      --secondary-color: #2fb6b6;
+      --text-primary: #2d3748;
+      --text-muted: #718096;
+      --border-color: #e2e8f0;
+      --radius-lg: 18px;
+    }
+
+    [data-theme='dark'] {
+      --bg-app: #121212;
+      --bg-card: #1e1e1e;
+      --bg-navbar: #1a202c;
+      --primary-color: #63b3ed;
+      --text-primary: #f7fafc;
+      --text-muted: #a0aec0;
+      --border-color: #2d3748;
+    }
+
+    body {
+      background-color: var(--bg-app);
+      margin: 0;
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .nav-skeleton { height: 100px; background: var(--bg-navbar); border-bottom: 1px solid var(--border-color); width: 100%; position: fixed; top: 0; z-index: 10; }
     .hero-skeleton { padding-top: 140px; min-height: 750px; width: 100%; display: flex; justify-content: center; align-items: flex-start; padding-inline: 40px; box-sizing: border-box; }
-    .skeleton-panel { width: 100%; max-width: 950px; height: 600px; background: #fff; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); padding: 60px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; }
-    .skeleton-bar { height: 44px; background: #f1f5f9; margin-bottom: 24px; border-radius: 8px; width: 100%; }
+    .skeleton-panel { width: 100%; max-width: 950px; height: 600px; background: var(--bg-card); border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); padding: 60px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; border: 1px solid var(--border-color); }
+    .skeleton-bar { height: 44px; background: var(--bg-app); margin-bottom: 24px; border-radius: 8px; width: 100%; }
     .skeleton-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; margin-top: 30px; }
-    .skeleton-btn { height: 60px; background: #f1f5f9; border-radius: 14px; }
+    .skeleton-btn { height: 60px; background: var(--bg-app); border-radius: 14px; }
   </style>
   <script>
     (function() {
