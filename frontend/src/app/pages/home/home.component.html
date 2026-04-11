@@ -129,10 +129,12 @@
               <div class="appointment-item">
                 <p><strong>Doctor Visit</strong> • Mon, Aug 15</p>
               </div>
-              <button class="btn-manage-mini" routerLink="/dashboard">Manage All</button>
+              <button class="btn-manage-mini" routerLink="/dashboard" aria-label="Manage all appointments">Manage All</button>
             </div>
             
-            <button class="btn-sos-main" routerLink="/emergency">🚨 Emergency SOS Help</button>
+            <button class="btn-sos-main" routerLink="/emergency" aria-label="Emergency SOS Help - Get help immediately">
+              <span role="img" aria-label="Emergency Siren">🚨</span> Emergency SOS Help
+            </button>
           </div>
         </div>
       </div>
@@ -147,7 +149,7 @@
       <div class="icon-circle blue">📚</div>
       <h3>Health Tips and Articles</h3>
       <p>Stay active and healthy with daily advice tailored for your wellbeing.</p>
-      <button class="btn-text" (click)="openArticle()">Read More →</button>
+      <button class="btn-text" (click)="openArticle()" aria-label="Read more about health tips and articles">Read More <span aria-hidden="true">→</span></button>
     </div>
 
     <div class="feature-card">
