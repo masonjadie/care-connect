@@ -236,6 +236,10 @@
 }
 
 @media (max-width: 1024px) {
+  .home-container {
+    padding: 20px;
+  }
+
   .hero {
     min-height: auto;
     .hero-content {
@@ -243,12 +247,45 @@
       flex-direction: column;
       height: auto;
       
-      .hero-text-panel { max-width: 100%; }
-      .hero-dashboard-mini { flex-direction: column; align-items: stretch; }
-      .btn-sos-main { flex: 1; padding: 20px; }
+      .hero-text-panel { 
+        max-width: 100%; 
+        padding: 30px 20px;
+      }
+
+      .hero-text {
+        h1 { font-size: 2.2rem; }
+        p { font-size: 1.1rem; }
+      }
+
+      .hero-actions { 
+        grid-template-columns: 1fr; 
+        gap: 10px;
+      }
+
+      .hero-dashboard-mini { 
+        flex-direction: column; 
+        align-items: stretch;
+        gap: 15px;
+      }
+      
+      .btn-sos-main { 
+        flex: 1; 
+        padding: 20px;
+        min-height: 120px;
+      }
     }
   }
   .features-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 1.8rem !important;
+  }
+  
+  .hero-content {
+    padding: 20px 10px !important;
+  }
 }
 
 /* Custom Modal Styles */
