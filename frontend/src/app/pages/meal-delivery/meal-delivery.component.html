@@ -56,7 +56,7 @@
       <div class="meal-grid">
         <div class="meal-card" *ngFor="let meal of filteredMeals">
           <div class="meal-image">
-            <img [src]="'assets/images/' + meal.image" [alt]="meal.name" loading="lazy">
+            <img [src]="'assets/images/' + meal.image" [alt]="meal.name" loading="lazy" width="400" height="250">
             <div class="image-overlay"></div>
           </div>
           <div class="meal-badge" [ngClass]="meal.category.toLowerCase().replace(' ', '-')">

@@ -8,7 +8,7 @@
     <div class="services-grid">
         <div class="service-card" *ngFor="let service of services">
             <div class="service-image-header">
-                <img [src]="'assets/images/' + service.image" [alt]="service.title" class="service-img" loading="lazy">
+                <img [src]="'assets/images/' + service.image" [alt]="service.title" class="service-img" loading="lazy" width="600" height="350">
                 <div class="service-icon-overlay">{{service.icon}}</div>
             </div>
             <div class="service-content">
