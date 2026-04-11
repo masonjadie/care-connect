@@ -41,7 +41,7 @@ export class AccessibilityService {
     this.themeSubject.next(theme);
     
     requestAnimationFrame(() => {
-      this.renderer.setAttribute(document.documentElement, 'data-theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
     });
     
     localStorage.setItem('careconnect_theme', theme);
@@ -63,9 +63,9 @@ export class AccessibilityService {
     const roundedScale = Math.round(scale * 10) / 10;
     this.fontScaleSubject.next(roundedScale);
     
-    // Defer style application to avoid forced reflow during bootstrap
+    // Use native setProperty for CSS variables to ensure reliable browser rendering
     requestAnimationFrame(() => {
-      this.renderer.setStyle(document.documentElement, '--font-scale', roundedScale.toString());
+      document.documentElement.style.setProperty('--font-scale', roundedScale.toString());
     });
     
     localStorage.setItem('careconnect_font_scale', roundedScale.toString());

@@ -61,6 +61,16 @@ export class CaregiversComponent implements OnInit {
     });
   }
 
+  toastMessage = '';
+  showToast(message: string): void {
+    this.toastMessage = message;
+    setTimeout(() => this.toastMessage = '', 3500);
+  }
+
+  requestCaregiver(caregiver: Caregiver): void {
+    this.showToast(`✅ Request sent to ${caregiver.name}! They will contact you shortly.`);
+  }
+
   submitCaregiverForm(): void {
     this.caregiverSuccessMessage = '';
     this.caregiverErrorMessage = '';

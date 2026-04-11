@@ -1,4 +1,5 @@
 <section class="caregivers-page">
+  <div class="toast-message" *ngIf="toastMessage">{{ toastMessage }}</div>
   <div class="caregivers-shell">
     <header class="section-header">
       <h1>Find a Caregiver</h1>
@@ -37,7 +38,7 @@
           
           <p class="bio">{{ caregiver.bio }}</p>
           
-          <button class="btn-secondary">Request Caregiver</button>
+          <button class="btn-secondary" (click)="requestCaregiver(caregiver)">Request Caregiver</button>
         </article>
       </div>
 

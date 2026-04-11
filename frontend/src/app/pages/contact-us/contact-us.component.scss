@@ -1,0 +1,200 @@
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    color: var(--text-dark, #1e293b);
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: var(--text-muted, #64748b);
+  }
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .info-card {
+    background: var(--bg-card, #ffffff);
+    padding: 25px;
+    border-radius: var(--radius-md, 12px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--primary-color, #2563eb);
+    }
+
+    p {
+      color: var(--text-muted, #64748b);
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+}
+
+.contact-form-card {
+  background: var(--bg-card, #ffffff);
+  padding: 40px;
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--card-shadow, 0 10px 30px rgba(0, 0, 0, 0.08));
+
+  h2 {
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    color: var(--text-dark, #1e293b);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-weight: 600;
+      color: var(--text-dark, #1e293b);
+    }
+
+    input, select, textarea {
+      padding: 12px 16px;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color, #2563eb);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+    }
+    textarea {
+      resize: vertical;
+    }
+  }
+
+  .btn-submit {
+    background: var(--primary-color, #2563eb);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+
+    &:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+/* Success Modal Styles */
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+
+  .success-modal {
+    background: var(--bg-card, #ffffff);
+    padding: 50px 40px;
+    border-radius: var(--radius-lg, 16px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: modalPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    .success-icon-large {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      animation: scaleUp 0.5s ease-out 0.2s both;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--text-dark, #1e293b);
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: var(--text-muted, #64748b);
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .btn-close-modal {
+      background: var(--primary-color, #2563eb);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+
+      &:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+@keyframes modalPopIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes scaleUp {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}

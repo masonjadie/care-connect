@@ -1,0 +1,63 @@
+<div class="contact-container">
+  <div class="success-overlay" *ngIf="successMessage">
+    <div class="success-modal">
+      <div class="success-icon-large">✅</div>
+      <h2>Message Sent</h2>
+      <p>{{ successMessage }}</p>
+      <button class="btn-close-modal" (click)="successMessage = ''">Close</button>
+    </div>
+  </div>
+
+  <header class="page-header">
+    <h1>Contact Us</h1>
+    <p>Have questions or need assistance? We're here to help.</p>
+  </header>
+
+  <div class="contact-content">
+    <div class="contact-info">
+      <div class="info-card">
+        <h3>📍 Our Office</h3>
+        <p>123 Healthway Blvd, Suite 100<br>Wellness City, ST 12345</p>
+      </div>
+      <div class="info-card">
+        <h3>📞 Phone</h3>
+        <p>General Inquiries: (555) 123-4567<br>Emergency Support: (555) 987-6543</p>
+      </div>
+      <div class="info-card">
+        <h3>✉️ Email</h3>
+        <p>support&#64;careconnect.com<br>partnerships&#64;careconnect.com</p>
+      </div>
+    </div>
+
+    <div class="contact-form-card">
+      <h2>Send Us a Message</h2>
+      <form (submit)="onSubmit($event)">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="john&#64;example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select required>
+            <option value="" disabled selected>Select a subject...</option>
+            <option value="general">General Inquiry</option>
+            <option value="support">Technical Support</option>
+            <option value="billing">Billing Question</option>
+            <option value="partnership">Partnership Opportunity</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea rows="5" placeholder="How can we help?" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit" [disabled]="submitted">
+          {{ submitted ? 'Sending...' : 'Send Message' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -99,8 +99,5 @@ export class MealDeliveryComponent implements OnInit {
 
   requestMeal(mealName: string): void {
     this.successMessage = `Request for "${mealName}" has been received! Our kitchen is preparing your fresh meal.`;
-    setTimeout(() => {
-      this.successMessage = '';
-    }, 4000);
   }
 }

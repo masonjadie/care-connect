@@ -98,14 +98,28 @@
 }
 
 .btn-inquire {
-    background: var(--bg-light);
-    color: var(--primary-color);
-    padding: 12px 25px;
-    border-radius: 8px;
+    background: var(--primary-color);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 30px;
     width: auto;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.2);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: inline-block;
 
     &:hover {
-        background: var(--primary-light);
+        background: #244a85;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(44, 90, 160, 0.3);
+    }
+    
+    &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(44, 90, 160, 0.2);
     }
 }
 

@@ -1,4 +1,13 @@
 <div class="transportation-container">
+  <!-- Big modern success overlay -->
+  <div class="success-overlay" *ngIf="successMessage">
+    <div class="success-modal">
+      <div class="success-icon-large">✅</div>
+      <h2>Booking Confirmed</h2>
+      <p>{{ successMessage }}</p>
+      <button class="btn-close-modal" (click)="successMessage = ''">Close</button>
+    </div>
+  </div>
   <header class="page-header">
     <h1>Reliable Transportation</h1>
     <p>Safe, accessible, and comfortable rides for your medical appointments and daily errands.</p>
@@ -107,7 +116,6 @@
             <textarea id="notes" formControlName="notes" rows="3" placeholder="Oxygen tank, folding walker, etc."></textarea>
           </div>
 
-          <p class="success-msg" *ngIf="successMessage">{{ successMessage }}</p>
 
           <button type="submit" class="btn-submit" [disabled]="isSubmitting">
             {{ isSubmitting ? 'Processing...' : 'Schedule Ride' }}

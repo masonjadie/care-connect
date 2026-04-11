@@ -8,8 +8,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class PrescriptionDeliveryComponent implements OnInit {
   prescriptionForm: FormGroup;
-  submitted = false;
   successMessage = '';
+  submitted = false;
+  toastMessage = '';
   autoRefillEnabled = false;
 
   howItWorks = [
@@ -30,18 +31,16 @@ export class PrescriptionDeliveryComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.prescriptionForm = this.fb.group({
-      patientName: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
-      doctorName: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      deliveryAddress: ['', Validators.required],
+      patientName: [''],
+      dateOfBirth: [''],
+      doctorName: [''],
+      phone: [''],
+      deliveryAddress: [''],
       notes: [''],
-      // Auto-refill fields
       autoRefill: [false],
       medicationDuration: [''],
       durationUnit: ['Days'],
       refillFrequency: ['Every 30 days'],
-      // Payment fields
       enableRecurringPayment: [false],
       cardholderName: [''],
       cardNumber: [''],
@@ -52,53 +51,59 @@ export class PrescriptionDeliveryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Toggle required validators for auto-refill and payment fields
     this.f['autoRefill'].valueChanges.subscribe((enabled: boolean) => {
       this.autoRefillEnabled = enabled;
-      if (enabled) {
-        this.f['medicationDuration'].setValidators([Validators.required]);
-      } else {
-        this.f['medicationDuration'].clearValidators();
-      }
-      this.f['medicationDuration'].updateValueAndValidity();
-    });
-
-    this.f['enableRecurringPayment'].valueChanges.subscribe((enabled: boolean) => {
-      const paymentFields = ['cardholderName', 'cardNumber', 'expiryDate', 'cvv', 'billingAddress'];
-      paymentFields.forEach(field => {
-        if (enabled) {
-          this.f[field].setValidators([Validators.required]);
-        } else {
-          this.f[field].clearValidators();
-        }
-        this.f[field].updateValueAndValidity();
-      });
     });
   }
 
   get f() { return this.prescriptionForm.controls; }
   get recurringPaymentEnabled() { return this.f['enableRecurringPayment'].value; }
 
+  showToast(message: string): void {
+    this.toastMessage = message;
+    setTimeout(() => this.toastMessage = '', 5000);
+  }
+
   onSubmit(): void {
     this.submitted = true;
-    if (this.prescriptionForm.invalid) return;
+    const missing: string[] = [];
+    
+    // Core fields
+    if (!this.f['patientName'].value?.trim()) missing.push('Patient Name');
+    if (!this.f['dateOfBirth'].value?.trim()) missing.push('Date of Birth');
+    if (!this.f['doctorName'].value?.trim()) missing.push('Doctor Name');
+    if (!this.f['phone'].value?.trim()) missing.push('Phone Number');
+    if (!this.f['deliveryAddress'].value?.trim()) missing.push('Delivery Address');
 
-    const autoRefill = this.f['autoRefill'].value;
-    const recurring = this.f['enableRecurringPayment'].value;
-
-    let msg = `Thank you, ${this.f['patientName'].value}! Your prescription request has been received.`;
-    if (autoRefill) {
-      msg += ` Auto-refill is set for ${this.f['medicationDuration'].value} ${this.f['durationUnit'].value} (${this.f['refillFrequency'].value}).`;
+    // Payment fields only if enabled
+    if (this.f['enableRecurringPayment'].value) {
+      if (!this.f['cardholderName'].value?.trim()) missing.push('Cardholder Name');
+      if (!this.f['cardNumber'].value?.trim()) missing.push('Card Number');
+      if (!this.f['expiryDate'].value?.trim()) missing.push('Expiry Date');
+      if (!this.f['cvv'].value?.trim()) missing.push('CVV');
+      if (!this.f['billingAddress'].value?.trim()) missing.push('Billing Address');
     }
-    if (recurring) {
-      msg += ' Recurring payment has been set up securely.';
-    }
-    msg += ' Our pharmacist will contact you shortly.';
 
-    this.successMessage = msg;
-    this.prescriptionForm.reset();
-    this.submitted = false;
-    this.autoRefillEnabled = false;
-    setTimeout(() => this.successMessage = '', 8000);
+    if (missing.length > 0) {
+      this.showToast(`⚠️ Missing: ${missing.join(', ')}`);
+      return; 
+    }
+
+    const name = this.f['patientName'].value;
+    this.successMessage = `✅ Success! Thank you ${name}. Your request is being processed.`;
+    this.showToast('✅ Prescription Request Submitted!');
+
+    // Reset after success
+    setTimeout(() => {
+      this.prescriptionForm.reset({
+        autoRefill: false,
+        enableRecurringPayment: false,
+        durationUnit: 'Days',
+        refillFrequency: 'Every 30 days'
+      });
+      this.autoRefillEnabled = false;
+      this.successMessage = '';
+      this.submitted = false;
+    }, 6000);
   }
 }

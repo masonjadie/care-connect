@@ -1,0 +1,14 @@
+<div class="sitemap-container">
+  <header class="page-header">
+    <h1>Sitemap</h1>
+    <p>Navigate quickly to any part of CareConnect.</p>
+  </header>
+
+  <div class="sitemap-content">
+    <ul class="sitemap-list">
+      <li *ngFor="let link of links">
+        <a [routerLink]="link.url">{{ link.label }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-pet-care',
@@ -63,7 +64,28 @@ export class PetCareComponent implements OnInit {
     }
   ];
 
+  toastMessage = '';
+
   constructor() { }
 
   ngOnInit(): void { }
+
+  showToast(message: string): void {
+    this.toastMessage = message;
+    setTimeout(() => this.toastMessage = '', 3500);
+  }
+
+  learnMore(service: any): void {
+    this.showToast(`🐾 Learn more about ${service.title} — booking feature coming soon.`);
+  }
+
+  registerSpecialist(form: NgForm): void {
+    if (form.invalid) {
+      this.showToast('⚠️ Please fill in all required fields.');
+      form.control.markAllAsTouched();
+      return;
+    }
+    this.showToast('✅ Registration submitted! We\'ll reach out within 48 hours.');
+    form.resetForm();
+  }
 }

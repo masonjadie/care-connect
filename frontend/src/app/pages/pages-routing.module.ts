@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../guards/auth.guard';
 import { SubscriptionGuard } from '../guards/subscription.guard';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { SitemapComponent } from './sitemap/sitemap.component';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./home/home.module').then(m => m.HomeModule), data: { title: 'Home | CareConnect Hub' } },
@@ -18,7 +20,9 @@ const routes: Routes = [
   { path: 'plans', loadChildren: () => import('./plans/plans.module').then(m => m.PlansModule), canActivate: [AuthGuard], data: { title: 'Choose Your Plan | CareConnect Hub' } },
   { path: 'caregivers', loadChildren: () => import('./caregivers/caregivers.module').then(m => m.CaregiversModule), canActivate: [AuthGuard, SubscriptionGuard], data: { title: 'Caregiver Directory | CareConnect Hub' } },
   { path: 'about', loadChildren: () => import('./about/about.module').then(m => m.AboutModule), data: { title: 'About Us | CareConnect Hub' } },
-  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule), data: { title: 'Login or Register | CareConnect Hub' } }
+  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule), data: { title: 'Login or Register | CareConnect Hub' } },
+  { path: 'contact-us', component: ContactUsComponent, data: { title: 'Contact Us | CareConnect Hub' } },
+  { path: 'sitemap', component: SitemapComponent, data: { title: 'Sitemap | CareConnect Hub' } }
 ];
 
 @NgModule({

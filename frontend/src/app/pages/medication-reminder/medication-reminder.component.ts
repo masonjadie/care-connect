@@ -6,6 +6,7 @@ interface Medication {
   frequency: string;
   nextDose: string;
   color: string;
+  taken?: boolean;
 }
 
 @Component({
@@ -52,9 +53,83 @@ export class MedicationReminderComponent implements OnInit {
     'Discard any medications that have passed their expiration date.'
   ];
 
+  toastMessage = '';
+
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  showToast(message: string): void {
+    this.toastMessage = message;
+    setTimeout(() => this.toastMessage = '', 3500);
+  }
+
+  showModal = false;
+  isEditing = false;
+  editingIndex = -1;
+  currentMedication: Medication = {
+    name: '',
+    dosage: '',
+    frequency: '',
+    nextDose: '',
+    color: 'blue'
+  };
+
+  markAsTaken(): void {
+    const med = this.medications.find(m => m.name === 'Metformin');
+    if (med) {
+      med.taken = true;
+      med.nextDose = 'Tomorrow, 6:00 PM';
+      this.showToast('✅ Metformin (500mg) marked as taken!');
+    }
+  }
+
+  editMedication(med: Medication, index: number): void {
+    this.isEditing = true;
+    this.editingIndex = index;
+    this.currentMedication = { ...med };
+    this.showModal = true;
+  }
+
+  addMedication(): void {
+    this.isEditing = false;
+    this.currentMedication = {
+      name: '',
+      dosage: '',
+      frequency: '',
+      nextDose: '',
+      color: 'blue'
+    };
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  saveMedication(): void {
+    if (this.currentMedication.name.trim() && this.currentMedication.dosage.trim()) {
+      if (this.isEditing) {
+        this.medications[this.editingIndex] = { ...this.currentMedication };
+      } else {
+        this.medications.push({ ...this.currentMedication });
+      }
+      this.showModal = false;
+      this.showToast(this.isEditing ? '✏️ Medication updated!' : '➕ Medication added!');
+    }
+  }
+
+  deleteMedication(): void {
+    if (this.isEditing && this.editingIndex !== -1) {
+      this.medications.splice(this.editingIndex, 1);
+      this.showModal = false;
+      this.showToast('🗑️ Medication deleted!');
+    }
+  }
+
+  callDoctor(): void {
+    window.open('tel:5559876543');
+    this.showToast('📞 Calling Dr. Sarah Johnson…');
   }
 
 }

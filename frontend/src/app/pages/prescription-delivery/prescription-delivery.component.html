@@ -1,4 +1,5 @@
 <div class="prescription-container">
+  <div class="toast-message" *ngIf="toastMessage">{{ toastMessage }}</div>
   <header class="page-header">
     <div class="header-icon">💊</div>
     <h1>Prescription Fill & Delivery</h1>
@@ -38,8 +39,14 @@
       <h2>Submit Prescription Request</h2>
       <p class="form-subtext">Fill in your details below and a pharmacist will follow up within 30 minutes.</p>
 
-      <div class="alert success" *ngIf="successMessage">
-        ✅ {{ successMessage }}
+      <!-- Big modern success overlay -->
+      <div class="success-overlay" *ngIf="successMessage">
+        <div class="success-modal">
+          <div class="success-icon-large">✅</div>
+          <h2>Request Submitted</h2>
+          <p>{{ successMessage }}</p>
+          <button class="btn-close-modal" (click)="successMessage = ''">Close</button>
+        </div>
       </div>
 
       <form [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">

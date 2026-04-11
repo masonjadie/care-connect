@@ -1,4 +1,99 @@
 <div class="home-container">
+  <!-- Article View Modal Overlay -->
+  <div class="custom-modal-overlay" *ngIf="showArticleModal">
+    <div class="custom-modal" style="max-width: 600px; width: 95%;">
+      <div class="modal-header">
+        <h3>{{ currentArticle.title }}</h3>
+        <button class="btn-close" (click)="closeArticleModal()">✕</button>
+      </div>
+      <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+        <!-- Simple text formatting to handle markdown style newlines -->
+        <div style="font-size: 1.05rem; line-height: 1.7; color: #334155; white-space: pre-wrap;">{{ currentArticle.content }}</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeArticleModal()">Close Article</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coming Soon Modal Overlay -->
+  <div class="custom-modal-overlay" *ngIf="showComingSoon">
+    <div class="custom-modal">
+      <div class="modal-header">
+        <h3>Building Something Great!</h3>
+        <button class="btn-close" (click)="closeComingSoon()">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 40px 20px;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🚧</div>
+        <p style="font-size: 1.1rem; color: #1e293b; line-height: 1.6;">{{ comingSoonMessage }}</p>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button class="btn-save" (click)="closeComingSoon()">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Contact Modal Overlay -->
+  <div class="custom-modal-overlay" *ngIf="showContactModal">
+    <div class="custom-modal">
+      <div class="modal-header">
+        <h3>Add Emergency Contact</h3>
+        <button class="btn-close" (click)="closeContactModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Contact Name</label>
+          <input type="text" [(ngModel)]="newContactName" placeholder="e.g. John Doe">
+        </div>
+        <div class="form-group">
+          <label>Relationship</label>
+          <input type="text" [(ngModel)]="newContactRelation" placeholder="e.g. Son, Friend, Doctor">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeContactModal()">Cancel</button>
+        <button class="btn-save" (click)="saveContact()">Save Contact</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Reminder Modal Overlay -->
+  <div class="custom-modal-overlay" *ngIf="showReminderModal">
+    <div class="custom-modal">
+      <div class="modal-header">
+        <h3>Add Daily Reminder</h3>
+        <button class="btn-close" (click)="closeReminderModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Activity/Task Name</label>
+          <input type="text" [(ngModel)]="newReminderText" placeholder="e.g. Take Vitamins">
+        </div>
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" [(ngModel)]="newReminderTime">
+          </div>
+          <div class="form-group">
+            <label>Icon</label>
+            <select style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1.1rem; width: 100%;" [(ngModel)]="newReminderIcon">
+              <option value="⏰">⏰ Alarm</option>
+              <option value="💊">💊 Medicine</option>
+              <option value="🏃">🏃 Exercise</option>
+              <option value="💧">💧 Water</option>
+              <option value="🍎">🍎 Food</option>
+              <option value="📝">📝 Note</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeReminderModal()">Cancel</button>
+        <button class="btn-save" (click)="saveReminder()">Save Reminder</button>
+      </div>
+    </div>
+  </div>
+
   <section class="hero">
       <!-- Zero-Weight Premium Hero Background -->
       <div class="hero-visual-accent">
@@ -52,7 +147,7 @@
       <div class="icon-circle blue">📚</div>
       <h3>Health Tips and Articles</h3>
       <p>Stay active and healthy with daily advice tailored for your wellbeing.</p>
-      <button class="btn-text">Read More →</button>
+      <button class="btn-text" (click)="openArticle()">Read More →</button>
     </div>
 
     <div class="feature-card">
@@ -61,16 +156,19 @@
       <div class="contact-list">
         <p *ngFor="let contact of contacts"><strong>{{ contact.name }}</strong> ({{ contact.relation }})</p>
       </div>
-      <button class="btn-add" (click)="addContact()">+ Add Contact</button>
+      <button class="btn-add" (click)="openAddContactModal()">+ Add Contact</button>
     </div>
 
     <div class="feature-card">
       <div class="icon-circle purple">⏰</div>
       <h3>Daily Reminders</h3>
       <div class="reminder-list">
-        <p><span>💊</span> Blood Pressure - 8:00 AM</p>
-        <p><span>🏃</span> Stretching - 3:00 PM</p>
+        <p *ngFor="let reminder of reminders; let i = index">
+          <span>{{ reminder.icon }}</span> {{ reminder.text }} - {{ reminder.time }}
+          <button style="border:none;background:none;color: #ef4444;cursor:pointer;float:right;" (click)="deleteReminder(i)">✕</button>
+        </p>
       </div>
+      <button class="btn-add" (click)="openAddReminderModal()">+ Add Reminder</button>
     </div>
   </section>
 </div>
