@@ -12,21 +12,21 @@ export class PetCareComponent implements OnInit {
       title: 'Medical Alert Service Dogs',
       description: 'Specially trained companions that detect seizures, diabetic changes, or provide stability for mobility.',
       icon: '🐕‍🦺',
-      image: 'service_dog_alert.png',
+      image: 'service_dog_alert.webp',
       features: ['24/7 Monitoring', 'Mobility Assistance', 'Emergency Alert Training']
     },
     {
       title: 'Therapeutic Pet Visits',
       description: 'Scheduled visits from certified therapy animals to improve emotional well-being and reduce stress.',
       icon: '🐈',
-      image: 'therapy_cat.png',
+      image: 'therapy_cat.webp',
       features: ['Certified Handlers', 'Emotional Support', 'Stress Reduction']
     },
     {
       title: 'Senior Pet Support',
       description: 'Mobile veterinary care and grooming services tailored for the pets of elderly owners.',
       icon: '🦴',
-      image: 'senior_pet_care.png',
+      image: 'senior_pet_care.webp',
       features: ['In-home Grooming', 'Vet Check-ups', 'Pet Med Management']
     }
   ];
