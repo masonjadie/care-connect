@@ -6,7 +6,7 @@
     <div class="chat-header">
       <div class="header-info">
         <div class="avatar-container">
-          <img src="assets/images/ai-avatar-lady.png" alt="CareConnect Assistant Avatar" class="bot-avatar">
+          <img src="assets/images/ai-avatar-lady.png" alt="CareConnect Assistant Avatar" class="bot-avatar" width="45" height="45">
           <span class="online-dot"></span>
         </div>
         <div class="header-text">
@@ -14,7 +14,16 @@
           <span class="status">Online • Ready to help</span>
         </div>
       </div>
-      <button class="close-btn" (click)="toggleChat()" aria-label="Close Chat">×</button>
+      <div class="header-actions">
+        <button class="voice-toggle-btn" 
+                [class.active]="isVoiceOutputEnabled" 
+                (click)="toggleVoiceOutput()" 
+                [title]="isVoiceOutputEnabled ? 'Disable Voice Output' : 'Enable Voice Output'"
+                aria-label="Toggle Voice Response">
+          <span class="icon">{{ isVoiceOutputEnabled ? '🔊' : '🔇' }}</span>
+        </button>
+        <button class="close-btn" (click)="toggleChat()" aria-label="Close Chat">×</button>
+      </div>
     </div>
 
     <div class="chat-messages" #scrollMe>
@@ -23,7 +32,7 @@
         
         <!-- Avatar for AI Messages -->
         <div class="msg-avatar" *ngIf="msg.sender === 'ai'">
-          <img src="assets/images/ai-avatar-lady.png" alt="Assistant">
+          <img src="assets/images/ai-avatar-lady.png" alt="Assistant" width="32" height="32">
         </div>
 
         <div class="message-bubble">
@@ -49,10 +58,19 @@
     </div>
 
     <form class="chat-input" (submit)="sendMessage(); $event.preventDefault()">
+      <button type="button" 
+              class="mic-btn" 
+              [class.listening]="isListening" 
+              (click)="startVoiceInput()"
+              [title]="isListening ? 'Listening...' : 'Start Voice Input'"
+              aria-label="Voice Input">
+        <span class="mic-icon">🎤</span>
+        <span class="mic-pulse" *ngIf="isListening"></span>
+      </button>
       <input type="text" 
              [(ngModel)]="userInput" 
              name="chatInput"
-             placeholder="Type your question..."
+             placeholder="{{ isListening ? 'Listening...' : 'Type your question...' }}"
              autocomplete="off">
       <button type="submit" [disabled]="!userInput.trim()">
         <span>➤</span>
@@ -63,6 +81,6 @@
   <!-- Trigger Button -->
   <button class="chat-trigger" (click)="toggleChat()" [class.hidden]="isOpen" aria-label="Open AI Assistant">
     <span class="pulse"></span>
-    <img src="assets/images/ai-avatar-lady.png" alt="Assistant" class="trigger-avatar">
+    <img src="assets/images/ai-avatar-lady.png" alt="Assistant" class="trigger-avatar" width="60" height="60">
   </button>
 </div>

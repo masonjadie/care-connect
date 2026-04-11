@@ -66,6 +66,9 @@ export class AuthComponent {
         this.successMessage = response.message;
         this.errorMessage = '';
         localStorage.setItem('careconnect_user', JSON.stringify(response.user));
+        if (response.token) {
+          localStorage.setItem('careconnect_token', response.token);
+        }
         this.router.navigate(['/home']);
       },
       error: (error) => {

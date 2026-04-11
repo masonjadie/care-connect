@@ -11,8 +11,11 @@
           <div class="card-top">
             <div class="avatar-wrapper">
               <img *ngIf="caregiver.id <= 3; else initials" 
-                   [src]="caregiver.name.includes('Nadine') || caregiver.name.includes('Althea') ? 'assets/images/ai-avatar-lady.png' : 'assets/images/ai-avatar.png'" 
-                   [alt]="caregiver.name">
+                   [src]="caregiver.name.includes('Nadine') || caregiver.name.includes('Althea') || caregiver.name.includes('Sarah') ? 'assets/images/ai-avatar-lady.png' : 'assets/images/ai-avatar.png'" 
+                   [alt]="caregiver.name"
+                   loading="lazy"
+                   width="80"
+                   height="80">
               <ng-template #initials>
                 <div class="avatar-placeholder">{{ caregiver.name.substring(0, 1) }}</div>
               </ng-template>

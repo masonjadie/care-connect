@@ -1,8 +1,11 @@
 const express = require('express');
 const { getPool } = require('../../db');
 const { validateAppointment } = require('../utils/validators');
+const { authenticate } = require('../middleware/auth.middleware');
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get('/', async (req, res, next) => {
   try {
@@ -31,6 +34,39 @@ router.post('/', async (req, res, next) => {
 
     return res.status(201).json({
       id: result.insertId,
+      title: req.body.title.trim(),
+      date: req.body.date.trim(),
+      time: req.body.time.trim()
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put('/:id', async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: 'Invalid appointment id' });
+    }
+
+    const validationError = validateAppointment(req.body);
+    if (validationError) {
+      return res.status(400).json({ error: validationError });
+    }
+
+    const pool = await getPool();
+    const [result] = await pool.execute(
+      'UPDATE appointments SET title = ?, date = ?, time = ? WHERE id = ?',
+      [req.body.title.trim(), req.body.date.trim(), req.body.time.trim(), id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+
+    return res.json({
+      id,
       title: req.body.title.trim(),
       date: req.body.date.trim(),
       time: req.body.time.trim()

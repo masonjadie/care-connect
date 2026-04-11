@@ -68,7 +68,7 @@
 
     &:hover {
         transform: translateY(-5px);
-        background: white;
+        background: var(--bg-card);
         box-shadow: var(--card-shadow);
     }
 }
@@ -92,7 +92,7 @@
 }
 
 .team-card {
-    background: white;
+    background: var(--bg-card);
     padding: 40px;
     border-radius: var(--radius-lg);
     box-shadow: var(--card-shadow);

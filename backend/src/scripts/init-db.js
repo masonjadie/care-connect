@@ -72,8 +72,23 @@ async function run() {
       name VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL UNIQUE,
       password_hash TEXT NOT NULL,
+      subscription_tier VARCHAR(50) DEFAULT NULL,
+      subscription_status VARCHAR(50) DEFAULT 'active',
+      trial_ends_at DATETIME,
+      role VARCHAR(20) NOT NULL DEFAULT 'user',
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
+  `);
+
+  try {
+    await dbConnection.query('ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT "user"');
+  } catch (err) {
+    if (!err.message.includes('Duplicate column name')) {
+       console.warn('Note: Role column might already exist or error occurred:', err.message);
+    }
+  }
+
+  await dbConnection.query(`
 
     CREATE TABLE IF NOT EXISTS caregivers (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -125,6 +140,10 @@ async function run() {
       SELECT 'Nutritious Meal Delivery', 'Healthy, diet-aware meals delivered to your door.'
       UNION ALL
       SELECT 'Medication Management', 'Timely reminders and refill support.'
+      UNION ALL
+      SELECT 'Service Animal & Pet Care', 'Support for your service animals including walking and vet visits.'
+      UNION ALL
+      SELECT 'Prescription Delivery', 'Secure courier drop-off and pharmacy coordination.'
     ) AS seed
     WHERE NOT EXISTS (SELECT 1 FROM services);
 
@@ -165,6 +184,42 @@ async function run() {
         'Licensed Practical Nurse (LPN)',
         'Portmore',
         'althea.morgan@careconnect.com'
+      UNION ALL
+      SELECT
+        'David Wilson',
+        'Physical Therapy & Rehab',
+        12,
+        4.9,
+        'Mon-Fri, 9:00 AM - 5:00 PM',
+        '(555) 302-1182',
+        'Certified physical therapy assistant focused on post-operative mobility and strength training.',
+        'Registered Nurse (RN)',
+        'Kingston',
+        'david.wilson@careconnect.com'
+      UNION ALL
+      SELECT
+        'Sarah Jenkins',
+        'Palliative & Hospice Care',
+        15,
+        5.0,
+        'Daily, 24/7 Availability',
+        '(555) 551-9902',
+        'Compassionate senior care specialist providing comfort and emotional support for long-term health needs.',
+        'Certified Palliative Care Specialist',
+        'Portmore',
+        'sarah.jenkins@careconnect.com'
+      UNION ALL
+      SELECT
+        'Robert Chen',
+        'Post-Stroke Recovery',
+        9,
+        4.7,
+        'Tue-Sat, 10:00 AM - 6:00 PM',
+        '(555) 772-4401',
+        'Specializing in speech and occupational therapy support for stroke survivors and their families.',
+        'Occupational Therapy Assistant',
+        'Spanish Town',
+        'robert.chen@careconnect.com'
     ) AS seed
     WHERE NOT EXISTS (SELECT 1 FROM caregivers);
   `);

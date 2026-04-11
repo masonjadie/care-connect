@@ -39,7 +39,11 @@ export class AccessibilityService {
 
   setTheme(theme: 'light' | 'dark'): void {
     this.themeSubject.next(theme);
-    this.renderer.setAttribute(document.documentElement, 'data-theme', theme);
+    
+    requestAnimationFrame(() => {
+      this.renderer.setAttribute(document.documentElement, 'data-theme', theme);
+    });
+    
     localStorage.setItem('careconnect_theme', theme);
   }
 
@@ -58,7 +62,12 @@ export class AccessibilityService {
   setFontScale(scale: number): void {
     const roundedScale = Math.round(scale * 10) / 10;
     this.fontScaleSubject.next(roundedScale);
-    this.renderer.setStyle(document.documentElement, '--font-scale', roundedScale.toString());
+    
+    // Defer style application to avoid forced reflow during bootstrap
+    requestAnimationFrame(() => {
+      this.renderer.setStyle(document.documentElement, '--font-scale', roundedScale.toString());
+    });
+    
     localStorage.setItem('careconnect_font_scale', roundedScale.toString());
   }
 
@@ -140,7 +149,10 @@ export class AccessibilityService {
 
     const savedScale = localStorage.getItem('careconnect_font_scale');
     if (savedScale) {
-      this.setFontScale(parseFloat(savedScale));
+      // Small delay to ensure browser is ready for font scale animation
+      setTimeout(() => {
+        this.setFontScale(parseFloat(savedScale));
+      }, 50);
     }
   }
 }

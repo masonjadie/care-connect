@@ -29,7 +29,7 @@
 }
 
 .service-card {
-    background: white;
+    background: var(--bg-card);
     border-radius: var(--radius-lg);
     padding: 40px;
     box-shadow: var(--card-shadow);
@@ -131,7 +131,7 @@
 }
 
 .btn-primary {
-    background: white;
+    background: var(--bg-card);
     color: var(--primary-color);
     padding: 15px 40px;
     border-radius: var(--radius-md);

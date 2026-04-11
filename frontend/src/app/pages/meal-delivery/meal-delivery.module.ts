@@ -1,0 +1,15 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MealDeliveryComponent } from './meal-delivery.component';
+import { SharedModule } from '../../shared/shared.module';
+
+@NgModule({
+  declarations: [MealDeliveryComponent],
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule.forChild([{ path: '', component: MealDeliveryComponent }])
+  ]
+})
+export class MealDeliveryModule { }

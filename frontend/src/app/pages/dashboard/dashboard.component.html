@@ -1,4 +1,9 @@
 <div class="dashboard-container">
+  <div *ngIf="trialDaysRemaining !== null && trialDaysRemaining > 0" class="trial-banner">
+    <span class="icon">✨</span>
+    <span>You are on a <strong>Free Trial</strong>. {{ trialDaysRemaining }} days remaining.</span>
+    <a routerLink="/plans" class="upgrade-link">Upgrade Now</a>
+  </div>
   <header class="dashboard-header">
     <h1>Your Care Dashboard</h1>
     <p>Monitor your health and stay connected with your support network.</p>
@@ -47,6 +52,24 @@
             <p class="title">{{reminder.title}}</p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- UPCOMING APPOINTMENTS -->
+    <div class="card appointments">
+      <div class="card-header">
+        <h3>Upcoming Appointments</h3>
+        <span class="icon">📅</span>
+      </div>
+      <div class="appointment-list">
+        <div class="appointment-item" *ngFor="let apt of appointments">
+          <div class="apt-info">
+            <p class="title">{{apt.title}}</p>
+            <p class="datetime">{{apt.date}} • {{apt.time}}</p>
+          </div>
+          <button class="btn-cancel" (click)="deleteAppointment(apt.id)">Cancel</button>
+        </div>
+        <p *ngIf="appointments.length === 0" class="no-data">No upcoming appointments.</p>
       </div>
     </div>
   </div>

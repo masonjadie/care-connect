@@ -1,43 +1,49 @@
 <div class="home-container">
   <section class="hero">
-    <div class="hero-bg">
-      <img src="assets/images/hero_bg.png" alt="Elderly woman smiling with caregiver" />
-    </div>
+      <!-- Zero-Weight Premium Hero Background -->
+      <div class="hero-visual-accent">
+        <div class="mesh-gradient"></div>
+        <div class="glass-orb"></div>
+      </div>
+
     <div class="hero-content">
-      <div class="hero-text">
-        <h1>Welcome to CareConnect Hub</h1>
-        <p>
-          Support and care at your fingertips. We connect seniors with the services they need to
-          live independently and safely.
-        </p>
+      <div class="hero-text-panel">
+        <div class="hero-text">
+          <h1>Welcome to CareConnect Hub</h1>
+          <p>
+            Support and care at your fingertips. We connect seniors with the services they need to
+            live independently and safely.
+          </p>
 
-        <div class="hero-actions">
-          <button class="btn-service orange" routerLink="/caregivers">👩‍⚕️ Find a Caregiver</button>
-          <button class="btn-service green" routerLink="/pet-care">🦮 Find Service Animal</button>
-          <button class="btn-service teal" routerLink="/transportation">🚗 Book a Ride</button>
-          <button class="btn-service blue" routerLink="/meal-delivery">🍲 Nutritional Meals Delivery</button>
-          <button class="btn-service purple" routerLink="/medication-reminder">💊 Medication Reminder</button>
-          <button class="btn-service rose" routerLink="/prescription-delivery">💉 Prescription Fill & Delivery</button>
+          <div class="hero-actions">
+            <button class="btn-service orange" routerLink="/caregivers">👩‍⚕️ Find a Caregiver</button>
+            <button class="btn-service green" routerLink="/pet-care">🦮 Find Service Animal</button>
+            <button class="btn-service teal" routerLink="/transportation">🚗 Book a Ride</button>
+            <button class="btn-service blue" routerLink="/meal-delivery">🍲 Nutritional Meals Delivery</button>
+            <button class="btn-service purple" routerLink="/medication-reminder">💊 Medication Reminder</button>
+            <button class="btn-service rose" routerLink="/prescription-delivery">💉 Prescription Fill & Delivery</button>
+          </div>
+
+          <!-- Relocated here for better visibility and hierarchy -->
+          <div class="hero-dashboard-mini">
+            <div class="appointment-card-mini">
+              <div class="card-header">
+                <h3>Upcoming Appointments</h3>
+                <span class="icon">📅</span>
+              </div>
+              <div class="appointment-item">
+                <p><strong>Doctor Visit</strong> • Mon, Aug 15</p>
+              </div>
+              <button class="btn-manage-mini" routerLink="/dashboard">Manage All</button>
+            </div>
+            
+            <button class="btn-sos-main" routerLink="/emergency">🚨 Emergency SOS Help</button>
+          </div>
         </div>
       </div>
-
-      <div class="hero-cards">
-        <div class="appointment-card">
-          <div class="card-header">
-            <h3>Upcoming Appointments</h3>
-            <span class="icon">📅</span>
-          </div>
-          <div class="appointment-item">
-            <p><strong>Doctor Visit</strong><br />Mon, Aug 15 at 10:00 AM</p>
-          </div>
-          <div class="appointment-item">
-            <p><strong>Physical Therapy</strong><br />Wed, Aug 17 at 2:00 PM</p>
-          </div>
-          <button class="btn-secondary">Manage All</button>
-        </div>
-
-        <button class="btn-sos" routerLink="/emergency">🚨 Emergency SOS</button>
-      </div>
+      
+      <!-- Empty space to showcase the Caregiver image -->
+      <div class="hero-image-spacer"></div>
     </div>
   </section>
 

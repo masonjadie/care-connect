@@ -1,6 +1,9 @@
 const express = require('express');
 const { getPool } = require('../../db');
 const { hashPassword, verifyPassword } = require('../utils/password');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'careconnect_hub_secret_key';
 
 const router = express.Router();
 
@@ -36,17 +39,25 @@ router.post('/register', async (req, res, next) => {
 
     const passwordHash = hashPassword(password);
     const [result] = await pool.execute(
-      'INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)',
-      [name, email, passwordHash]
+      'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)',
+      [name, email, passwordHash, 'user']
     );
+
+    const user = {
+      id: result.insertId,
+      name,
+      email,
+      subscription_tier: null,
+      trial_ends_at: null,
+      role: 'user'
+    };
+
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
 
     return res.status(201).json({
       message: 'Registration successful.',
-      user: {
-        id: result.insertId,
-        name,
-        email
-      }
+      user,
+      token
     });
   } catch (error) {
     next(error);
@@ -64,7 +75,7 @@ router.post('/login', async (req, res, next) => {
 
     const pool = await getPool();
     const [rows] = await pool.execute(
-      'SELECT id, name, email, password_hash AS passwordHash FROM users WHERE (email = ? OR name = ?) LIMIT 1',
+      'SELECT id, name, email, subscription_tier, trial_ends_at, role, password_hash AS passwordHash FROM users WHERE (email = ? OR name = ?) LIMIT 1',
       [identifier, identifier]
     );
 
@@ -72,13 +83,21 @@ router.post('/login', async (req, res, next) => {
       return res.status(401).json({ error: 'Incorrect username/email or password.' });
     }
 
+    const user = {
+      id: rows[0].id,
+      name: rows[0].name,
+      email: rows[0].email,
+      subscription_tier: rows[0].subscription_tier,
+      trial_ends_at: rows[0].trial_ends_at,
+      role: rows[0].role
+    };
+
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+
     return res.json({
       message: 'Login successful.',
-      user: {
-        id: rows[0].id,
-        name: rows[0].name,
-        email: rows[0].email
-      }
+      user,
+      token
     });
   } catch (error) {
     next(error);

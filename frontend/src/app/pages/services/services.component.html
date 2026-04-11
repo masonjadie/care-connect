@@ -15,7 +15,7 @@
                         <span class="check">✓</span> {{feature}}
                     </li>
                 </ul>
-                <button class="btn-inquire">Inquire Now</button>
+                <button class="btn-inquire" [routerLink]="service.route">Inquire Now</button>
             </div>
         </div>
     </div>
@@ -27,6 +27,4 @@
             <button class="btn-primary" routerLink="/emergency">Contact Support</button>
         </div>
     </section>
-
-    <app-auth-overlay></app-auth-overlay>
 </div>

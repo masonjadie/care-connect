@@ -47,7 +47,8 @@ export interface AuthUser {
 
 export interface AuthResponse {
   message: string;
-  user: AuthUser;
+  user: any;
+  token?: string;
 }
 
 export interface Caregiver {
@@ -94,6 +95,10 @@ export class ApiService {
     return this.http.get<Appointment[]>(`${this.apiUrl}/appointments`);
   }
 
+  deleteAppointment(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/appointments/${id}`);
+  }
+
   getContacts(): Observable<Contact[]> {
     return this.http.get<Contact[]>(`${this.apiUrl}/contacts`);
   }
@@ -126,5 +131,13 @@ export class ApiService {
     payload: CaregiverRegistrationPayload
   ): Observable<CaregiverRegistrationResponse> {
     return this.http.post<CaregiverRegistrationResponse>(`${this.apiUrl}/caregivers`, payload);
+  }
+
+  updateSubscription(userId: number, tier: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/subscriptions/update`, { userId, tier });
+  }
+
+  startTrial(userId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/subscriptions/start-trial`, { userId });
   }
 }

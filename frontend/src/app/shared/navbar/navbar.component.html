@@ -1,29 +1,43 @@
 <header class="navbar">
 
   <!-- LOGO -->
-  <div class="logo" routerLink="/home" style="cursor: pointer;">
-    <span class="logo-icon">💙</span>
+  <div class="logo" routerLink="/home" style="cursor: pointer;" aria-label="CareConnect Hub Home">
+    <span class="logo-icon" aria-hidden="true">💙</span>
     CareConnect <span class="hub">Hub</span>
   </div>
 
   <!-- NAV LINKS -->
-  <button class="mobile-toggle" (click)="toggleMenu()" [class.active]="menuOpen">
+  <button class="mobile-toggle" (click)="toggleMenu()" [class.active]="menuOpen" aria-label="Toggle Navigation Menu">
     <span></span>
     <span></span>
     <span></span>
   </button>
 
   <nav class="nav-links" [class.open]="menuOpen">
-    <a routerLink="/home" *ngIf="!isRouteActive('/home') && !isRouteActive('/')">Home</a>
-    <a routerLink="/services" *ngIf="!isRouteActive('/services')">Services</a>
-    <a routerLink="/emergency" *ngIf="!isRouteActive('/emergency')" class="nav-emergency">🚨 SOS Help</a>
-    <a routerLink="/about" *ngIf="!isRouteActive('/about')">About Us</a>
+    <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+    <a routerLink="/services" routerLinkActive="active">Services</a>
+    <a routerLink="/emergency" routerLinkActive="active" class="nav-emergency">🚨 SOS Help</a>
+    <a routerLink="/about" routerLinkActive="active">About Us</a>
+    
+    <!-- Mobile-only A11y Controls -->
+    <div class="mobile-a11y nav-mobile-only">
+      <div class="a11y-controls">
+        <button class="a11y-btn" (click)="decreaseFont()" aria-label="Decrease Font Size">A-</button>
+        <button class="a11y-btn" (click)="increaseFont()" aria-label="Increase Font Size">A+</button>
+        <button class="a11y-btn" [class.active-mic]="voiceActive" (click)="toggleVoice()">
+          {{ voiceActive ? '🎙️' : '🎤' }}
+        </button>
+        <button class="a11y-btn theme-toggle" (click)="toggleTheme()">
+          {{ (currentTheme$ | async) === 'light' ? '🌙' : '☀️' }}
+        </button>
+      </div>
+    </div>
   </nav>
 
   <!-- LOGIN / USER BUBBLE -->
   <div class="nav-right">
-    <!-- Accessibility Controls -->
-    <div class="a11y-controls">
+    <!-- Accessibility Controls (Hidden on mobile) -->
+    <div class="a11y-controls nav-desktop-only">
       <button class="a11y-btn" (click)="decreaseFont()" title="Decrease Font Size" aria-label="Decrease Font Size">A-</button>
       <button class="a11y-btn" (click)="increaseFont()" title="Increase Font Size" aria-label="Increase Font Size">A+</button>
       

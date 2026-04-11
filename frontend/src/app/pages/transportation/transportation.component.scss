@@ -29,7 +29,7 @@
 }
 
 .info-card, .pricing-card, .booking-card {
-  background: white;
+  background: var(--bg-card);
   padding: 30px;
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
@@ -88,7 +88,7 @@
   display: flex;
   justify-content: space-between;
   padding: 12px 0;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border-color);
 
   &:last-child { border-bottom: none; }
 
@@ -118,10 +118,12 @@ form {
 
   input, select, textarea {
     padding: 12px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     font-family: inherit;
     font-size: 1rem;
+    background: var(--bg-subtle);
+    color: var(--text-dark);
 
     &:focus {
       outline: none;
@@ -172,8 +174,8 @@ form {
 }
 
 .success-msg {
-  background: #ecfdf5;
-  color: #065f46;
+  background: var(--success-bg);
+  color: var(--success-text);
   padding: 15px;
   border-radius: 10px;
   font-size: 0.95rem;

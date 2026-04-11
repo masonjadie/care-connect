@@ -5,6 +5,7 @@ interface ServiceCard extends Service {
   icon: string;
   features: string[];
   color: string;
+  route: string;
 }
 
 @Component({
@@ -15,26 +16,42 @@ interface ServiceCard extends Service {
 export class ServicesComponent implements OnInit {
   services: ServiceCard[] = [];
 
-  private serviceMeta: Record<string, { icon: string; features: string[]; color: string }> = {
+  private serviceMeta: Record<string, { icon: string; features: string[]; color: string; route: string }> = {
     'Professional Caregiving': {
       icon: '👩‍⚕️',
       features: ['24/7 Availability', 'Background Checked', 'Specialized Dementia Care'],
-      color: 'orange'
+      color: 'orange',
+      route: '/caregivers'
     },
     'Reliable Transportation': {
       icon: '🚗',
       features: ['Wheelchair Accessible', 'Door-to-Door Service', 'Scheduled Pickups'],
-      color: 'teal'
+      color: 'teal',
+      route: '/transportation'
     },
     'Nutritious Meal Delivery': {
       icon: '🍲',
       features: ['Dietary Planning', 'Fresh Ingredients', 'Contactless Delivery'],
-      color: 'blue'
+      color: 'blue',
+      route: '/meal-delivery'
     },
     'Medication Management': {
       icon: '💊',
       features: ['Smart Reminders', 'Pharmacist Consultation', 'Refill Tracking'],
-      color: 'purple'
+      color: 'purple',
+      route: '/medication-reminder'
+    },
+    'Service Animal & Pet Care': {
+      icon: '🦮',
+      features: ['Dog Walking & Exercise', 'Feeding & Grooming', 'Vet Visit Assistance'],
+      color: 'green',
+      route: '/pet-care'
+    },
+    'Prescription Delivery': {
+      icon: '💉',
+      features: ['Secure Courier Drop-off', 'Pharmacy Coordination', 'Auto-Refill Processing'],
+      color: 'rose',
+      route: '/prescription-delivery'
     }
   };
 
@@ -47,14 +64,16 @@ export class ServicesComponent implements OnInit {
           const meta = this.serviceMeta[service.title] ?? {
             icon: '✅',
             features: ['Professional support', 'Personalized care', 'Trusted providers'],
-            color: 'blue'
+            color: 'blue',
+            route: '/emergency'
           };
 
           return {
             ...service,
             icon: meta.icon,
             features: meta.features,
-            color: meta.color
+            color: meta.color,
+            route: meta.route
           };
         });
       },

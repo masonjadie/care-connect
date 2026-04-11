@@ -18,7 +18,7 @@
 
         p {
             font-size: 1.2rem;
-            color: #475569;
+            color: var(--text-muted);
             max-width: 700px;
             margin: 0 auto;
         }
@@ -33,32 +33,63 @@
 }
 
 .service-card {
-    background: white;
-    padding: 40px;
+    background: var(--bg-card);
+    padding: 0;
+    overflow: hidden;
     border-radius: 24px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color);
+
+    .service-image-header {
+        position: relative;
+        height: 200px;
+        width: 100%;
+        overflow: hidden;
+
+        .service-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .service-icon-overlay {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    }
 
     &:hover {
         transform: translateY(-8px);
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
 
-    .service-icon {
-        font-size: 40px;
-        margin-bottom: 20px;
+        .service-img {
+            transform: scale(1.05);
+        }
     }
 
     .service-content {
+        padding: 30px;
+
         h2 {
             font-size: 1.5rem;
             margin-bottom: 15px;
-            color: #1e293b;
+            color: var(--text-dark);
         }
 
         p {
-            color: #64748b;
+            color: var(--text-muted);
             line-height: 1.6;
             margin-bottom: 20px;
         }
@@ -70,7 +101,7 @@
 
             li {
                 margin-bottom: 10px;
-                color: #475569;
+                color: var(--text-muted);
                 font-size: 0.95rem;
 
                 .check {
@@ -101,12 +132,12 @@
 }
 
 .pet-caregivers-section {
-    background: white;
+    background: var(--bg-card);
     padding: 60px;
     border-radius: 32px;
     margin-bottom: 60px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
 
     .registration-header {
         text-align: center;
@@ -114,12 +145,12 @@
 
         h2 {
             font-size: 2rem;
-            color: #1e293b;
+            color: var(--text-dark);
             margin-bottom: 10px;
         }
 
         p {
-            color: #64748b;
+            color: var(--text-muted);
         }
     }
 }
@@ -138,7 +169,7 @@
     input, textarea {
         padding: 14px;
         border-radius: 12px;
-        border: 1px solid #cbd5e1;
+        border: 1px solid var(--border-color);
         font-size: 1rem;
         width: 100%;
 
@@ -174,7 +205,7 @@
 }
 
 .info-banner {
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    background: var(--info-bg);
     padding: 60px;
     border-radius: 32px;
     text-align: center;
@@ -185,13 +216,13 @@
         margin: 0 auto;
 
         h2 {
-            color: #1e3a8a;
+            color: var(--info-text);
             font-size: 2rem;
             margin-bottom: 15px;
         }
 
         p {
-            color: #3b82f6;
+            color: var(--primary-color);
             font-size: 1.1rem;
             font-weight: 500;
             line-height: 1.6;
@@ -207,8 +238,8 @@
         margin-bottom: 45px;
 
         .badge {
-            background: #dcfce7;
-            color: #166534;
+            background: var(--success-bg);
+            color: var(--success-text);
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.85rem;
@@ -221,12 +252,12 @@
 
         h2 {
             font-size: 2.4rem;
-            color: #1e293b;
+            color: var(--text-dark);
             margin-bottom: 12px;
         }
 
         p {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
@@ -241,14 +272,14 @@
 }
 
 .match-card {
-    background: #f8fafc;
+    background: var(--bg-subtle);
     padding: 30px;
     border-radius: 20px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 
     &:hover {
-        background: white;
+        background: var(--bg-card);
         border-color: var(--primary-color);
         box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
     }
@@ -266,12 +297,12 @@
 
     h3 {
         font-size: 1.25rem;
-        color: #1e3a8a;
+        color: var(--info-text);
         margin-bottom: 12px;
     }
 
     p {
-        color: #475569;
+        color: var(--text-muted);
         font-size: 0.95rem;
         line-height: 1.6;
     }

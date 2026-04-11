@@ -6,7 +6,10 @@
 
     <div class="services-grid">
         <div class="service-card" *ngFor="let service of services">
-            <div class="service-icon">{{service.icon}}</div>
+            <div class="service-image-header">
+                <img [src]="'assets/images/' + service.image" [alt]="service.title" class="service-img" loading="lazy">
+                <div class="service-icon-overlay">{{service.icon}}</div>
+            </div>
             <div class="service-content">
                 <h2>{{service.title}}</h2>
                 <p>{{service.description}}</p>
@@ -15,7 +18,7 @@
                         <span class="check">✓</span> {{feature}}
                     </li>
                 </ul>
-                <button class="btn-inquire">Learn More</button>
+                <button class="btn-inquire" [attr.aria-label]="'Learn more about ' + service.title">Learn More</button>
             </div>
         </div>
     </div>
@@ -43,13 +46,13 @@
         
         <form class="pet-reg-form">
             <div class="form-grid">
-                <input type="text" placeholder="Full Name">
-                <input type="email" placeholder="Email Address">
-                <input type="text" placeholder="Specialization (e.g., Service Dog Trainer)">
-                <input type="text" placeholder="Location">
+                <input type="text" placeholder="Full Name" aria-label="Full Name">
+                <input type="email" placeholder="Email Address" aria-label="Email Address">
+                <input type="text" placeholder="Specialization (e.g., Service Dog Trainer)" aria-label="Specialization (e.g., Service Dog Trainer)">
+                <input type="text" placeholder="Location" aria-label="Location">
             </div>
-            <textarea placeholder="Describe your experience and the animals you work with..." rows="4"></textarea>
-            <button class="btn-primary-large">Register as Pet Specialist</button>
+            <textarea placeholder="Describe your experience and the animals you work with..." rows="4" aria-label="Experience description"></textarea>
+            <button class="btn-primary-large" aria-label="Register as Pet Specialist">Register as Pet Specialist</button>
         </form>
     </section>
 

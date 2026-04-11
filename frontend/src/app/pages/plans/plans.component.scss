@@ -1,0 +1,218 @@
+.plans-container {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.plans-header {
+  text-align: center;
+  margin-bottom: 60px;
+
+  h1 {
+    font-size: 3rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    font-weight: 800;
+    line-height: 1.1;
+    min-height: 3.3rem; /* Reserve space for H1 */
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 3.6rem; /* Reserve space for subtitle */
+  }
+}
+
+.trial-offer-card {
+  background: linear-gradient(135deg, var(--primary-color), #0056b3);
+  color: white;
+  padding: 40px;
+  border-radius: 20px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 15px 35px rgba(var(--primary-rgb), 0.4);
+
+  .trial-content {
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: white;
+    }
+    p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+  }
+
+  .btn-trial {
+    background: white;
+    color: var(--primary-color);
+    border: none;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Use slightly larger min-width for grid stability */
+  gap: 30px;
+  min-height: 600px; /* Reserve space for cards */
+}
+
+.plan-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+
+  &.featured {
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+
+    .plan-badge {
+      background: var(--primary-color);
+      color: white;
+    }
+  }
+
+  .plan-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-light);
+    color: var(--text-muted);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+  }
+
+  .price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+
+    span {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+  }
+
+  .features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+    flex-grow: 1;
+
+    li {
+      margin-bottom: 12px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .check {
+        color: var(--success-text);
+        font-weight: bold;
+      }
+
+      &.disabled {
+        color: var(--text-muted);
+        opacity: 0.6;
+        
+        span {
+          color: var(--danger-red);
+        }
+      }
+    }
+  }
+
+  .btn-select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    &:disabled {
+      border-color: var(--border-color);
+      color: var(--text-muted);
+      cursor: default;
+    }
+
+    &.primary {
+      background: var(--primary-color);
+      color: white;
+
+      &:hover:not(:disabled) {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+.alert-box {
+  margin-top: 40px;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+
+  &.success {
+    background: var(--success-bg);
+    color: var(--success-text);
+  }
+
+  &:not(.success) {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+  }
+}
+
+@media (max-width: 768px) {
+  .plans-header h1 {
+    font-size: 2rem;
+  }
+}

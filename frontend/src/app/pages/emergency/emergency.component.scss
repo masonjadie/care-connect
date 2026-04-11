@@ -32,7 +32,7 @@
 
 /* LEFT COLUMN */
 .sos-wrapper {
-  background: white;
+  background: var(--bg-card);
   padding: 60px;
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
@@ -64,8 +64,8 @@
 }
 
 .status-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 30px;
 
@@ -75,7 +75,7 @@
     gap: 12px;
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-color);
 
     .status-dot {
       width: 12px;
@@ -114,7 +114,7 @@
 
 /* RIGHT COLUMN */
 .info-block {
-  background: white;
+  background: var(--bg-card);
   padding: 30px;
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
@@ -134,7 +134,7 @@
     align-items: center;
     gap: 15px;
     padding: 15px 0;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--border-color);
 
     &:last-child {
       border: none;
@@ -196,7 +196,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--bg-card);
   padding: 50px;
   border-radius: var(--radius-lg);
   max-width: 500px;
@@ -236,7 +236,7 @@
     }
 
     .cancel {
-      background: #f1f5f9;
+      background: var(--bg-light);
       color: var(--text-dark);
       border: none;
       cursor: pointer;
@@ -259,7 +259,7 @@
 }
 
 .alert-box {
-  background: white;
+  background: var(--bg-card);
   padding: 50px;
   border-radius: var(--radius-lg);
   max-width: 600px;
@@ -292,10 +292,10 @@
   }
 
   .contact-card {
-    background: #fff5f5;
+    background: var(--warning-bg);
     padding: 15px;
     border-radius: var(--radius-md);
-    border: 1px solid #feb2b2;
+    border: 1px solid var(--warning-text);
 
     strong {
       display: block;
