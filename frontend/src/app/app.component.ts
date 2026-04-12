@@ -9,6 +9,8 @@ import { filter, map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  loadChat = false;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -31,5 +33,10 @@ export class AppComponent implements OnInit {
       const title = event['title'] || 'CareConnect Hub';
       this.titleService.setTitle(title);
     });
+
+    // Defer non-critical components to improve LCP and TBT
+    setTimeout(() => {
+      this.loadChat = true;
+    }, 1000);
   }
 }
