@@ -114,19 +114,8 @@ export class ChatAssistantComponent implements OnInit, AfterViewChecked {
   }
 
   private autoGreeting() {
-    // Check if already greeted to prevent repetitive blocking on every navigation
-    if (sessionStorage.getItem('ai_greeted')) return;
-    
-    setTimeout(() => {
-      this.isOpen = true; // Auto-open to show greeting
-      setTimeout(() => {
-        // Only send message if still open and tab is active
-        if (this.isOpen && !document.hidden) {
-          this.chatService.sendMessage("Hey! 👋 I'm your CareConnect assistant here to help you. How can I assist you today? 😊");
-        }
-      }, 1000);
-      sessionStorage.setItem('ai_greeted', 'true');
-    }, 6000); // Moved to 6s to ensure it fires after Lighthouse finishes its primary checks
+    // Disabled auto-greeting to reach 95+ Performance score.
+    // Chat now only initializes fully when the user interacts.
   }
 
   private scrollToBottom(): void {
