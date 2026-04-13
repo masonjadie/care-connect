@@ -104,6 +104,7 @@
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Date</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -114,6 +115,15 @@
                 <td>${{ order.amount | number:'1.2-2' }}</td>
                 <td><span class="status-dot" [class]="order.status"></span> {{ order.status | titlecase }}</td>
                 <td>{{ order.created_at | date:'short' }}</td>
+                <td>
+                  <button 
+                    *ngIf="order.status !== 'completed'" 
+                    class="btn-fulfill" 
+                    (click)="fulfillOrder(order.id)">
+                    Fulfill
+                  </button>
+                  <span *ngIf="order.status === 'completed'" class="badge-done">Ready ✅</span>
+                </td>
               </tr>
               <tr *ngIf="statsData.recentOrders.length === 0">
                 <td colspan="6" class="empty-state">No orders placed yet.</td>

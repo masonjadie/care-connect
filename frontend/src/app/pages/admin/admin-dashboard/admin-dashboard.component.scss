@@ -149,6 +149,29 @@
   .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; }
   .status-dot.pending { background: #f59e0b; }
   .status-dot.completed { background: #10b981; }
+
+  .badge-done {
+    font-size: 0.8rem;
+    color: #10b981;
+    font-weight: 600;
+  }
+
+  .btn-fulfill {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: var(--secondary-color);
+      transform: translateY(-1px);
+    }
+  }
 }
 
 .event-log {

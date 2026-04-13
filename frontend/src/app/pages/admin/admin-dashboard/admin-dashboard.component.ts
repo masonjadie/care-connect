@@ -50,6 +50,18 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     return this.loading ? 0 : 99;
   }
 
+  fulfillOrder(orderId: number): void {
+    if (!this.statsData) return;
+    
+    // Optimistically update the UI for the demo
+    const order = this.statsData.recentOrders.find(o => o.id === orderId);
+    if (order) {
+      order.status = 'completed';
+      // In a real app, we'd call a service here: 
+      // this.analyticsService.updateOrderStatus(orderId, 'completed').subscribe();
+    }
+  }
+
   parseEventData(data: string): any {
     try {
       return JSON.parse(data);
