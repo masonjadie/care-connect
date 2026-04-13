@@ -53,7 +53,8 @@ export class NavbarComponent implements OnInit {
     if (userStr) {
       try {
         const user = JSON.parse(userStr);
-        return user.role === 'admin';
+        // Detect admin by role OR by the master admin email
+        return user.role === 'admin' || user.email === 'admin@careconnect.com';
       } catch (e) { }
     }
     return false;
