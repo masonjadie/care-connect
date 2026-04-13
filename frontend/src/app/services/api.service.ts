@@ -87,7 +87,7 @@ export interface CaregiverRegistrationResponse {
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = `${environment.apiBaseUrl}/api`;
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
