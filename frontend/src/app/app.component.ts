@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap, tap } from 'rxjs/operators';
+import { AnalyticsService } from './services/analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +15,17 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
+    private analyticsService: AnalyticsService
   ) {}
 
   ngOnInit() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
+      tap((event: any) => {
+        const url = event.urlAfterRedirects || event.url;
+        this.analyticsService.trackVisit(url).subscribe();
+      }),
       map(() => this.activatedRoute),
       map(route => {
         while (route.firstChild) {

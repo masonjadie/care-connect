@@ -48,6 +48,17 @@ export class NavbarComponent implements OnInit {
     return '';
   }
 
+  get isAdmin(): boolean {
+    const userStr = localStorage.getItem('careconnect_user');
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        return user.role === 'admin';
+      } catch (e) { }
+    }
+    return false;
+  }
+
   isRouteActive(route: string): boolean {
     return this.router.url === route;
   }

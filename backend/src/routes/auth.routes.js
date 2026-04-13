@@ -80,6 +80,9 @@ router.post('/login', async (req, res, next) => {
     );
 
     if (rows.length === 0 || !verifyPassword(password, rows[0].passwordHash)) {
+      // Log failed login attempt
+      const logData = JSON.stringify({ email: identifier, method: 'password', ip: req.ip });
+      await pool.execute('INSERT INTO site_analytics (event_type, event_data) VALUES (?, ?)', ['login_fail', logData]);
       return res.status(401).json({ error: 'Incorrect username/email or password.' });
     }
 

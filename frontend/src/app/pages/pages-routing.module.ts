@@ -20,7 +20,8 @@ const routes: Routes = [
   { path: 'about', loadChildren: () => import('./about/about.module').then(m => m.AboutModule), data: { title: 'About Us | CareConnect Hub' } },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule), data: { title: 'Login or Register | CareConnect Hub' } },
   { path: 'contact-us', loadChildren: () => import('./contact-us/contact-us.module').then(m => m.ContactUsModule), data: { title: 'Contact Us | CareConnect Hub' } },
-  { path: 'sitemap', loadChildren: () => import('./sitemap/sitemap.module').then(m => m.SitemapModule), data: { title: 'Sitemap | CareConnect Hub' } }
+  { path: 'sitemap', loadChildren: () => import('./sitemap/sitemap.module').then(m => m.SitemapModule), data: { title: 'Sitemap | CareConnect Hub' } },
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), data: { title: 'Admin Command Center | CareConnect Hub' } }
 ];
 
 @NgModule({

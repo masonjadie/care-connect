@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AnalyticsService } from '../../services/analytics.service';
 
 interface Meal {
   id: number;
@@ -82,7 +83,7 @@ export class MealDeliveryComponent implements OnInit {
   filteredMeals: Meal[] = [];
   successMessage = '';
 
-  constructor() { }
+  constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
     this.filteredMeals = this.meals;
@@ -97,7 +98,21 @@ export class MealDeliveryComponent implements OnInit {
     }
   }
 
-  requestMeal(mealName: string): void {
-    this.successMessage = `Request for "${mealName}" has been received! Our kitchen is preparing your fresh meal.`;
+  requestMeal(meal: Meal): void {
+    const orderData = {
+      itemName: meal.name,
+      itemType: 'meal',
+      amount: meal.price
+    };
+
+    this.analyticsService.placeOrder(orderData).subscribe({
+      next: () => {
+        this.successMessage = `Request for "${meal.name}" has been received! Our kitchen is preparing your fresh meal.`;
+      },
+      error: (err) => {
+        console.error('Order failed', err);
+        this.successMessage = 'Sorry, we could not process your order at this time.';
+      }
+    });
   }
 }
