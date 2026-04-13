@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'http://localhost:3000'
+  apiUrl: 'https://care-connect-production-b10d.up.railway.app/api'
 };
