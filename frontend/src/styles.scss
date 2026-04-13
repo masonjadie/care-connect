@@ -90,6 +90,7 @@ body {
   color: var(--text-primary);
   line-height: var(--base-line-height);
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-display: swap;
 }
 
 /* Keyboard Accessibility: High-visibility focus rings */
