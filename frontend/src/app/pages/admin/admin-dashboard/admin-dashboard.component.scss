@@ -33,6 +33,47 @@
   }
 }
 
+.health-monitoring {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 30px;
+
+  .health-card {
+    background: var(--bg-card);
+    padding: 20px 24px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+
+      h3 { margin: 0; font-size: 1rem; color: var(--text-muted); font-weight: 600; }
+      .percentage { font-family: 'Inter', monospace; font-weight: 700; color: var(--text-dark); }
+    }
+
+    .progress-bar-bg {
+      height: 10px;
+      background: var(--bg-app);
+      border-radius: 5px;
+      overflow: hidden;
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 5px;
+        transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        
+        &.green { background: linear-gradient(90deg, #10b981, #34d399); }
+        &.blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+      }
+    }
+  }
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

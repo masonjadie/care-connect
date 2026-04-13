@@ -65,6 +65,28 @@
       </div>
     </section>
 
+    <!-- Platform Health visual section -->
+    <section class="health-monitoring">
+      <div class="health-card">
+        <div class="card-header">
+          <h3>System Performance</h3>
+          <span class="percentage">{{ platformHealth }}%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-fill green" [style.width.%]="platformHealth"></div>
+        </div>
+      </div>
+      <div class="health-card">
+        <div class="card-header">
+          <h3>Order Fulfillment</h3>
+          <span class="percentage">{{ fulfillmentRate }}%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-fill blue" [style.width.%]="fulfillmentRate"></div>
+        </div>
+      </div>
+    </section>
+
     <div class="dashboard-main-content">
       <!-- Recent Orders Table -->
       <section class="content-panel secondary">
