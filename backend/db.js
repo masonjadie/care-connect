@@ -3,19 +3,22 @@ const mysql = require('mysql2/promise');
 let pool;
 
 async function createMysqlPool() {
-  const required = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
-  const missing = required.filter((key) => !process.env[key]);
+  const host = process.env.MYSQLHOST || process.env.DB_HOST;
+  const user = process.env.MYSQLUSER || process.env.DB_USER;
+  const password = process.env.MYSQLPASSWORD || process.env.DB_PASSWORD;
+  const database = process.env.MYSQLDATABASE || process.env.DB_NAME;
+  const port = process.env.MYSQLPORT || process.env.DB_PORT || 3306;
 
-  if (missing.length > 0) {
-    throw new Error(`Missing required DB config: ${missing.join(', ')}`);
+  if (!host || !user || !database) {
+    throw new Error(`Missing required DB config. Ensure MYSQLHOST/DB_HOST, MYSQLUSER/DB_USER, and MYSQLDATABASE/DB_NAME are set.`);
   }
 
   return mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+    host: host,
+    user: user,
+    password: password,
+    database: database,
+    port: Number(port),
     waitForConnections: true,
     connectionLimit: 10
   });

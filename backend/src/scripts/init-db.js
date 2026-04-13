@@ -3,32 +3,33 @@ require('dotenv').config();
 const mysql = require('mysql2/promise');
 
 async function run() {
-  const required = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
-  const missing = required.filter((key) => !process.env[key]);
+  const host = process.env.MYSQLHOST || process.env.DB_HOST;
+  const user = process.env.MYSQLUSER || process.env.DB_USER;
+  const password = process.env.MYSQLPASSWORD || process.env.DB_PASSWORD;
+  const dbName = process.env.MYSQLDATABASE || process.env.DB_NAME;
+  const port = Number(process.env.MYSQLPORT || process.env.DB_PORT || 3306);
 
-  if (missing.length > 0) {
-    throw new Error(`Missing required DB config: ${missing.join(', ')}`);
+  if (!host || !user || !dbName) {
+    throw new Error(`Missing required DB config. Check MYSQLHOST/DB_HOST and others.`);
   }
 
-  const port = process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306;
-
   const adminConnection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    host,
+    user,
+    password,
     port
   });
 
   await adminConnection.query(
-    `CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+    `CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
   );
   await adminConnection.end();
 
   const dbConnection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host,
+    user,
+    password,
+    database: dbName,
     port,
     multipleStatements: true
   });
