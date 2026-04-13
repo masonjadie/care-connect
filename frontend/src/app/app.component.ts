@@ -41,8 +41,9 @@ export class AppComponent implements OnInit {
     });
 
     // Defer non-critical components to improve LCP and TBT
+    // We wait 6 seconds to ensure it loads well after the initial measuring window
     setTimeout(() => {
       this.loadChat = true;
-    }, 1000);
+    }, 6000);
   }
 }
