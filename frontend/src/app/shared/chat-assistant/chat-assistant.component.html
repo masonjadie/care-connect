@@ -6,7 +6,7 @@
     <div class="chat-header">
       <div class="header-info">
         <div class="avatar-container">
-          <img src="assets/images/ai-avatar-lady.webp" alt="CareConnect Assistant Avatar" class="bot-avatar" width="45" height="45">
+          <div class="bot-avatar-alt">🤖</div>
           <span class="online-dot"></span>
         </div>
         <div class="header-text">
@@ -32,7 +32,7 @@
         
         <!-- Avatar for AI Messages -->
         <div class="msg-avatar" *ngIf="msg.sender === 'ai'">
-          <img src="assets/images/ai-avatar-lady.webp" alt="Assistant" width="32" height="32">
+          <div class="msg-avatar-alt">🤖</div>
         </div>
 
         <div class="message-bubble">

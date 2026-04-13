@@ -120,11 +120,15 @@
       width: 45px;
       height: 45px;
 
-      .bot-avatar {
+      .bot-avatar-alt {
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        object-fit: cover;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
         border: 2px solid rgba(255, 255, 255, 0.5);
       }
 
