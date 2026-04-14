@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-pet-care',
@@ -123,7 +124,7 @@ export class PetCareComponent implements OnInit {
         this.showToast('✅ Registration submitted! We\'ll reach out within 48 hours for verification.');
         form.resetForm();
       },
-      error: (err) => {
+      error: (err: any) => {
         const errorMsg = err.error?.error || 'Registration failed. Please try again.';
         this.showToast(`❌ ${errorMsg}`);
       }

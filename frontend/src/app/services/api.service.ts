@@ -63,6 +63,7 @@ export interface Caregiver {
   certification: string;
   location: string;
   email: string;
+  verified?: number;
 }
 
 export interface CaregiverRegistrationPayload {

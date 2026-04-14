@@ -69,10 +69,14 @@ if (fs.existsSync(distPath)) {
     }
   }));
 
-  // Angular Fallback for Deep Linking
-  app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api')) return next();
-    res.sendFile(path.join(distPath, 'index.html'));
+  // Angular Fallback for Deep Linking - Must be after all API routes
+  app.get('*', (req, res) => {
+    // If it's an API request that reached here, it's a 404 API error
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    // Otherwise, serve the Angular index.html for SPA routing
+    res.sendFile(path.resolve(distPath, 'index.html'));
   });
 } else {
   console.warn('Frontend dist folder not found. Serving API only mode.');
