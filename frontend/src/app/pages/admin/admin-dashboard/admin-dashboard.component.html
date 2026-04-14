@@ -614,7 +614,7 @@
               <tbody>
                 <tr *ngFor="let m of allMeals">
                   <td>
-                    <img [src]="m.image" [alt]="m.name" class="meal-thumb" onerror="this.src='assets/meals/placeholder.png'">
+                    <img [src]="m.image" [alt]="m.name" class="meal-thumb" onerror="this.onerror=null; this.src='assets/meals/placeholder.png'">
                   </td>
                   <td>
                     <strong>{{ m.name }}</strong>
