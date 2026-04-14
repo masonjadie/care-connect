@@ -58,14 +58,24 @@ export class ServicesComponent implements OnInit {
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
+    const defaultServices: Service[] = [
+      { id: 1, title: 'Professional Caregiving', description: 'Certified caregivers providing daily assistance and specialized care.' },
+      { id: 2, title: 'Reliable Transportation', description: 'Safe, accessible rides for medical appointments and errands.' },
+      { id: 3, title: 'Nutritious Meal Delivery', description: 'Dietician-approved meals delivered directly to your door.' },
+      { id: 4, title: 'Medication Management', description: 'Never miss a dose with our automated reminders and pharmacy sync.' },
+      { id: 5, title: 'Service Animal & Pet Care', description: 'Support for your furry companions, plus service animal matching.' },
+      { id: 6, title: 'Prescription Delivery', description: 'Fast, secure delivery of your essential medications.' }
+    ];
+
     this.api.getServices().subscribe({
       next: (data) => {
-        this.services = data.map((service) => {
+        const finalData = data && data.length > 0 ? data : defaultServices;
+        this.services = finalData.map((service) => {
           const meta = this.serviceMeta[service.title] ?? {
             icon: '✅',
             features: ['Professional support', 'Personalized care', 'Trusted providers'],
             color: 'blue',
-            route: '/emergency'
+            route: '/contact-us'
           };
 
           return {
@@ -79,6 +89,15 @@ export class ServicesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to load services', error);
+        this.services = defaultServices.map((service) => {
+          const meta = this.serviceMeta[service.title] ?? {
+            icon: '✅',
+            features: ['Professional support', 'Personalized care', 'Trusted providers'],
+            color: 'blue',
+            route: '/contact-us'
+          };
+          return { ...service, icon: meta.icon, features: meta.features, color: meta.color, route: meta.route };
+        });
       }
     });
   }

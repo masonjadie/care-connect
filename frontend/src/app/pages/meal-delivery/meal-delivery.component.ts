@@ -35,13 +35,25 @@ export class MealDeliveryComponent implements OnInit {
   }
 
   loadMeals(): void {
+    const defaultMeals: Meal[] = [
+      { id: 1, name: 'Grilled Lemon Herb Salmon', description: 'Fresh salmon with steamed asparagus and quinoa.', category: 'Heart Healthy', calories: 450, protein: '35g', price: 14.99, tags: ['Omega-3', 'Gluten-Free'], image: 'salmon_meal.webp' },
+      { id: 2, name: 'Low-Sodium Turkey Meatballs', description: 'Served with zucchini noodles and sugar-free marinara.', category: 'Low Sodium', calories: 380, protein: '30g', price: 12.99, tags: ['Low Carb', 'Heart Healthy'], image: 'turkey_meatballs.webp' },
+      { id: 3, name: 'Diabetic-Friendly Chicken Stir-Fry', description: 'Lean chicken breast with broccoli, bell peppers, and brown rice.', category: 'Diabetic Friendly', calories: 410, protein: '32g', price: 13.50, tags: ['High Fiber', 'Low Glycemic'], image: 'chicken_stirfry.webp' },
+      { id: 4, name: 'Mediterranean Buddha Bowl', description: 'Chickpeas, cucumber, tomatoes, olives, and feta over crisp greens.', category: 'Vegetarian', calories: 350, protein: '15g', price: 11.99, tags: ['Plant Based', 'High Fiber'], image: 'buddha_bowl.webp' },
+      { id: 5, name: 'Hearty Beef Stew', description: 'Tender beef slow-cooked with carrots, potatoes, and peas.', category: 'All', calories: 480, protein: '28g', price: 15.00, tags: ['Comfort Food', 'High Protein'], image: 'beef_stew.webp' },
+      { id: 6, name: 'Oatmeal & Berry Breakfast Bowl', description: 'Steel-cut oats with fresh mixed berries and walnuts.', category: 'Heart Healthy', calories: 310, protein: '10g', price: 8.99, tags: ['Breakfast', 'Superfood'], image: 'oatmeal_bowl.webp' }
+    ];
+
     this.mealService.getMeals().subscribe({
       next: (meals: Meal[]) => {
-        this.meals = meals;
-        this.filteredMeals = meals;
+        const finalMeals = meals && meals.length > 0 ? meals : defaultMeals;
+        this.meals = finalMeals;
+        this.filteredMeals = finalMeals;
       },
       error: (err: any) => {
         console.error('Failed to load meals', err);
+        this.meals = defaultMeals;
+        this.filteredMeals = defaultMeals;
       }
     });
   }
