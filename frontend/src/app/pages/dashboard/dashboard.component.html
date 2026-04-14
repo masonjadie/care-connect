@@ -11,8 +11,8 @@
       <p>Tracking your active services and health support network.</p>
     </div>
     <div class="header-badges">
-      <span class="badge premium" *ngIf="user?.tier === 'premium'">⭐ Premium Member</span>
-      <span class="badge free" *ngIf="user?.tier !== 'premium'">Free Member</span>
+      <span class="badge premium" *ngIf="user?.subscription_tier === 'premium' || user?.subscription_tier === 'family'">⭐ Premium Member</span>
+      <span class="badge free" *ngIf="user?.subscription_tier !== 'premium' && user?.subscription_tier !== 'family'">Free Member</span>
     </div>
   </header>
 
