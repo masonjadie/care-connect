@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnalyticsService, DashboardStats } from '../../../services/analytics.service';
+import { MealService, Meal } from '../../../services/meal.service';
 import { interval, Subscription } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { startWith } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,11 +21,20 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   pendingSpecialists: any[] = [];
   verifiedCaregivers: any[] = [];
   verifiedSpecialists: any[] = [];
+  allMeals: Meal[] = [];
 
-  activeTab: 'summary' | 'orders' | 'verification' | 'verified' | 'transport' = 'summary';
+  activeTab: 'summary' | 'orders' | 'verification' | 'verified' | 'transport' | 'meals' = 'summary';
   transportationBookings: any[] = [];
 
-  constructor(private analyticsService: AnalyticsService) { }
+  // Meal Form State
+  isMealModalOpen = false;
+  currentMeal: Partial<Meal> = this.resetMealForm();
+  isEditingMeal = false;
+
+  constructor(
+    private analyticsService: AnalyticsService,
+    private mealService: MealService
+  ) { }
 
   ngOnInit(): void {
     this.loadAllData();
@@ -46,6 +57,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.loadVerifications();
     this.loadVerifiedStaff();
     this.loadTransportation();
+    this.loadMeals();
   }
 
   loadStats(): void {
@@ -81,6 +93,13 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.analyticsService.getVerifiedPetSpecialists().subscribe({
       next: (data) => this.verifiedSpecialists = data,
       error: () => this.verifiedSpecialists = []
+    });
+  }
+
+  loadMeals(): void {
+    this.mealService.getMeals().subscribe({
+      next: (meals) => this.allMeals = meals,
+      error: (err) => console.error('Failed to load meals', err)
     });
   }
 
@@ -229,5 +248,68 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => console.error('Trip status update failed', err)
     });
+  }
+
+  // ── Meal Management ───────────────────────────────────────────────
+  resetMealForm(): Partial<Meal> {
+    return {
+      name: '',
+      description: '',
+      category: 'Heart Healthy',
+      calories: 0,
+      protein: '',
+      price: 0,
+      tags: [],
+      image: 'meals/roasted-salmon.png'
+    };
+  }
+
+  openAddMealModal(): void {
+    this.currentMeal = this.resetMealForm();
+    this.isEditingMeal = false;
+    this.isMealModalOpen = true;
+  }
+
+  openEditMealModal(meal: Meal): void {
+    this.currentMeal = { ...meal };
+    this.isEditingMeal = true;
+    this.isMealModalOpen = true;
+  }
+
+  closeMealModal(): void {
+    this.isMealModalOpen = false;
+  }
+
+  saveMeal(): void {
+    if (this.isEditingMeal && this.currentMeal.id) {
+      this.mealService.updateMeal(this.currentMeal.id, this.currentMeal as Meal).subscribe({
+        next: () => {
+          this.loadMeals();
+          this.closeMealModal();
+        },
+        error: (err) => console.error('Failed to update meal', err)
+      });
+    } else {
+      this.mealService.createMeal(this.currentMeal as Meal).subscribe({
+        next: () => {
+          this.loadMeals();
+          this.closeMealModal();
+        },
+        error: (err) => console.error('Failed to create meal', err)
+      });
+    }
+  }
+
+  deleteMeal(id: number): void {
+    if (confirm('Are you sure you want to delete this meal?')) {
+      this.mealService.deleteMeal(id).subscribe({
+        next: () => this.loadMeals(),
+        error: (err) => console.error('Failed to delete meal', err)
+      });
+    }
+  }
+
+  updateTags(tagsString: string): void {
+    this.currentMeal.tags = tagsString.split(',').map(tag => tag.trim()).filter(tag => !!tag);
   }
 }
