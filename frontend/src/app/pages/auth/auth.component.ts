@@ -69,7 +69,9 @@ export class AuthComponent {
         if (response.token) {
           localStorage.setItem('careconnect_token', response.token);
         }
-        this.router.navigate(['/home']);
+        const user = response.user;
+        const targetRoute = (user.role === 'admin' || user.email === 'admin@careconnect.com') ? '/admin' : '/dashboard';
+        this.router.navigate([targetRoute]);
       },
       error: (error) => {
         this.loading = false;

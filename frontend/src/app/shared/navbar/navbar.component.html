@@ -18,6 +18,7 @@
     <a routerLink="/services" routerLinkActive="active">Services</a>
     <a routerLink="/emergency" routerLinkActive="active" class="nav-emergency">🚨 SOS Help</a>
     <a routerLink="/about" routerLinkActive="active">About Us</a>
+    <a routerLink="/dashboard" routerLinkActive="active" *ngIf="userName && !isAdmin">Dashboard</a>
     <a routerLink="/admin" routerLinkActive="active" *ngIf="isAdmin" style="color: #6366f1; font-weight: 700;">⚙️ Admin</a>
     
     <!-- Mobile-only A11y Controls -->
@@ -65,7 +66,7 @@
     </div>
 
     <ng-container *ngIf="userName; else loginBtn">
-      <div class="user-greeting">
+      <div class="user-greeting" [routerLink]="isAdmin ? '/admin' : '/dashboard'" style="cursor: pointer;">
         <span class="avatar">👤</span>
         <span class="user-name">{{ userName }}</span>
       </div>
