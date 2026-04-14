@@ -709,8 +709,132 @@
             </table>
           </div>
         </section>
+      <!-- TAB 6: MEAL MANAGEMENT -->
+      <ng-container *ngIf="activeTab === 'meals'">
+        <section class="content-panel full-width">
+          <div class="panel-header">
+            <div class="header-titles">
+              <h3>🥗 Meal Management</h3>
+              <p>Create and refine the nutritious menu offerings.</p>
+            </div>
+            <button class="add-meal-btn" (click)="openAddMealModal()">+ Add New Meal</button>
+          </div>
+          
+          <div class="table-wrapper">
+            <table class="data-table detailed">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Meal Name</th>
+                  <th>Category</th>
+                  <th>Nutrition</th>
+                  <th>Price</th>
+                  <th>Tags</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of allMeals">
+                  <td>
+                    <img [src]="m.image" [alt]="m.name" class="meal-thumb" onerror="this.src='assets/meals/placeholder.png'">
+                  </td>
+                  <td>
+                    <strong>{{ m.name }}</strong>
+                    <div style="font-size: 0.8rem; color: #718096; max-width: 250px;">{{ m.description }}</div>
+                  </td>
+                  <td><span class="category-badge">{{ m.category }}</span></td>
+                  <td>
+                    <div style="font-size: 0.85rem;">🔥 {{ m.calories }} kcal</div>
+                    <div style="font-size: 0.85rem; color: #4a5568;">🥩 {{ m.protein }} Protein</div>
+                  </td>
+                  <td><strong>${{ m.price | number:'1.2-2' }}</strong></td>
+                  <td>
+                    <span *ngFor="let tag of m.tags" class="tag-chip">{{ tag }}</span>
+                  </td>
+                  <td>
+                    <div class="action-grid">
+                      <button class="btn-edit" (click)="openEditMealModal(m)">Edit</button>
+                      <button class="btn-delete" (click)="deleteMeal(m.id!)">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="allMeals.length === 0">
+                  <td colspan="7" class="empty-state">No meals found. Start by adding your first nutritious dish!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </ng-container>
 
     </div>
   </ng-container>
+
+  <!-- MEAL ADD/EDIT MODAL -->
+  <div class="modal-overlay" *ngIf="isMealModalOpen" (click)="closeMealModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ isEditingMeal ? '✍️ Edit Meal' : '🍲 Add New Meal' }}</h3>
+        <button class="close-btn" (click)="closeMealModal()">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <form class="meal-form">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label>Meal Name</label>
+              <input type="text" [(ngModel)]="currentMeal.name" name="name" placeholder="e.g. Roasted Salmon with Quinoa">
+            </div>
+            
+            <div class="form-group full-width">
+              <label>Description</label>
+              <textarea [(ngModel)]="currentMeal.description" name="description" rows="3" placeholder="Describe the meal ingredients and benefits..."></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label>Category</label>
+              <select [(ngModel)]="currentMeal.category" name="category">
+                <option value="Low Sodium">Low Sodium</option>
+                <option value="Diabetic Friendly">Diabetic Friendly</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Heart Healthy">Heart Healthy</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Price ($)</label>
+              <input type="number" [(ngModel)]="currentMeal.price" name="price" step="0.5">
+            </div>
+            
+            <div class="form-group">
+              <label>Calories (kcal)</label>
+              <input type="number" [(ngModel)]="currentMeal.calories" name="calories">
+            </div>
+            
+            <div class="form-group">
+              <label>Protein (g)</label>
+              <input type="text" [(ngModel)]="currentMeal.protein" name="protein" placeholder="e.g. 24g">
+            </div>
+            
+            <div class="form-group full-width">
+              <label>Tags (comma separated)</label>
+              <input type="text" [ngModel]="currentMeal.tags?.join(', ')" (ngModelChange)="updateTags($event)" name="tags" placeholder="e.g. Omega-3, Fiber, Gluten-Free">
+            </div>
+            
+            <div class="form-group full-width">
+              <label>Image Path (relative to assets/)</label>
+              <input type="text" [(ngModel)]="currentMeal.image" name="image" placeholder="e.g. meals/salmon.png">
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeMealModal()">Cancel</button>
+        <button class="btn-primary" (click)="saveMeal()" [disabled]="!currentMeal.name || !currentMeal.price">
+          {{ isEditingMeal ? 'Update Meal' : 'Create Meal' }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
