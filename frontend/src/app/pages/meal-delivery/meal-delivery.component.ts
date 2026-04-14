@@ -32,11 +32,11 @@ export class MealDeliveryComponent implements OnInit {
 
   loadMeals(): void {
     this.mealService.getMeals().subscribe({
-      next: (meals) => {
+      next: (meals: Meal[]) => {
         this.meals = meals;
         this.filteredMeals = meals;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Failed to load meals', err);
       }
     });

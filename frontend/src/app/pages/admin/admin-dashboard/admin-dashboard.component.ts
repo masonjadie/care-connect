@@ -98,8 +98,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   loadMeals(): void {
     this.mealService.getMeals().subscribe({
-      next: (meals) => this.allMeals = meals,
-      error: (err) => console.error('Failed to load meals', err)
+      next: (meals: Meal[]) => this.allMeals = meals,
+      error: (err: any) => console.error('Failed to load meals', err)
     });
   }
 
@@ -287,7 +287,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
           this.loadMeals();
           this.closeMealModal();
         },
-        error: (err) => console.error('Failed to update meal', err)
+        error: (err: any) => console.error('Failed to update meal', err)
       });
     } else {
       this.mealService.createMeal(this.currentMeal as Meal).subscribe({
@@ -295,7 +295,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
           this.loadMeals();
           this.closeMealModal();
         },
-        error: (err) => console.error('Failed to create meal', err)
+        error: (err: any) => console.error('Failed to create meal', err)
       });
     }
   }
@@ -304,7 +304,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     if (confirm('Are you sure you want to delete this meal?')) {
       this.mealService.deleteMeal(id).subscribe({
         next: () => this.loadMeals(),
-        error: (err) => console.error('Failed to delete meal', err)
+        error: (err: any) => console.error('Failed to delete meal', err)
       });
     }
   }
