@@ -12,7 +12,10 @@ function validateEmail(email) {
 }
 
 function validatePassword(password) {
-  return typeof password === 'string' && password.trim().length >= 6;
+  if (typeof password !== 'string') return false;
+  // Rule: 7 characters long, not counting numbers
+  const lettersOnly = password.replace(/[0-9]/g, '');
+  return lettersOnly.length >= 7;
 }
 
 router.post('/register', async (req, res, next) => {
@@ -28,7 +31,7 @@ router.post('/register', async (req, res, next) => {
       return res.status(400).json({ error: 'A valid email is required.' });
     }
     if (!validatePassword(password)) {
-      return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+      return res.status(400).json({ error: 'Password must be at least 7 letters/symbols (numbers do not count toward this length).' });
     }
 
     const pool = await getPool();
@@ -67,28 +70,18 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
   const identifier = typeof req.body.email === 'string' ? req.body.email.trim() : '';
   const password = typeof req.body.password === 'string' ? req.body.password : '';
-  console.log('Login attempt for:', identifier);
+
   try {
-
-    if (!identifier || !validatePassword(password)) {
-      return res.status(400).json({ error: 'Invalid username/email or password.' });
-    }
-
-    // FAIL-SAFE FOR TEACHER PRESENTATION:
-    // This ensures the admin login always works even if the DB has connection issues
-    if (identifier === 'admin@careconnect.com' && password === 'admin123') {
-      const user = { id: 999, name: 'Admin User', email: 'admin@careconnect.com', role: 'admin' };
-      const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-      return res.json({ message: 'Login successful (Master Key).', user, token });
+    if (!identifier || !password) {
+      return res.status(400).json({ error: 'Username/email and password are required.' });
     }
 
     const pool = await getPool();
     const [rows] = await pool.execute(
-      'SELECT id, name, email, subscription_tier, trial_ends_at, role, password_hash AS passwordHash FROM users WHERE (email = ? OR name = ?) LIMIT 1',
+      'SELECT id, name, email, subscription_tier, trial_ends_at, role, failed_login_attempts, lockout_until, password_hash AS passwordHash FROM users WHERE (email = ? OR name = ?) LIMIT 1',
       [identifier, identifier]
     );
 
-    if (rows.length === 0 || !verifyPassword(password, rows[0].passwordHash)) {
       // Log failed login attempt (wrapped in catch to prevent 500 errors)
       const logData = JSON.stringify({ email: identifier, method: 'password', ip: req.ip });
       await pool.execute('INSERT INTO site_analytics (event_type, event_data) VALUES (?, ?)', ['login_fail', logData])

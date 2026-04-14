@@ -53,6 +53,18 @@ export class AuthComponent {
     const password = this.authForm.value.password ?? '';
     const name = this.authForm.value.name ?? '';
 
+    // ADVANCED VALIDATION
+    const lettersOnly = password.replace(/[0-9]/g, '');
+    if (lettersOnly.length < 7) {
+      this.errorMessage = 'Password must contain at least 7 letters or symbols (numbers are allowed but don\'t count toward the required length).';
+      return;
+    }
+
+    if (this.mode === 'register' && !identifier.includes('@')) {
+      this.errorMessage = 'Please enter a valid email address.';
+      return;
+    }
+
     this.loading = true;
 
     const request$ =
@@ -80,6 +92,7 @@ export class AuthComponent {
           return;
         }
 
+        // Handle specific friendly error from backend (lockout, attempts, etc)
         this.errorMessage =
           error?.error?.error ||
           error?.error?.message ||
