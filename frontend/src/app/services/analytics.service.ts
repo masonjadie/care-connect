@@ -80,6 +80,10 @@ export class AnalyticsService {
     return this.http.post(`${this.ordersUrl}/place-order`, orderData);
   }
 
+  getUserOrders(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.ordersUrl}/my-orders/${userId}`);
+  }
+
   updateOrderStatus(id: number, status: string): Observable<any> {
     return this.http.patch(`${this.ordersUrl}/${id}/status`, { status });
   }
@@ -91,7 +95,12 @@ export class AnalyticsService {
     return this.http.get<any[]>(this.transportUrl);
   }
 
+  getUserBookings(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.transportUrl}/my-bookings/${userId}`);
+  }
+
   createTransportationBooking(data: {
+    userId?: number;
     passengerName?: string;
     pickup: string;
     dropoff: string;

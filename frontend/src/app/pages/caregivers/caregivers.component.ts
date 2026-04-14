@@ -106,7 +106,11 @@ export class CaregiversComponent implements OnInit {
     }
 
     const details = this.requestDetailsForm.getRawValue();
+    const userStr = localStorage.getItem('careconnect_user');
+    const user = userStr ? JSON.parse(userStr) : null;
+
     const orderData = {
+      userId: user?.id,
       itemName: `Caregiver Service: ${this.selectedCaregiver.name}`,
       itemType: 'caregiver_request',
       amount: 0, // Rate is descriptive here

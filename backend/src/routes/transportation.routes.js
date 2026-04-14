@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
 // Create a new booking
 router.post('/', async (req, res, next) => {
   try {
-    const { passengerName, pickup, dropoff, date, time, vehicleType, tripType, notes } = req.body;
+    const { userId, passengerName, pickup, dropoff, date, time, vehicleType, tripType, notes } = req.body;
 
     if (!pickup || !dropoff || !date || !time) {
       return res.status(400).json({ error: 'Pickup, dropoff, date, and time are required.' });
@@ -27,9 +27,10 @@ router.post('/', async (req, res, next) => {
     const pool = await getPool();
     const [result] = await pool.execute(
       `INSERT INTO transportation_bookings
-         (passenger_name, pickup, dropoff, date, time, vehicle_type, trip_type, notes, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'booked')`,
+         (user_id, passenger_name, pickup, dropoff, date, time, vehicle_type, trip_type, notes, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'booked')`,
       [
+        userId || null,
         passengerName || 'Guest',
         pickup,
         dropoff,
@@ -45,6 +46,21 @@ router.post('/', async (req, res, next) => {
       message: 'Ride booked successfully!',
       bookingId: result.insertId
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Get user specific bookings
+router.get('/my-bookings/:userId', async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const pool = await getPool();
+    const [rows] = await pool.execute(
+      'SELECT * FROM transportation_bookings WHERE user_id = ? ORDER BY created_at DESC',
+      [userId]
+    );
+    res.json(rows);
   } catch (error) {
     next(error);
   }

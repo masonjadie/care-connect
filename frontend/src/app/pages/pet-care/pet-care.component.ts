@@ -115,11 +115,29 @@ export class PetCareComponent implements OnInit {
   }
 
   bookConsultation(): void {
+    if (!this.selectedService) return;
+    
     const serviceName = this.selectedService.title;
-    this.closeModal();
-    this.showToast(`📅 Consulting request for ${serviceName} sent!`);
-    // Scroll to specialists registration
-    document.getElementById('specialist-registration')?.scrollIntoView({ behavior: 'smooth' });
+    const userStr = localStorage.getItem('careconnect_user');
+    const user = userStr ? JSON.parse(userStr) : null;
+
+    const orderData = {
+      userId: user?.id,
+      itemName: `Pet Consultation: ${serviceName}`,
+      itemType: 'pet_consultation',
+      amount: 0,
+      requestLocation: user?.location || 'Self-delivery/Visit'
+    };
+
+    this.analyticsService.placeOrder(orderData).subscribe({
+      next: () => {
+        this.closeModal();
+        this.showToast(`📅 Consulting request for ${serviceName} sent!`);
+        // Scroll to specialists registration
+        document.getElementById('specialist-registration')?.scrollIntoView({ behavior: 'smooth' });
+      },
+      error: () => this.showToast('❌ Failed to send request.')
+    });
   }
 
   registerSpecialist(form: NgForm): void {

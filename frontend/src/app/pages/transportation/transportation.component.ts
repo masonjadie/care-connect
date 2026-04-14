@@ -39,8 +39,12 @@ export class TransportationComponent implements OnInit {
     this.isSubmitting = true;
     const val = this.bookingForm.value;
 
+    const userStr = localStorage.getItem('careconnect_user');
+    const user = userStr ? JSON.parse(userStr) : null;
+
     this.analyticsService.createTransportationBooking({
-      passengerName: val.passengerName || 'Guest',
+      userId: user?.id,
+      passengerName: val.passengerName || user?.name || 'Guest',
       pickup: val.pickup,
       dropoff: val.dropoff,
       date: val.date,

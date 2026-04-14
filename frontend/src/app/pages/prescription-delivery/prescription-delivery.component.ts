@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-prescription-delivery',
@@ -12,6 +13,7 @@ export class PrescriptionDeliveryComponent implements OnInit {
   submitted = false;
   toastMessage = '';
   autoRefillEnabled = false;
+  isSubmitting = false;
 
   howItWorks = [
     { step: '1', icon: '📸', title: 'Upload Prescription', desc: 'Take a photo of your prescription or upload it from your device.' },
@@ -29,7 +31,7 @@ export class PrescriptionDeliveryComponent implements OnInit {
   refillFrequencies = ['Every 30 days', 'Every 60 days', 'Every 90 days', 'Custom'];
   durationUnits = ['Days', 'Weeks', 'Months'];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private analyticsService: AnalyticsService) {
     this.prescriptionForm = this.fb.group({
       patientName: [''],
       dateOfBirth: [''],
@@ -89,21 +91,43 @@ export class PrescriptionDeliveryComponent implements OnInit {
       return; 
     }
 
-    const name = this.f['patientName'].value;
-    this.successMessage = `✅ Success! Thank you ${name}. Your request is being processed.`;
-    this.showToast('✅ Prescription Request Submitted!');
+    this.isSubmitting = true;
+    const userStr = localStorage.getItem('careconnect_user');
+    const user = userStr ? JSON.parse(userStr) : null;
+    
+    const orderData = {
+      userId: user?.id,
+      itemName: `Prescription: ${this.f['patientName'].value}`,
+      itemType: 'prescription',
+      amount: 0,
+      requestLocation: this.f['deliveryAddress'].value,
+      notes: this.f['notes'].value
+    };
 
-    // Reset after success
-    setTimeout(() => {
-      this.prescriptionForm.reset({
-        autoRefill: false,
-        enableRecurringPayment: false,
-        durationUnit: 'Days',
-        refillFrequency: 'Every 30 days'
-      });
-      this.autoRefillEnabled = false;
-      this.successMessage = '';
-      this.submitted = false;
-    }, 6000);
+    this.analyticsService.placeOrder(orderData).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        const name = this.f['patientName'].value;
+        this.successMessage = `✅ Success! Thank you ${name}. Your request is being processed.`;
+        this.showToast('✅ Prescription Request Submitted!');
+
+        // Reset after success
+        setTimeout(() => {
+          this.prescriptionForm.reset({
+            autoRefill: false,
+            enableRecurringPayment: false,
+            durationUnit: 'Days',
+            refillFrequency: 'Every 30 days'
+          });
+          this.autoRefillEnabled = false;
+          this.successMessage = '';
+          this.submitted = false;
+        }, 6000);
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.showToast('❌ Failed to submit request. Please try again.');
+      }
+    });
   }
 }

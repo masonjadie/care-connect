@@ -26,7 +26,9 @@ async function run() {
         trip_type VARCHAR(40) NOT NULL DEFAULT 'one-way',
         notes TEXT,
         status VARCHAR(40) NOT NULL DEFAULT 'booked',
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        user_id INT,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
       )
     `);
     console.log('Table "transportation_bookings" is ready.');

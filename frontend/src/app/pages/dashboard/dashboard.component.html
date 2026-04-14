@@ -4,41 +4,79 @@
     <span>You are on a <strong>Free Trial</strong>. {{ trialDaysRemaining }} days remaining.</span>
     <a routerLink="/plans" class="upgrade-link">Upgrade Now</a>
   </div>
+
   <header class="dashboard-header">
-    <h1>Your Care Dashboard</h1>
-    <p>Monitor your health and stay connected with your support network.</p>
+    <div class="header-content">
+      <h1>Welcome back, {{ user?.name || 'Care Seeker' }}</h1>
+      <p>Tracking your active services and health support network.</p>
+    </div>
+    <div class="header-badges">
+      <span class="badge premium" *ngIf="user?.tier === 'premium'">⭐ Premium Member</span>
+      <span class="badge free" *ngIf="user?.tier !== 'premium'">Free Member</span>
+    </div>
   </header>
 
-  <div class="info-sections">
-    <!-- HEALTH TIPS -->
-    <div class="card health-tips">
-      <div class="card-header">
-        <h3>Health Tips & Articles</h3>
-        <span class="icon">📚</span>
-      </div>
-      <div class="health-content">
-        <p>Get daily advice on nutrition, exercise, and mental well-being for seniors.</p>
-        <button class="btn-read">Explore Library</button>
-      </div>
+  <!-- ACTIVE TRACKING: SERVICE REQUESTS -->
+  <section class="tracking-summary" *ngIf="userOrders.length > 0 || userBookings.length > 0">
+    <div class="section-header">
+      <h2>🛤️ Active Service Tracking</h2>
+      <p>Real-time progress of your requested services</p>
     </div>
 
-    <!-- EMERGENCY CONTACTS -->
-    <div class="card emergency-contacts">
-      <div class="card-header">
-        <h3>Emergency Contacts</h3>
-        <span class="icon">📞</span>
-      </div>
-      <div class="contact-grid">
-        <div class="contact" *ngFor="let contact of contacts">
-          <span class="phone-icon">📞</span>
-          <div class="contact-info">
-            <p class="name">{{contact.name}}</p>
-            <p class="relation">{{contact.relation}}</p>
+    <div class="tracking-grid">
+      <!-- Orders (Meals, Prescriptions, Caregivers) -->
+      <div class="tracking-card" *ngFor="let order of userOrders">
+        <div class="card-badges">
+          <span class="type-badge" [class]="order.item_type">{{ order.item_type.replace('_', ' ') }}</span>
+          <span class="status-badge" [class]="order.status">{{ getStatusLabel(order.status) }}</span>
+        </div>
+        <h3>{{ order.item_name }}</h3>
+        
+        <div class="progress-container">
+          <div class="progress-labels">
+            <span>Progress</span>
+            <span>{{ getStatusProgress(order.status) }}%</span>
           </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [class]="order.status" [style.width.%]="getStatusProgress(order.status)"></div>
+          </div>
+          <div class="milestones">
+            <span *ngFor="let step of statusSteps" class="milestone-dot" [class.active]="getStatusProgress(order.status) >= getStatusProgress(step)"></span>
+          </div>
+        </div>
+        
+        <div class="order-meta">
+          <span>📅 {{ order.created_at | date:'MMM d, h:mm a' }}</span>
+          <span *ngIf="order.request_location">📍 {{ order.request_location | slice:0:30 }}...</span>
+        </div>
+      </div>
+
+      <!-- Bookings (Transportation) -->
+      <div class="tracking-card transportation" *ngFor="let trip of userBookings">
+        <div class="card-badges">
+          <span class="type-badge transport">Ride Booking</span>
+          <span class="status-badge" [class]="trip.status">{{ getStatusLabel(trip.status) }}</span>
+        </div>
+        <h3>RIDE: {{ trip.pickup }} → {{ trip.dropoff }}</h3>
+
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill transport" [class]="trip.status" [style.width.%]="getTripProgress(trip.status)"></div>
+          </div>
+          <div class="milestones">
+            <span *ngFor="let step of tripSteps" class="milestone-dot" [class.active]="getTripProgress(trip.status) >= getTripProgress(step)"></span>
+          </div>
+        </div>
+        
+        <div class="order-meta">
+          <span>🕒 {{ trip.date }} at {{ trip.time }}</span>
+          <span>🚗 {{ trip.vehicle_type | titlecase }} ({{ trip.trip_type }})</span>
         </div>
       </div>
     </div>
+  </section>
 
+  <div class="info-sections">
     <!-- DAILY REMINDERS -->
     <div class="card reminders">
       <div class="card-header">
@@ -52,13 +90,14 @@
             <p class="title">{{reminder.title}}</p>
           </div>
         </div>
+        <p *ngIf="reminders.length === 0" class="no-data">Take meds or water? No reminders set.</p>
       </div>
     </div>
 
     <!-- UPCOMING APPOINTMENTS -->
     <div class="card appointments">
       <div class="card-header">
-        <h3>Upcoming Appointments</h3>
+        <h3>Medical Appointments</h3>
         <span class="icon">📅</span>
       </div>
       <div class="appointment-list">
@@ -69,7 +108,38 @@
           </div>
           <button class="btn-cancel" (click)="deleteAppointment(apt.id)">Cancel</button>
         </div>
-        <p *ngIf="appointments.length === 0" class="no-data">No upcoming appointments.</p>
+        <p *ngIf="appointments.length === 0" class="no-data">No doctor visits scheduled.</p>
+      </div>
+    </div>
+
+    <!-- EMERGENCY CONTACTS -->
+    <div class="card emergency-contacts">
+      <div class="card-header">
+        <h3>Care Network</h3>
+        <span class="icon">👫</span>
+      </div>
+      <div class="contact-grid">
+        <div class="contact" *ngFor="let contact of contacts">
+          <div class="contact-avatar">{{ contact.name.charAt(0) }}</div>
+          <div class="contact-info">
+            <p class="name">{{contact.name}}</p>
+            <p class="relation">{{contact.relation}}</p>
+          </div>
+          <a [href]="'tel:' + contact.phone" class="call-btn">📞</a>
+        </div>
+      </div>
+      <p *ngIf="contacts.length === 0" class="no-data">Add relatives or caregivers.</p>
+    </div>
+
+    <!-- HEALTH TIPS -->
+    <div class="card health-tips">
+      <div class="card-header">
+        <h3>Wellness Library</h3>
+        <span class="icon">🌿</span>
+      </div>
+      <div class="health-content">
+        <p>Expert-vetted articles on senior nutrition, gentle exercise, and mental agility.</p>
+        <button class="btn-read">Browse Archive</button>
       </div>
     </div>
   </div>

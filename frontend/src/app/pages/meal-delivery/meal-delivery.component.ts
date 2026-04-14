@@ -64,11 +64,15 @@ export class MealDeliveryComponent implements OnInit {
   confirmOrder(): void {
     if (!this.orderToConfirm) return;
 
+    const userStr = localStorage.getItem('careconnect_user');
+    const user = userStr ? JSON.parse(userStr) : null;
+
     const orderData = {
+      userId: user?.id,
       itemName: this.orderToConfirm.name,
       itemType: 'meal',
       amount: this.orderToConfirm.price,
-      address: this.deliveryAddress,
+      requestLocation: this.deliveryAddress,
       payment: this.paymentMethod
     };
 
