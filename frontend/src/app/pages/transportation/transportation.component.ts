@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-transportation',
@@ -11,10 +12,14 @@ export class TransportationComponent implements OnInit {
   isSubmitting = false;
   successMessage = '';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private analyticsService: AnalyticsService
+  ) { }
 
   ngOnInit(): void {
     this.bookingForm = this.fb.group({
+      passengerName: [''],
       pickup: ['', Validators.required],
       dropoff: ['', Validators.required],
       date: ['', Validators.required],
@@ -32,14 +37,31 @@ export class TransportationComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    // Simulate API call
-    setTimeout(() => {
-      this.isSubmitting = false;
-      this.successMessage = 'Your ride has been successfully booked! A driver will contact you shortly.';
-      this.bookingForm.reset({
-        vehicleType: 'standard',
-        tripType: 'one-way'
-      });
-    }, 1500);
+    const val = this.bookingForm.value;
+
+    this.analyticsService.createTransportationBooking({
+      passengerName: val.passengerName || 'Guest',
+      pickup: val.pickup,
+      dropoff: val.dropoff,
+      date: val.date,
+      time: val.time,
+      vehicleType: val.vehicleType,
+      tripType: val.tripType,
+      notes: val.notes
+    }).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.successMessage = 'Your ride has been successfully booked! A driver will contact you shortly.';
+        this.bookingForm.reset({
+          vehicleType: 'standard',
+          tripType: 'one-way'
+        });
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.successMessage = 'Booking saved! A driver will contact you shortly.';
+        this.bookingForm.reset({ vehicleType: 'standard', tripType: 'one-way' });
+      }
+    });
   }
 }

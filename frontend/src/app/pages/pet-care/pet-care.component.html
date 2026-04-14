@@ -39,7 +39,41 @@
         </div>
     </section>
 
+    <!-- Verified Pet Specialists Section -->
+    <section class="verified-specialists-section">
+        <div class="registration-header">
+            <h2>🐾 Meet Our Verified Pet Specialists</h2>
+            <p>Our admin-approved specialists are certified, experienced, and ready to support your animal care needs.</p>
+        </div>
+
+        <div *ngIf="loadingSpecialists" class="specialists-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading specialists...</p>
+        </div>
+
+        <div class="specialists-grid" *ngIf="!loadingSpecialists && verifiedSpecialists.length > 0">
+            <div class="specialist-card" *ngFor="let sp of verifiedSpecialists">
+                <div class="specialist-avatar">🐾</div>
+                <div class="specialist-info">
+                    <h3>{{ sp.name }}</h3>
+                    <span class="specialty-badge">{{ sp.specialty }}</span>
+                    <p class="specialist-meta">📍 {{ sp.location }}</p>
+                    <p class="specialist-bio" *ngIf="sp.experience">{{ sp.experience }}</p>
+                    <div class="contact-row" *ngIf="sp.phone">
+                        <span>📞 {{ sp.phone }}</span>
+                    </div>
+                </div>
+                <div class="verified-badge">✅ Verified</div>
+            </div>
+        </div>
+
+        <div class="empty-specialists" *ngIf="!loadingSpecialists && verifiedSpecialists.length === 0">
+            <p>🔍 No verified specialists yet. Check back soon — our team is reviewing applications!</p>
+        </div>
+    </section>
+
     <section class="pet-caregivers-section" id="specialist-registration">
+
         <div class="registration-header">
             <h2>Join our Service Animal Network</h2>
             <p>Are you a certified therapy animal handler or service animal specialist? Register to help our community.</p>

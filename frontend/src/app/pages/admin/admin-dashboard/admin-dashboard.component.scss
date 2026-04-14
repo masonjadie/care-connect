@@ -341,3 +341,251 @@
 @media (max-width: 768px) {
     .dashboard-tabs { overflow-x: auto; white-space: nowrap; button { padding: 10px 15px; font-size: 0.9rem; } }
 }
+
+// Extra stat icon colors
+.stat-icon.teal { background: #f0fdfa; }
+
+// Tab count badge (inline in tab button)
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 20px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 8px;
+  &.pending { background: #fee2e2; color: #dc2626; }
+}
+
+// Sub-section header within a tab panel
+.sub-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+}
+
+// Verified row highlight
+.verified-row {
+  background: #f0fdf4;
+  &:hover { background: #dcfce7; }
+}
+
+// Pet specialist request badge
+.badge.pet_specialist_request { background: #fff7ed; color: #9a3412; }
+.badge.red { background: #fee2e2; color: #991b1b; }
+.pet-request-row { background: #fff7ed; }
+
+// Count badge red variant
+.count-badge.red { background: #ef4444; }
+
+// Certification & availability chips in verified table
+.certification-chip {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.avail-chip {
+  display: inline-block;
+  background: #ecfdf5;
+  color: #065f46;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+// ─── DELIVERY PROGRESS BAR ────────────────────────────────────────────
+.order-status-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 170px;
+}
+
+.status-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  &.pending          { color: #d97706; }
+  &.fulfilled        { color: #2563eb; }
+  &.out_for_delivery { color: #7c3aed; }
+  &.delivered        { color: #059669; }
+}
+
+.delivery-progress-bar {
+  height: 7px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+
+  .delivery-progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.pending          { background: #e2e8f0; width: 5% !important; }
+    &.fulfilled        { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+    &.out_for_delivery { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+    &.delivered        { background: linear-gradient(90deg, #34d399, #059669); }
+  }
+}
+
+.progress-steps {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+
+  .step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    transition: background 0.3s ease, transform 0.2s ease;
+
+    &.active {
+      background: #3b82f6;
+      transform: scale(1.3);
+    }
+  }
+}
+
+// Extended status dot colors
+.status-dot {
+  &.fulfilled        { background: #3b82f6 !important; }
+  &.out_for_delivery { background: #7c3aed !important; }
+  &.delivered        { background: #10b981 !important; }
+}
+
+// Improved action button
+.data-table .btn-fulfill {
+  white-space: nowrap;
+  font-size: 0.78rem;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+  width: 100%;
+  text-align: center;
+
+  &:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.35);
+  }
+}
+
+// ─── TRANSPORTATION TAB ─────────────────────────────────────────────────
+.transport-row { background: #f0f9ff; &:hover { background: #e0f2fe; } }
+
+.route-cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+
+  .route-icon { font-size: 0.75rem; margin-top: 2px; flex-shrink: 0; }
+}
+
+.time-sub {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.vehicle-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  &.standard   { background: #eff6ff; color: #1d4ed8; }
+  &.accessible { background: #f0fdf4; color: #166534; }
+  &.luxury     { background: #fffbeb; color: #92400e; }
+}
+
+.trip-type-chip {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+// Trip progress fill — 4-step colors
+.trip-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.booked      { background: #e2e8f0; width: 5% !important; }
+  &.picked_up   { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+  &.on_route    { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+  &.dropped_off { background: linear-gradient(90deg, #34d399, #059669); }
+}
+
+// Trip status dot
+.trip-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.booked      { background: #94a3b8; }
+  &.picked_up   { background: #f59e0b; }
+  &.on_route    { background: #3b82f6; }
+  &.dropped_off { background: #10b981; }
+}
+
+// Trip status text
+.trip-status-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  &.booked      { color: #64748b; }
+  &.picked_up   { color: #d97706; }
+  &.on_route    { color: #2563eb; }
+  &.dropped_off { color: #059669; }
+}
+
+// Trip action button
+.trip-btn {
+  background: #0ea5e9 !important;
+  white-space: nowrap;
+
+  &:hover { box-shadow: 0 4px 12px rgba(14,165,233,0.4) !important; }
+}

@@ -42,6 +42,20 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
+// Get only verified specialists (for public pet-care page and admin)
+router.get('/verified', async (req, res, next) => {
+  try {
+    const pool = await getPool();
+    const [rows] = await pool.query(
+      `SELECT id, name, email, specialty, location, experience, phone, created_at
+       FROM pet_specialists WHERE verified = 1 ORDER BY created_at DESC`
+    );
+    res.json(rows);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Verify a specialist (admin only)
 router.patch('/:id/verify', async (req, res, next) => {
   try {

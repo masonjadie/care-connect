@@ -51,6 +51,14 @@ export class AnalyticsService {
     return this.http.patch(`${this.specialistsUrl}/${id}/verify`, {});
   }
 
+  getVerifiedCaregivers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.caregiversUrl}/verified`);
+  }
+
+  getVerifiedPetSpecialists(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.specialistsUrl}/verified`);
+  }
+
   registerPetSpecialist(data: any): Observable<any> {
     return this.http.post(`${this.specialistsUrl}/register`, data);
   }
@@ -71,4 +79,33 @@ export class AnalyticsService {
   }): Observable<any> {
     return this.http.post(`${this.ordersUrl}/place-order`, orderData);
   }
+
+  updateOrderStatus(id: number, status: string): Observable<any> {
+    return this.http.patch(`${this.ordersUrl}/${id}/status`, { status });
+  }
+
+  // ── Transportation ──────────────────────────────────────────────────
+  private transportUrl = `${environment.apiUrl}/transportation`;
+
+  getTransportationBookings(): Observable<any[]> {
+    return this.http.get<any[]>(this.transportUrl);
+  }
+
+  createTransportationBooking(data: {
+    passengerName?: string;
+    pickup: string;
+    dropoff: string;
+    date: string;
+    time: string;
+    vehicleType: string;
+    tripType: string;
+    notes?: string;
+  }): Observable<any> {
+    return this.http.post(this.transportUrl, data);
+  }
+
+  updateTripStatus(id: number, status: string): Observable<any> {
+    return this.http.patch(`${this.transportUrl}/${id}/status`, { status });
+  }
 }
+

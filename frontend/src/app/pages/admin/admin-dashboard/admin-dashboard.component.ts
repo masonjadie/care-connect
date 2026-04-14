@@ -13,11 +13,15 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   private refreshSub?: Subscription;
   loading = true;
 
-  // New Admin Sections
+  // All staff lists
   allOrders: any[] = [];
   pendingCaregivers: any[] = [];
   pendingSpecialists: any[] = [];
-  activeTab: 'summary' | 'orders' | 'verification' = 'summary';
+  verifiedCaregivers: any[] = [];
+  verifiedSpecialists: any[] = [];
+
+  activeTab: 'summary' | 'orders' | 'verification' | 'verified' | 'transport' = 'summary';
+  transportationBookings: any[] = [];
 
   constructor(private analyticsService: AnalyticsService) { }
 
@@ -40,6 +44,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.loadStats();
     this.loadOrders();
     this.loadVerifications();
+    this.loadVerifiedStaff();
+    this.loadTransportation();
   }
 
   loadStats(): void {
@@ -67,24 +73,43 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadVerifiedStaff(): void {
+    this.analyticsService.getVerifiedCaregivers().subscribe({
+      next: (data) => this.verifiedCaregivers = data,
+      error: () => this.verifiedCaregivers = []
+    });
+    this.analyticsService.getVerifiedPetSpecialists().subscribe({
+      next: (data) => this.verifiedSpecialists = data,
+      error: () => this.verifiedSpecialists = []
+    });
+  }
+
   verifyCaregiver(id: number): void {
     this.analyticsService.verifyCaregiver(id).subscribe(() => {
       this.loadVerifications();
+      this.loadVerifiedStaff();
     });
   }
 
   verifySpecialist(id: number): void {
     this.analyticsService.verifySpecialist(id).subscribe(() => {
       this.loadVerifications();
+      this.loadVerifiedStaff();
     });
   }
 
   get prescriptionOrders(): any[] {
-    return this.allOrders.filter(o => o.item_type === 'prescription' || o.item_name.toLowerCase().includes('prescription'));
+    return this.allOrders.filter(o =>
+      o.item_type === 'prescription' || (o.item_name || '').toLowerCase().includes('prescription')
+    );
   }
 
   get caregiverRequests(): any[] {
     return this.allOrders.filter(o => o.item_type === 'caregiver_request');
+  }
+
+  get petSpecialistRequests(): any[] {
+    return this.allOrders.filter(o => o.item_type === 'pet_specialist_request');
   }
 
   get fulfillmentRate(): number {
@@ -103,5 +128,106 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     } catch {
       return { ip: 'Unknown', email: 'N/A' };
     }
+  }
+
+  // Delivery status progression
+  readonly statusSteps = ['pending', 'fulfilled', 'out_for_delivery', 'delivered'];
+
+  statusProgress(status: string): number {
+    const idx = this.statusSteps.indexOf(status);
+    return idx < 0 ? 0 : Math.round((idx / (this.statusSteps.length - 1)) * 100);
+  }
+
+  statusLabel(status: string): string {
+    const labels: Record<string, string> = {
+      pending: 'Pending',
+      fulfilled: 'Fulfilled',
+      out_for_delivery: 'Out for Delivery',
+      delivered: 'Delivered'
+    };
+    return labels[status] ?? status;
+  }
+
+  nextStatus(status: string): string | null {
+    const idx = this.statusSteps.indexOf(status);
+    return idx >= 0 && idx < this.statusSteps.length - 1 ? this.statusSteps[idx + 1] : null;
+  }
+
+  nextStatusLabel(status: string): string {
+    const next = this.nextStatus(status);
+    if (!next) return '';
+    const labels: Record<string, string> = {
+      fulfilled: '✔ Fulfill',
+      out_for_delivery: '🚚 Out for Delivery',
+      delivered: '📦 Delivered'
+    };
+    return labels[next] ?? next;
+  }
+
+  updateOrderStatus(orderId: number, currentStatus: string): void {
+    const next = this.nextStatus(currentStatus);
+    if (!next) return;
+    this.analyticsService.updateOrderStatus(orderId, next).subscribe({
+      next: () => {
+        const order = this.statsData?.recentOrders.find((o: any) => o.id === orderId);
+        if (order) order.status = next;
+        const allOrder = this.allOrders.find(o => o.id === orderId);
+        if (allOrder) allOrder.status = next;
+      },
+      error: (err: any) => console.error('Status update failed', err)
+    });
+  }
+
+  // ── Transportation Trip Status ────────────────────────────────────────
+  loadTransportation(): void {
+    this.analyticsService.getTransportationBookings().subscribe({
+      next: (data) => this.transportationBookings = data,
+      error: () => this.transportationBookings = []
+    });
+  }
+
+  readonly tripStatusSteps = ['booked', 'picked_up', 'on_route', 'dropped_off'];
+
+  tripProgress(status: string): number {
+    const idx = this.tripStatusSteps.indexOf(status);
+    return idx < 0 ? 0 : Math.round((idx / (this.tripStatusSteps.length - 1)) * 100);
+  }
+
+  tripStatusLabel(status: string): string {
+    const labels: Record<string, string> = {
+      booked:      'Booked',
+      picked_up:   'Picked Up',
+      on_route:    'On Route',
+      dropped_off: 'Dropped Off'
+    };
+    return labels[status] ?? status;
+  }
+
+  nextTripStatus(status: string): string | null {
+    const idx = this.tripStatusSteps.indexOf(status);
+    return idx >= 0 && idx < this.tripStatusSteps.length - 1 ? this.tripStatusSteps[idx + 1] : null;
+  }
+
+  nextTripStatusLabel(status: string): string {
+    const next = this.nextTripStatus(status);
+    if (!next) return '';
+    const labels: Record<string, string> = {
+      picked_up:   '🚗 Picked Up',
+      on_route:    '🛣️ On Route',
+      dropped_off: '📍 Dropped Off'
+    };
+    return labels[next] ?? next;
+  }
+
+  updateTripStatus(bookingId: number, currentStatus: string): void {
+    const next = this.nextTripStatus(currentStatus);
+    if (!next) return;
+    this.analyticsService.updateTripStatus(bookingId, next).subscribe({
+      next: () => {
+        const booking = this.transportationBookings.find(b => b.id === bookingId);
+        if (booking) booking.status = next;
+      },
+      error: (err: any) => console.error('Trip status update failed', err)
+    });
   }
 }

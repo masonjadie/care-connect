@@ -58,4 +58,24 @@ router.get('/my-orders/:userId', async (req, res, next) => {
   }
 });
 
+// Update order status (admin)
+router.patch('/:id/status', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const allowed = ['pending', 'fulfilled', 'out_for_delivery', 'delivered'];
+    if (!allowed.includes(status)) {
+      return res.status(400).json({ error: 'Invalid status value.' });
+    }
+    const pool = await getPool();
+    const [result] = await pool.execute('UPDATE orders SET status = ? WHERE id = ?', [status, id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Order not found.' });
+    }
+    res.json({ message: 'Order status updated.', id, status });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

@@ -16,6 +16,8 @@ const subscriptionsRouter = require('./src/routes/subscriptions.routes');
 const analyticsRouter = require('./src/routes/analytics.routes');
 const ordersRouter = require('./src/routes/orders.routes');
 const petSpecialistsRouter = require('./src/routes/pet-specialists.routes');
+const mealsRouter = require('./src/routes/meals.routes');
+const transportationRouter = require('./src/routes/transportation.routes');
 
 const path = require('path');
 const app = express();
@@ -52,6 +54,8 @@ app.use('/api/subscriptions', subscriptionsRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/pet-specialists', petSpecialistsRouter);
+app.use('/api/meals', mealsRouter);
+app.use('/api/transportation', transportationRouter);
 
 // PRO PERFORMANCE: Serve Frontend with Cache Headers
 const distPath = path.join(__dirname, '../frontend/dist/frontend');

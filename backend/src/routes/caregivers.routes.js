@@ -23,6 +23,21 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/verified', async (req, res, next) => {
+  try {
+    const pool = await getPool();
+    const [rows] = await pool.query(
+      `SELECT id, name, specialty, experience_years AS experienceYears, rating, availability, 
+              phone, bio, certification, location, email
+       FROM caregivers WHERE verified = 1
+       ORDER BY created_at DESC`
+    );
+    res.json(rows);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/', async (req, res, next) => {
   try {
     const name = typeof req.body.name === 'string' ? req.body.name.trim() : '';

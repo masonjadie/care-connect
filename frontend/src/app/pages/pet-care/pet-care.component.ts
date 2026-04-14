@@ -76,10 +76,28 @@ export class PetCareComponent implements OnInit {
 
   toastMessage = '';
   selectedService: any = null;
+  verifiedSpecialists: any[] = [];
+  loadingSpecialists = true;
 
   constructor(private analyticsService: AnalyticsService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.loadVerifiedSpecialists();
+  }
+
+  loadVerifiedSpecialists(): void {
+    this.loadingSpecialists = true;
+    this.analyticsService.getVerifiedPetSpecialists().subscribe({
+      next: (data) => {
+        this.verifiedSpecialists = data;
+        this.loadingSpecialists = false;
+      },
+      error: () => {
+        this.verifiedSpecialists = [];
+        this.loadingSpecialists = false;
+      }
+    });
+  }
 
   showToast(message: string): void {
     this.toastMessage = message;
