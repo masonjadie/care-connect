@@ -29,6 +29,7 @@ app.use(express.json());
 
 // API Health Check
 app.get('/api/health', async (req, res) => {
+  console.log('Health check requested. Checking DB connection...');
   try {
     const pool = await getPool();
     await pool.query('SELECT 1');
@@ -52,26 +53,43 @@ app.use('/api/orders', ordersRouter);
 
 // PRO PERFORMANCE: Serve Frontend with Cache Headers
 const distPath = path.join(__dirname, '../frontend/dist/frontend');
+const fs = require('fs');
 
-// Cache static assets for 1 year
-app.use(express.static(distPath, {
-  maxAge: '1y',
-  etag: true,
-  setHeaders: (res, path) => {
-    if (path.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache'); // Don't cache HTML to ensure quick updates
+if (fs.existsSync(distPath)) {
+  // Cache static assets for 1 year
+  app.use(express.static(distPath, {
+    maxAge: '1y',
+    etag: true,
+    setHeaders: (res, path) => {
+      if (path.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
     }
-  }
-}));
+  }));
 
-// Angular Fallback for Deep Linking (Universal Compatibility)
-app.use((req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
-});
+  // Angular Fallback for Deep Linking
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+} else {
+  console.warn('Frontend dist folder not found. Serving API only mode.');
+  app.get('/', (req, res) => {
+    res.json({ 
+      message: 'CareConnect API is running', 
+      status: 'online',
+      health: '/api/health'
+    });
+  });
+}
 
 app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: 'Internal server error' });
+  console.error('SERVER ERROR:', err);
+  const status = err.statusCode || err.status || 500;
+  res.status(status).json({ 
+    error: err.message || 'Internal server error',
+    stack: process.env.NODE_ENV === 'production' ? undefined : err.stack
+  });
 });
 
 app.listen(PORT, () => {

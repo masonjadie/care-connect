@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true, // Switched to true for live deployment
-  apiUrl: 'https://care-connect-production-b10d.up.railway.app/api'
+  production: false,
+  apiUrl: 'http://localhost:4200/api'
 };
 
 /*

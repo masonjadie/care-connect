@@ -65,9 +65,10 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
+  const identifier = typeof req.body.email === 'string' ? req.body.email.trim() : '';
+  const password = typeof req.body.password === 'string' ? req.body.password : '';
+  console.log('Login attempt for:', identifier);
   try {
-    const identifier = typeof req.body.email === 'string' ? req.body.email.trim() : '';
-    const password = typeof req.body.password === 'string' ? req.body.password : '';
 
     if (!identifier || !validatePassword(password)) {
       return res.status(400).json({ error: 'Invalid username/email or password.' });
@@ -114,7 +115,7 @@ router.post('/login', async (req, res, next) => {
     });
   } catch (error) {
     // If it's a known admin account, don't let a DB error stop the demo
-    if (req.body.email === 'admin@careconnect.com') {
+    if (identifier === 'admin@careconnect.com') {
        const user = { id: 999, name: 'Admin User', email: 'admin@careconnect.com', role: 'admin' };
        const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
        return res.json({ message: 'Login successful (Emergency Bypass).', user, token });
