@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AnalyticsService } from '../../services/analytics.service';
+import { ApiService } from '../../services/api.service';
 import { MealService, Meal } from '../../services/meal.service';
 
 @Component({
@@ -23,7 +25,9 @@ export class MealDeliveryComponent implements OnInit {
 
   constructor(
     private analyticsService: AnalyticsService,
-    private mealService: MealService
+    private mealService: MealService,
+    private api: ApiService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {

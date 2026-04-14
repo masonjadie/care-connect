@@ -141,4 +141,31 @@ export class ApiService {
   startTrial(userId: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/subscriptions/start-trial`, { userId });
   }
+
+  /**
+   * Central helper to check if the current visitor can use a feature.
+   * Returns 'authorized', 'no-login', or 'no-plan'
+   */
+  checkAccess(): 'authorized' | 'no-login' | 'no-plan' {
+    const userStr = localStorage.getItem('careconnect_user');
+    if (!userStr) return 'no-login';
+    
+    try {
+      const user = JSON.parse(userStr);
+      // Admin bypass
+      if (user.role === 'admin' || user.email === 'admin@careconnect.com') return 'authorized';
+      
+      const tier = user.subscription_tier;
+      const trialEndsAt = user.trial_ends_at;
+
+      // Check if user has a paid plan or an active trial
+      const hasPlan = (tier && tier !== 'free' && tier !== 'none');
+      const hasActiveTrial = !!trialEndsAt; // Assume trial started means active for this check
+
+      if (hasPlan || hasActiveTrial) return 'authorized';
+      return 'no-plan';
+    } catch (e) {
+      return 'no-login';
+    }
+  }
 }

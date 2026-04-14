@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AnalyticsService } from '../../services/analytics.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-pet-care',

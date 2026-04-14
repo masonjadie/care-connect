@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AnalyticsService } from '../../services/analytics.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-transportation',
@@ -14,7 +16,9 @@ export class TransportationComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private api: ApiService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +35,16 @@ export class TransportationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const access = this.api.checkAccess();
+    if (access === 'no-login') {
+      this.router.navigate(['/auth']);
+      return;
+    }
+    if (access === 'no-plan') {
+      this.router.navigate(['/plans']);
+      return;
+    }
+
     if (this.bookingForm.invalid) {
       this.bookingForm.markAllAsTouched();
       return;

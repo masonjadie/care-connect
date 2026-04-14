@@ -47,7 +47,8 @@ export class CaregiversComponent implements OnInit {
   constructor(
     private api: ApiService, 
     private fb: FormBuilder,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -88,6 +89,16 @@ export class CaregiversComponent implements OnInit {
   }
 
   requestCaregiver(caregiver: Caregiver): void {
+    const access = this.api.checkAccess();
+    if (access === 'no-login') {
+      this.router.navigate(['/auth']);
+      return;
+    }
+    if (access === 'no-plan') {
+      this.router.navigate(['/plans']);
+      return;
+    }
+
     this.selectedCaregiver = caregiver;
     this.showRequestForm = true;
     document.body.style.overflow = 'hidden';
