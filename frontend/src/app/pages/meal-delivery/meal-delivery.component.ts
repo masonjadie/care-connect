@@ -83,6 +83,12 @@ export class MealDeliveryComponent implements OnInit {
   filteredMeals: Meal[] = [];
   successMessage = '';
 
+  // Confirmation state
+  isConfirming = false;
+  orderToConfirm: Meal | null = null;
+  deliveryAddress = '123 Care Street, Medical District'; // Default demo address
+  paymentMethod = 'Cash on Delivery';
+
   constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
@@ -99,19 +105,37 @@ export class MealDeliveryComponent implements OnInit {
   }
 
   requestMeal(meal: Meal): void {
+    this.orderToConfirm = meal;
+    this.isConfirming = true;
+  }
+
+  cancelOrder(): void {
+    this.isConfirming = false;
+    this.orderToConfirm = null;
+  }
+
+  confirmOrder(): void {
+    if (!this.orderToConfirm) return;
+
     const orderData = {
-      itemName: meal.name,
+      itemName: this.orderToConfirm.name,
       itemType: 'meal',
-      amount: meal.price
+      amount: this.orderToConfirm.price,
+      address: this.deliveryAddress,
+      payment: this.paymentMethod
     };
+
+    this.isConfirming = false;
 
     this.analyticsService.placeOrder(orderData).subscribe({
       next: () => {
-        this.successMessage = `Request for "${meal.name}" has been received! Our kitchen is preparing your fresh meal.`;
+        this.successMessage = `Order for ${this.orderToConfirm?.name} confirmed! It will be delivered to ${this.deliveryAddress} via ${this.paymentMethod}.`;
+        this.orderToConfirm = null;
       },
       error: (err) => {
         console.error('Order failed', err);
         this.successMessage = 'Sorry, we could not process your order at this time.';
+        this.orderToConfirm = null;
       }
     });
   }

@@ -39,7 +39,7 @@
         </div>
     </section>
 
-    <section class="pet-caregivers-section">
+    <section class="pet-caregivers-section" id="specialist-registration">
         <div class="registration-header">
             <h2>Join our Service Animal Network</h2>
             <p>Are you a certified therapy animal handler or service animal specialist? Register to help our community.</p>
@@ -56,6 +56,38 @@
             <button class="btn-primary-large" type="submit" aria-label="Register as Pet Specialist">Register as Pet Specialist</button>
         </form>
     </section>
+
+    <!-- Detailed Service Modal -->
+    <div class="modal-backdrop" *ngIf="selectedService" (click)="closeModal()">
+        <div class="service-modal" (click)="$event.stopPropagation()">
+            <button class="close-btn" (click)="closeModal()" aria-label="Close modal">×</button>
+            
+            <div class="modal-image">
+                <img [src]="'assets/images/' + selectedService.image" [alt]="selectedService.title">
+                <div class="modal-icon">{{selectedService.icon}}</div>
+            </div>
+            
+            <div class="modal-body">
+                <span class="modal-badge">{{selectedService.price}}</span>
+                <h2>{{selectedService.title}}</h2>
+                <div class="modal-scroll-area">
+                    <p class="long-description">{{selectedService.details}}</p>
+                    
+                    <h3>Key Program Features:</h3>
+                    <ul class="modal-feature-list">
+                        <li *ngFor="let feature of selectedService.features">
+                            <span class="check">✓</span> {{feature}}
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-inquire" (click)="closeModal()">Later</button>
+                    <button class="btn-primary-large" (click)="bookConsultation()">Inquire Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="info-banner">
         <div class="banner-content">

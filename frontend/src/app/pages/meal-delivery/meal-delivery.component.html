@@ -1,4 +1,45 @@
 <div class="meal-delivery-container">
+  <!-- Order Confirmation Modal -->
+  <div class="success-overlay" *ngIf="isConfirming">
+    <div class="success-modal confirmation-modal">
+      <div class="modal-header">
+        <span class="modal-icon-small">🛒</span>
+        <h2>Confirm Your Order</h2>
+      </div>
+      
+      <div class="order-summary" *ngIf="orderToConfirm">
+        <p>You are ordering: <strong>{{ orderToConfirm.name }}</strong></p>
+        <p class="summary-price">${{ orderToConfirm.price | number:'1.2-2' }}</p>
+      </div>
+
+      <div class="confirmation-form">
+        <div class="form-group">
+          <label>Delivery Address</label>
+          <input type="text" [(ngModel)]="deliveryAddress" placeholder="Enter your address">
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method</label>
+          <div class="payment-options">
+            <label class="radio-option">
+              <input type="radio" name="payment" value="Cash on Delivery" [(ngModel)]="paymentMethod">
+              <span>Cash on Delivery</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="payment" value="Card on Delivery" [(ngModel)]="paymentMethod">
+              <span>Card on Delivery</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer-actions">
+        <button class="btn-cancel" (click)="cancelOrder()">Cancel</button>
+        <button class="btn-confirm" (click)="confirmOrder()">Confirm Order</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Big modern success overlay -->
   <div class="success-overlay" *ngIf="successMessage">
     <div class="success-modal">
