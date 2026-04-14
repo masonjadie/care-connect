@@ -87,69 +87,161 @@
       </div>
     </section>
 
-    <div class="dashboard-main-content">
-      <!-- Recent Orders Table -->
-      <section class="content-panel secondary">
-        <div class="panel-header">
-          <h3>Recent Platform Orders</h3>
-          <button class="btn-export">Export CSV</button>
-        </div>
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Patient/User</th>
-                <th>Item</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let order of statsData.recentOrders">
-                <td>#{{ order.id }}</td>
-                <td><strong>{{ order.user_name || 'Guest' }}</strong></td>
-                <td><span class="badge" [class]="order.item_type">{{ order.item_name }}</span></td>
-                <td>${{ order.amount | number:'1.2-2' }}</td>
-                <td><span class="status-dot" [class]="order.status"></span> {{ order.status | titlecase }}</td>
-                <td>{{ order.created_at | date:'short' }}</td>
-                <td>
-                  <button 
-                    *ngIf="order.status !== 'completed'" 
-                    class="btn-fulfill" 
-                    (click)="fulfillOrder(order.id)">
-                    Fulfill
-                  </button>
-                  <span *ngIf="order.status === 'completed'" class="badge-done">Ready ✅</span>
-                </td>
-              </tr>
-              <tr *ngIf="statsData.recentOrders.length === 0">
-                <td colspan="6" class="empty-state">No orders placed yet.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+    <!-- Navigation Tabs -->
+    <nav class="dashboard-tabs">
+        <button [class.active]="activeTab === 'summary'" (click)="activeTab = 'summary'">Summary</button>
+        <button [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'">Detailed Orders</button>
+        <button [class.active]="activeTab === 'verification'" (click)="activeTab = 'verification'">Verification Required ({{ pendingCaregivers.length + pendingSpecialists.length }})</button>
+    </nav>
 
-      <!-- Live Event Log -->
-      <aside class="content-panel event-log">
-        <div class="panel-header">
-          <h3>Live Activity Stream</h3>
-        </div>
-        <div class="log-stream">
-          <div class="log-item" *ngFor="let event of statsData.recentEvents" [class]="event.event_type">
-            <div class="log-time">{{ event.created_at | date:'HH:mm:ss' }}</div>
-            <div class="log-msg">
-              <strong>{{ event.event_type | uppercase }}:</strong>
-              <span *ngIf="event.event_type === 'visit'"> New visitor from {{ parseEventData(event.event_data).ip }}</span>
-              <span *ngIf="event.event_type === 'login_fail'"> Failed login for {{ parseEventData(event.event_data).email }}</span>
+    <div class="dashboard-main-content">
+      
+      <!-- TAB 1: SUMMARY -->
+      <ng-container *ngIf="activeTab === 'summary'">
+        <!-- Recent Orders Table -->
+        <section class="content-panel secondary">
+            <div class="panel-header">
+            <h3>Quick Overview: Recent Orders</h3>
             </div>
-          </div>
-          <div *ngIf="statsData.recentEvents.length === 0" class="empty-state">Waiting for activity...</div>
-        </div>
-      </aside>
+            <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Item</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let order of statsData.recentOrders">
+                    <td>#{{ order.id }}</td>
+                    <td><strong>{{ order.user_name || 'Guest' }}</strong></td>
+                    <td><span class="badge" [class]="order.item_type">{{ order.item_name }}</span></td>
+                    <td>${{ order.amount | number:'1.2-2' }}</td>
+                    <td><span class="status-dot" [class]="order.status"></span> {{ order.status | titlecase }}</td>
+                    <td>{{ order.created_at | date:'short' }}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- Live Event Log -->
+        <aside class="content-panel event-log">
+            <div class="panel-header">
+            <h3>Live Activity Stream</h3>
+            </div>
+            <div class="log-stream">
+            <div class="log-item" *ngFor="let event of statsData.recentEvents" [class]="event.event_type">
+                <div class="log-time">{{ event.created_at | date:'HH:mm:ss' }}</div>
+                <div class="log-msg">
+                <strong>{{ event.event_type | uppercase }}:</strong>
+                <span *ngIf="event.event_type === 'visit'"> New visitor from {{ parseEventData(event.event_data).ip }}</span>
+                <span *ngIf="event.event_type === 'login_fail'"> Failed login for {{ parseEventData(event.event_data).email }}</span>
+                </div>
+            </div>
+            </div>
+        </aside>
+      </ng-container>
+
+      <!-- TAB 2: DETAILED ORDERS (Prescriptions & Requests) -->
+      <ng-container *ngIf="activeTab === 'orders'">
+        <section class="content-panel full-width">
+            <div class="panel-header">
+                <h3>Prescription & Service Requests</h3>
+                <p>Monitor high-priority deliveries and caregiver service agreements.</p>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="data-table detailed">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Service/Item</th>
+                            <th>Request Details (Time, Location, Duration)</th>
+                            <th>Rate/Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Prescription Orders -->
+                        <tr *ngFor="let order of prescriptionOrders" class="prescription-row">
+                            <td><span class="badge prescription">Prescription</span></td>
+                            <td><strong>{{order.item_name}}</strong><br><small>Ordered by {{order.userName || 'Guest'}}</small></td>
+                            <td>N/A (Pharmacy Coordination)</td>
+                            <td>${{order.amount}}</td>
+                            <td><span class="status-dot" [class]="order.status"></span> {{order.status}}</td>
+                            <td><button class="btn-fulfill">Coordinate Courier</button></td>
+                        </tr>
+                        
+                        <!-- Caregiver Requests -->
+                        <tr *ngFor="let req of caregiverRequests" class="caregiver-request-row">
+                            <td><span class="badge caregiver_request">Care Request</span></td>
+                            <td>{{req.item_name}}</td>
+                            <td>
+                                <div><strong>Time:</strong> {{req.request_time}}</div>
+                                <div><strong>Where:</strong> {{req.request_location}}</div>
+                                <div><strong>Length:</strong> {{req.request_duration}}</div>
+                            </td>
+                            <td><strong>Rate:</strong> ${{req.request_rate}}/hr</td>
+                            <td><span class="status-dot" [class]="req.status"></span> {{req.status}}</td>
+                            <td><button class="btn-fulfill">Assign Caregiver</button></td>
+                        </tr>
+                        <tr *ngIf="prescriptionOrders.length === 0 && caregiverRequests.length === 0">
+                            <td colspan="6" class="empty-state">No detailed requests found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+      </ng-container>
+
+      <!-- TAB 3: VERIFICATION -->
+      <ng-container *ngIf="activeTab === 'verification'">
+        <!-- Caregivers -->
+        <section class="content-panel full-width">
+            <div class="panel-header">
+                <h3>Caregiver Verification Required</h3>
+                <span class="count-badge">{{pendingCaregivers.length}} Pending</span>
+            </div>
+            <div class="grid-list">
+                <div class="verification-card" *ngFor="let c of pendingCaregivers">
+                    <div class="card-info">
+                        <h4>{{c.name}}</h4>
+                        <p class="specialty">{{c.specialty}} • {{c.experienceYears}} Years Exp.</p>
+                        <p class="meta">📍 {{c.location}} | ✉️ {{c.email}}</p>
+                        <p class="certification">📜 {{c.certification}}</p>
+                    </div>
+                    <button class="btn-verify" (click)="verifyCaregiver(c.id)">Verify Profile</button>
+                </div>
+                <div *ngIf="pendingCaregivers.length === 0" class="empty-state">No caregivers awaiting verification.</div>
+            </div>
+        </section>
+
+        <!-- Pet Specialists -->
+        <section class="content-panel full-width" style="margin-top: 30px;">
+            <div class="panel-header">
+                <h3>Pet Specialist Verification Required</h3>
+                <span class="count-badge orange">{{pendingSpecialists.length}} Pending</span>
+            </div>
+            <div class="grid-list">
+                <div class="verification-card" *ngFor="let s of pendingSpecialists">
+                    <div class="card-info">
+                        <h4>{{s.name}}</h4>
+                        <p class="specialty">{{s.specialty}} • {{s.experience}}</p>
+                        <p class="meta">📍 {{s.location}} | ✉️ {{s.email}}</p>
+                    </div>
+                    <button class="btn-verify orange" (click)="verifySpecialist(s.id)">Verify Profile</button>
+                </div>
+                <div *ngIf="pendingSpecialists.length === 0" class="empty-state">No specialists awaiting verification.</div>
+            </div>
+        </section>
+      </ng-container>
+
     </div>
   </ng-container>
 </div>

@@ -15,6 +15,7 @@ const caregiversRouter = require('./src/routes/caregivers.routes');
 const subscriptionsRouter = require('./src/routes/subscriptions.routes');
 const analyticsRouter = require('./src/routes/analytics.routes');
 const ordersRouter = require('./src/routes/orders.routes');
+const petSpecialistsRouter = require('./src/routes/pet-specialists.routes');
 
 const path = require('path');
 const app = express();
@@ -50,6 +51,7 @@ app.use('/api/caregivers', caregiversRouter);
 app.use('/api/subscriptions', subscriptionsRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/pet-specialists', petSpecialistsRouter);
 
 // PRO PERFORMANCE: Serve Frontend with Cache Headers
 const distPath = path.join(__dirname, '../frontend/dist/frontend');

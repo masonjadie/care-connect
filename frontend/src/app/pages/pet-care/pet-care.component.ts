@@ -76,7 +76,7 @@ export class PetCareComponent implements OnInit {
   toastMessage = '';
   selectedService: any = null;
 
-  constructor() { }
+  constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void { }
 
@@ -109,7 +109,24 @@ export class PetCareComponent implements OnInit {
       form.control.markAllAsTouched();
       return;
     }
-    this.showToast('✅ Registration submitted! We\'ll reach out within 48 hours.');
-    form.resetForm();
+
+    const regData = {
+      name: form.value.fullName,
+      email: form.value.email,
+      specialty: form.value.specialization,
+      location: form.value.location,
+      experience: form.value.experience
+    };
+
+    this.analyticsService.registerPetSpecialist(regData).subscribe({
+      next: () => {
+        this.showToast('✅ Registration submitted! We\'ll reach out within 48 hours for verification.');
+        form.resetForm();
+      },
+      error: (err) => {
+        const errorMsg = err.error?.error || 'Registration failed. Please try again.';
+        this.showToast(`❌ ${errorMsg}`);
+      }
+    });
   }
 }

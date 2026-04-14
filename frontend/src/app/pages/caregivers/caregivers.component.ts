@@ -6,6 +6,8 @@ import {
   CaregiverRegistrationPayload
 } from '../../services/api.service';
 
+import { AnalyticsService } from '../../services/analytics.service';
+
 @Component({
   selector: 'app-caregivers',
   templateUrl: './caregivers.component.html',
@@ -18,6 +20,16 @@ export class CaregiversComponent implements OnInit {
   caregiverSubmitting = false;
   myProfile: Caregiver | null = null;
   currentUserEmail = '';
+
+  // Request Form State
+  showRequestForm = false;
+  selectedCaregiver: Caregiver | null = null;
+  requestDetailsForm = this.fb.group({
+    time: ['', [Validators.required]],
+    address: ['', [Validators.required]],
+    duration: ['', [Validators.required]],
+    rate: ['', [Validators.required]]
+  });
 
   caregiverForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -32,7 +44,11 @@ export class CaregiversComponent implements OnInit {
     bio: ['', [Validators.required, Validators.minLength(20)]]
   });
 
-  constructor(private api: ApiService, private fb: FormBuilder) { }
+  constructor(
+    private api: ApiService, 
+    private fb: FormBuilder,
+    private analyticsService: AnalyticsService
+  ) { }
 
   ngOnInit(): void {
     const userStr = localStorage.getItem('careconnect_user');
@@ -43,6 +59,9 @@ export class CaregiversComponent implements OnInit {
         name: user.name,
         email: user.email
       });
+      this.requestDetailsForm.patchValue({
+        address: '123 My Current Street, Care District' // Pre-fill with a placeholder or user address if available
+      });
     }
     this.loadCaregivers();
   }
@@ -50,7 +69,8 @@ export class CaregiversComponent implements OnInit {
   loadCaregivers(): void {
     this.api.getCaregivers().subscribe({
       next: (caregivers) => {
-        this.caregivers = caregivers;
+        // Only show verified caregivers to the public
+        this.caregivers = caregivers.filter(c => c.verified === 1);
         if (this.currentUserEmail) {
           this.myProfile = caregivers.find(c => c.email.toLowerCase() === this.currentUserEmail.toLowerCase()) || null;
         }
@@ -68,7 +88,44 @@ export class CaregiversComponent implements OnInit {
   }
 
   requestCaregiver(caregiver: Caregiver): void {
-    this.showToast(`✅ Request sent to ${caregiver.name}! They will contact you shortly.`);
+    this.selectedCaregiver = caregiver;
+    this.showRequestForm = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeRequestForm(): void {
+    this.showRequestForm = false;
+    this.selectedCaregiver = null;
+    document.body.style.overflow = 'auto';
+  }
+
+  submitRequest(): void {
+    if (this.requestDetailsForm.invalid || !this.selectedCaregiver) {
+      this.requestDetailsForm.markAllAsTouched();
+      return;
+    }
+
+    const details = this.requestDetailsForm.getRawValue();
+    const orderData = {
+      itemName: `Caregiver Service: ${this.selectedCaregiver.name}`,
+      itemType: 'caregiver_request',
+      amount: 0, // Rate is descriptive here
+      requestTime: details.time ?? '',
+      requestLocation: details.address ?? '',
+      requestDuration: details.duration ?? '',
+      requestRate: details.rate ?? ''
+    };
+
+    this.analyticsService.placeOrder(orderData).subscribe({
+      next: () => {
+        this.showToast(`✅ Detailed request for ${this.selectedCaregiver?.name} submitted!`);
+        this.closeRequestForm();
+        this.requestDetailsForm.reset({
+          address: '123 My Current Street, Care District'
+        });
+      },
+      error: () => this.showToast('❌ Failed to submit request. Please try again.')
+    });
   }
 
   submitCaregiverForm(): void {

@@ -13,53 +13,72 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   private refreshSub?: Subscription;
   loading = true;
 
+  // New Admin Sections
+  allOrders: any[] = [];
+  pendingCaregivers: any[] = [];
+  pendingSpecialists: any[] = [];
+  activeTab: 'summary' | 'orders' | 'verification' = 'summary';
+
   constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
-    // Live update every 30 seconds
-    this.refreshSub = interval(30000)
-      .pipe(
-        startWith(0),
-        switchMap(() => this.analyticsService.getDashboardStats())
-      )
-      .subscribe({
-        next: (data) => {
-          this.statsData = data;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Failed to fetch dashboard stats', err);
-          this.loading = false;
-        }
-      });
+    this.loadAllData();
+    // Live update stats every 60 seconds
+    this.refreshSub = interval(60000)
+      .pipe(startWith(0))
+      .subscribe(() => this.loadStats());
   }
 
-  ngOnDestroy(): void {
-    if (this.refreshSub) {
-      this.refreshSub.unsubscribe();
-    }
+  loadAllData(): void {
+    this.loading = true;
+    this.loadStats();
+    this.loadOrders();
+    this.loadVerifications();
   }
 
-  get fulfillmentRate(): number {
-    if (!this.statsData) return 0;
-    const total = this.statsData.stats.totalOrders;
-    return total > 0 ? Math.min(Math.round(((total - 1) / total) * 100), 98) : 0;
+  loadStats(): void {
+    this.analyticsService.getDashboardStats().subscribe({
+      next: (data) => {
+        this.statsData = data;
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
   }
 
-  get platformHealth(): number {
-    return this.loading ? 0 : 99;
+  loadOrders(): void {
+    this.analyticsService.getAllOrders().subscribe(orders => {
+      this.allOrders = orders;
+    });
   }
 
-  fulfillOrder(orderId: number): void {
-    if (!this.statsData) return;
-    
-    // Optimistically update the UI for the demo
-    const order = this.statsData.recentOrders.find(o => o.id === orderId);
-    if (order) {
-      order.status = 'completed';
-      // In a real app, we'd call a service here: 
-      // this.analyticsService.updateOrderStatus(orderId, 'completed').subscribe();
-    }
+  loadVerifications(): void {
+    this.analyticsService.getAllCaregivers().subscribe(caregivers => {
+      this.pendingCaregivers = caregivers.filter(c => !c.verified);
+    });
+    this.analyticsService.getAllPetSpecialists().subscribe(specialists => {
+      this.pendingSpecialists = specialists.filter(s => !s.verified);
+    });
+  }
+
+  verifyCaregiver(id: number): void {
+    this.analyticsService.verifyCaregiver(id).subscribe(() => {
+      this.loadVerifications();
+    });
+  }
+
+  verifySpecialist(id: number): void {
+    this.analyticsService.verifySpecialist(id).subscribe(() => {
+      this.loadVerifications();
+    });
+  }
+
+  get prescriptionOrders(): any[] {
+    return this.allOrders.filter(o => o.item_type === 'prescription' || o.item_name.toLowerCase().includes('prescription'));
+  }
+
+  get caregiverRequests(): any[] {
+    return this.allOrders.filter(o => o.item_type === 'caregiver_request');
   }
 
   parseEventData(data: string): any {

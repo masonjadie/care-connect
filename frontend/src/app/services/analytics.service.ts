@@ -22,6 +22,8 @@ export interface DashboardStats {
 export class AnalyticsService {
   private apiUrl = `${environment.apiUrl}/analytics`;
   private ordersUrl = `${environment.apiUrl}/orders`;
+  private caregiversUrl = `${environment.apiUrl}/caregivers`;
+  private specialistsUrl = `${environment.apiUrl}/pet-specialists`;
 
   constructor(private http: HttpClient) { }
 
@@ -29,11 +31,44 @@ export class AnalyticsService {
     return this.http.get<DashboardStats>(`${this.apiUrl}/dashboard-stats`);
   }
 
+  getAllOrders(): Observable<any[]> {
+    return this.http.get<any[]>(this.ordersUrl);
+  }
+
+  getAllCaregivers(): Observable<any[]> {
+    return this.http.get<any[]>(this.caregiversUrl);
+  }
+
+  getAllPetSpecialists(): Observable<any[]> {
+    return this.http.get<any[]>(this.specialistsUrl);
+  }
+
+  verifyCaregiver(id: number): Observable<any> {
+    return this.http.patch(`${this.caregiversUrl}/${id}/verify`, {});
+  }
+
+  verifySpecialist(id: number): Observable<any> {
+    return this.http.patch(`${this.specialistsUrl}/${id}/verify`, {});
+  }
+
+  registerPetSpecialist(data: any): Observable<any> {
+    return this.http.post(`${this.specialistsUrl}/register`, data);
+  }
+
   trackVisit(page: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/track-visit`, { page });
   }
 
-  placeOrder(orderData: { userId?: number, itemName: string, itemType: string, amount: number }): Observable<any> {
+  placeOrder(orderData: { 
+    userId?: number, 
+    itemName: string, 
+    itemType: string, 
+    amount: number,
+    requestTime?: string,
+    requestLocation?: string,
+    requestDuration?: string,
+    requestRate?: string
+  }): Observable<any> {
     return this.http.post(`${this.ordersUrl}/place-order`, orderData);
   }
 }

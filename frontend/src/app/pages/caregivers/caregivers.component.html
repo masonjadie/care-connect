@@ -1,5 +1,43 @@
 <section class="caregivers-page">
   <div class="toast-message" *ngIf="toastMessage">{{ toastMessage }}</div>
+
+  <!-- Caregiver Request Modal -->
+  <div class="modal-backdrop" *ngIf="showRequestForm" (click)="closeRequestForm()">
+    <div class="request-modal" (click)="$event.stopPropagation()" [formGroup]="requestDetailsForm">
+        <button class="close-btn" (click)="closeRequestForm()">×</button>
+        <div class="modal-header">
+            <span class="modal-icon">📅</span>
+            <h2>Request Service</h2>
+            <p>Provide details for <strong>{{selectedCaregiver?.name}}</strong></p>
+        </div>
+        
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Preferred Time</label>
+                <input type="text" formControlName="time" placeholder="e.g., Tomorrow at 10 AM">
+            </div>
+            <div class="form-group">
+                <label>Service Address</label>
+                <input type="text" formControlName="address" placeholder="Enter full address">
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="text" formControlName="duration" placeholder="e.g., 4 hours">
+                </div>
+                <div class="form-group">
+                    <label>Offered Rate ($/hr)</label>
+                    <input type="text" formControlName="rate" placeholder="e.g., 25">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeRequestForm()">Cancel</button>
+            <button class="btn-submit" (click)="submitRequest()">Submit Request</button>
+        </div>
+    </div>
+  </div>
   <div class="caregivers-shell">
     <header class="section-header">
       <h1>Find a Caregiver</h1>

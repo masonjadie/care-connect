@@ -95,4 +95,16 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+// Verify a caregiver (admin only)
+router.patch('/:id/verify', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const pool = await getPool();
+    await pool.execute('UPDATE caregivers SET verified = 1 WHERE id = ?', [id]);
+    res.json({ message: 'Caregiver verified successfully.' });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
