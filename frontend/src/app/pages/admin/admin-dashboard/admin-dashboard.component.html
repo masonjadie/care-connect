@@ -112,131 +112,7 @@
     <div class="dashboard-main-content">
       
       <!-- TAB 1: SUMMARY -->
-      <!-- ... (keep existing summary content) ... -->
       <ng-container *ngIf="activeTab === 'summary'">
-        <!-- Existing code remains here -->
-      </ng-container>
-
-      <!-- ... (keep existing tabs) ... -->
-
-      <!-- TAB 6: MEAL MANAGEMENT -->
-      <ng-container *ngIf="activeTab === 'meals'">
-        <section class="content-panel full-width">
-          <div class="panel-header">
-            <div class="header-titles">
-              <h3>🥗 Nutritious Meal Management</h3>
-              <p>Create, update, and manage the menu for the Meal Delivery service.</p>
-            </div>
-            <button class="btn-primary add-meal-btn" (click)="openAddMealModal()">+ Add New Meal</button>
-          </div>
-
-          <div class="table-wrapper">
-            <table class="data-table detailed">
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Meal Name</th>
-                  <th>Category</th>
-                  <th>Nutrients</th>
-                  <th>Price</th>
-                  <th>Tags</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let meal of allMeals" class="meal-row">
-                  <td>
-                    <img [src]="'/assets/' + meal.image" [alt]="meal.name" class="meal-thumb">
-                  </td>
-                  <td>
-                    <strong>{{ meal.name }}</strong>
-                    <br><small>{{ meal.description | slice:0:60 }}...</small>
-                  </td>
-                  <td><span class="category-badge">{{ meal.category }}</span></td>
-                  <td>
-                    <div>🔥 {{ meal.calories }} kcal</div>
-                    <div>🍖 {{ meal.protein }} protein</div>
-                  </td>
-                  <td><strong>${{ meal.price | number:'1.2-2' }}</strong></td>
-                  <td>
-                    <span *ngFor="let tag of meal.tags" class="tag-chip">{{ tag }}</span>
-                  </td>
-                  <td>
-                    <div class="action-grid">
-                      <button class="btn-edit" (click)="openEditMealModal(meal)">✏️ Edit</button>
-                      <button class="btn-delete" (click)="deleteMeal(meal.id!)">🗑️ Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr *ngIf="allMeals.length === 0">
-                  <td colspan="7" class="empty-state">No meals found. Click "Add New Meal" to start.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </ng-container>
-
-    </div>
-
-    <!-- MEAL MODAL -->
-    <div class="modal-overlay" *ngIf="isMealModalOpen" (click)="closeMealModal()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <header class="modal-header">
-          <h3>{{ isEditingMeal ? 'Edit Meal' : 'Create New Meal' }}</h3>
-          <button class="close-btn" (click)="closeMealModal()">&times;</button>
-        </header>
-
-        <form (ngSubmit)="saveMeal()" #mealForm="ngForm" class="meal-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Meal Name</label>
-              <input type="text" [(ngModel)]="currentMeal.name" name="name" required placeholder="e.g. Herb-Crusted Tilapia">
-            </div>
-            <div class="form-group">
-              <label>Category</label>
-              <select [(ngModel)]="currentMeal.category" name="category" required>
-                <option value="Heart Healthy">Heart Healthy</option>
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Low Sodium">Low Sodium</option>
-                <option value="Diabetic Friendly">Diabetic Friendly</option>
-              </select>
-            </div>
-            <div class="form-group full-width">
-              <label>Description</label>
-              <textarea [(ngModel)]="currentMeal.description" name="description" rows="3" required placeholder="Describe the ingredients and preparation..."></textarea>
-            </div>
-            <div class="form-group">
-              <label>Price ($)</label>
-              <input type="number" [(ngModel)]="currentMeal.price" name="price" step="0.5" required>
-            </div>
-            <div class="form-group">
-              <label>Calories</label>
-              <input type="number" [(ngModel)]="currentMeal.calories" name="calories" required>
-            </div>
-            <div class="form-group">
-              <label>Protein (e.g. 24g)</label>
-              <input type="text" [(ngModel)]="currentMeal.protein" name="protein" required>
-            </div>
-            <div class="form-group">
-              <label>Tags (comma separated)</label>
-              <input type="text" [ngModel]="currentMeal.tags?.join(', ')" (ngModelChange)="updateTags($event)" name="tags" placeholder="e.g. Gluten Free, Low Fat">
-            </div>
-            <div class="form-group full-width">
-              <label>Image Path (relative to assets/)</label>
-              <input type="text" [(ngModel)]="currentMeal.image" name="image" placeholder="meals/your-image.png">
-            </div>
-          </div>
-
-          <footer class="modal-footer">
-            <button type="button" class="btn-cancel" (click)="closeMealModal()">Cancel</button>
-            <button type="submit" class="btn-primary" [disabled]="!mealForm.valid">
-              {{ isEditingMeal ? 'Update Meal' : 'Create Meal' }}
-            </button>
-          </footer>
-        </form>
-      </div>
-    </div>
         <!-- Recent Orders Table -->
         <section class="content-panel secondary">
             <div class="panel-header">
@@ -709,6 +585,8 @@
             </table>
           </div>
         </section>
+      </ng-container>
+
       <!-- TAB 6: MEAL MANAGEMENT -->
       <ng-container *ngIf="activeTab === 'meals'">
         <section class="content-panel full-width">
