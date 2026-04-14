@@ -1,17 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from '../../services/analytics.service';
-
-interface Meal {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  calories: number;
-  protein: string;
-  price: number;
-  tags: string[];
-  image: string;
-}
+import { MealService, Meal } from '../../services/meal.service';
 
 @Component({
   selector: 'app-meal-delivery',
@@ -22,64 +11,7 @@ export class MealDeliveryComponent implements OnInit {
   categories: string[] = ['All', 'Low Sodium', 'Diabetic Friendly', 'Vegetarian', 'Heart Healthy'];
   selectedCategory = 'All';
   
-  meals: Meal[] = [
-    {
-      id: 1,
-      name: 'Roasted Salmon with Asparagus',
-      description: 'Fresh Atlantic salmon roasted with lemon and herbs, served over steamed asparagus and quinoa.',
-      category: 'Heart Healthy',
-      calories: 420,
-      protein: '32g',
-      price: 14.50,
-      tags: ['Omega-3', 'Gluten Free'],
-      image: 'meals/roasted-salmon.png'
-    },
-    {
-      id: 2,
-      name: 'Mediterranean Chickpea Salad',
-      description: 'Crunchy chickpeas, cucumbers, cherry tomatoes, and feta cheese with a light lemon-olive oil dressing.',
-      category: 'Vegetarian',
-      calories: 350,
-      protein: '12g',
-      price: 11.00,
-      tags: ['Fiber Rich', 'Fresh'],
-      image: 'meals/mediterranean-salad.png'
-    },
-    {
-      id: 3,
-      name: 'Turkey Meatloaf & Sweet Potato',
-      description: 'Lean ground turkey meatloaf served with mashed sweet potatoes and sautéed green beans.',
-      category: 'Low Sodium',
-      calories: 380,
-      protein: '28g',
-      price: 13.00,
-      tags: ['Low Fat', 'Filling'],
-      image: 'meals/turkey-meatloaf.png'
-    },
-    {
-      id: 4,
-      name: 'Grilled Chicken Stir-Fry',
-      description: 'Sliced chicken breast with bell peppers, broccoli, and snap peas in a low-glycemic ginger soy sauce.',
-      category: 'Diabetic Friendly',
-      calories: 310,
-      protein: '24g',
-      price: 12.50,
-      tags: ['No Sugar Added', 'High Protein'],
-      image: 'meals/chicken-stirfry.png'
-    },
-    {
-      id: 5,
-      name: 'Lentil & Vegetable Soup',
-      description: 'Hearty soup made with brown lentils, carrots, celery, and spinach. Served with a whole grain roll.',
-      category: 'Vegetarian',
-      calories: 290,
-      protein: '15g',
-      price: 9.50,
-      tags: ['Plant Based', 'Low Calorie'],
-      image: 'meals/roasted-salmon.png' // Fallback for failed soup image
-    }
-  ];
-
+  meals: Meal[] = [];
   filteredMeals: Meal[] = [];
   successMessage = '';
 
@@ -89,10 +21,25 @@ export class MealDeliveryComponent implements OnInit {
   deliveryAddress = '123 Care Street, Medical District'; // Default demo address
   paymentMethod = 'Cash on Delivery';
 
-  constructor(private analyticsService: AnalyticsService) { }
+  constructor(
+    private analyticsService: AnalyticsService,
+    private mealService: MealService
+  ) { }
 
   ngOnInit(): void {
-    this.filteredMeals = this.meals;
+    this.loadMeals();
+  }
+
+  loadMeals(): void {
+    this.mealService.getMeals().subscribe({
+      next: (meals) => {
+        this.meals = meals;
+        this.filteredMeals = meals;
+      },
+      error: (err) => {
+        console.error('Failed to load meals', err);
+      }
+    });
   }
 
   filterByCategory(category: string): void {
@@ -132,7 +79,7 @@ export class MealDeliveryComponent implements OnInit {
         this.successMessage = `Order for ${this.orderToConfirm?.name} confirmed! It will be delivered to ${this.deliveryAddress} via ${this.paymentMethod}.`;
         this.orderToConfirm = null;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Order failed', err);
         this.successMessage = 'Sorry, we could not process your order at this time.';
         this.orderToConfirm = null;
