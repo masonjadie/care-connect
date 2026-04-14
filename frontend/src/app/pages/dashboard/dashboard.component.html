@@ -77,6 +77,26 @@
   </section>
 
   <div class="info-sections">
+    <!-- PLAN STATUS -->
+    <div class="card plan-status">
+      <div class="card-header">
+        <h3>Current Plan</h3>
+        <span class="icon">🎟️</span>
+      </div>
+      <div class="plan-details">
+        <div class="plan-info">
+          <p class="plan-name" [class.premium]="user?.subscription_tier === 'premium' || user?.subscription_tier === 'family'">
+            {{ (user?.subscription_tier || 'Free') | titlecase }}
+          </p>
+          <p class="status-msg" *ngIf="user?.trial_ends_at">Trial expires: {{ user.trial_ends_at | date:'mediumDate' }}</p>
+          <p class="status-msg" *ngIf="!user?.subscription_tier || user?.subscription_tier === 'free'">Limited access to features.</p>
+        </div>
+        <button class="btn-upgrade" routerLink="/plans" *ngIf="user?.subscription_tier !== 'premium' && user?.subscription_tier !== 'family'">
+          {{ user?.trial_ends_at ? 'Level Up to Premium' : 'View Plans' }}
+        </button>
+      </div>
+    </div>
+
     <!-- DAILY REMINDERS -->
     <div class="card reminders">
       <div class="card-header">

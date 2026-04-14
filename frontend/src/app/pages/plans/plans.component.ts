@@ -15,6 +15,17 @@ export class PlansComponent implements OnInit {
   hasTrialUsed = false;
   isLoading = false;
 
+  // Payment Modal State
+  showPaymentModal = false;
+  selectedTier = '';
+  paymentData = {
+    cardName: '',
+    cardNumber: '',
+    expiry: '',
+    cvv: '',
+    address: ''
+  };
+
   constructor(private api: ApiService, private router: Router) { }
 
   ngOnInit(): void {
@@ -25,59 +36,71 @@ export class PlansComponent implements OnInit {
       this.currentTier = user.subscription_tier || 'free';
       this.hasTrialUsed = !!user.trial_ends_at;
     } else {
-      // Redirect to login if not logged in
       this.router.navigate(['/auth']);
     }
   }
 
   selectPlan(tier: string): void {
     if (!this.userId) return;
+    this.selectedTier = tier;
+    this.showPaymentModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closePayment(): void {
+    this.showPaymentModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
+  confirmPayment(): void {
+    if (!this.userId || !this.selectedTier) return;
+    
+    // Validate simple simulation
+    if (!this.paymentData.cardName || !this.paymentData.cardNumber) {
+      alert('Please fill in card details.');
+      return;
+    }
 
     this.isLoading = true;
-    this.api.updateSubscription(this.userId, tier).subscribe({
+    this.api.updateSubscription(this.userId, this.selectedTier).subscribe({
       next: (res) => {
         this.isLoading = false;
-        this.message = res.message;
-        this.isSuccess = true;
-        this.currentTier = tier;
+        this.showPaymentModal = false;
+        document.body.style.overflow = 'auto';
         
         // Update local storage
         const userStr = localStorage.getItem('careconnect_user');
         if (userStr) {
           const user = JSON.parse(userStr);
-          user.subscription_tier = tier;
+          user.subscription_tier = this.selectedTier;
           localStorage.setItem('careconnect_user', JSON.stringify(user));
         }
 
-        // Hard redirect for reliability
-        window.location.href = '/home';
+        this.message = `Successfully upgraded to ${this.selectedTier.toUpperCase()}! Redirecting...`;
+        this.isSuccess = true;
+        
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 2000);
       },
       error: (err) => {
         this.isLoading = false;
-        this.message = err.error?.error || 'Failed to update subscription.';
+        this.message = err.error?.error || 'Payment simulation failed.';
         this.isSuccess = false;
       }
     });
   }
 
   startTrial(): void {
-    if (!this.userId) {
-      console.error('No userId found in localStorage');
-      this.message = 'Please log in again to start your trial.';
-      this.isSuccess = false;
-      return;
-    }
+    if (!this.userId) return;
 
     this.isLoading = true;
     this.api.startTrial(this.userId).subscribe({
       next: (res) => {
-        console.log('Trial started:', res);
         this.isLoading = false;
-        this.message = res.message;
         this.isSuccess = true;
         this.hasTrialUsed = true;
         
-        // Update local storage
         const userStr = localStorage.getItem('careconnect_user');
         if (userStr) {
           const user = JSON.parse(userStr);
@@ -86,17 +109,14 @@ export class PlansComponent implements OnInit {
           localStorage.setItem('careconnect_user', JSON.stringify(user));
         }
 
-        // Hard redirect for reliability
-        window.location.href = '/home';
+        this.message = '7-Day Free Trial Started! Redirecting...';
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 2000);
       },
       error: (err) => {
-        console.error('Trial error:', err);
         this.isLoading = false;
-        if (err.status === 0) {
-          this.message = 'Unable to connect to the server. Please ensure the backend is running.';
-        } else {
-          this.message = err.error?.error || 'An unexpected error occurred while starting your trial.';
-        }
+        this.message = err.error?.error || 'Failed to start trial.';
         this.isSuccess = false;
       }
     });
