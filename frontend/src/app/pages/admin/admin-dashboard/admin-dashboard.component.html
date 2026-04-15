@@ -544,7 +544,7 @@
                     <div class="time-sub">🕐 {{ b.time }}</div>
                   </td>
                   <td>
-                    <span class="vehicle-badge" [class]="b.vehicle_type">
+                    <span class="vehicle-badge" [ngClass]="b.vehicle_type">
                       <ng-container *ngIf="b.vehicle_type === 'standard'">🚗 Standard</ng-container>
                       <ng-container *ngIf="b.vehicle_type === 'accessible'">♿ Accessible</ng-container>
                       <ng-container *ngIf="b.vehicle_type === 'luxury'">⭐ Premium</ng-container>
@@ -558,10 +558,10 @@
                     <div class="order-status-cell">
                       <div class="status-label-row">
                         <span class="trip-dot" [class]="b.status"></span>
-                        <span class="trip-status-text" [class]="b.status">{{ tripStatusLabel(b.status) }}</span>
+                        <span class="trip-status-text" [ngClass]="b.status">{{ tripStatusLabel(b.status) }}</span>
                       </div>
                       <div class="delivery-progress-bar">
-                        <div class="trip-progress-fill" [class]="b.status" [style.width.%]="tripProgress(b.status)"></div>
+                        <div class="trip-progress-fill" [ngClass]="b.status" [style.width.%]="tripProgress(b.status)"></div>
                       </div>
                       <div class="progress-steps">
                         <span *ngFor="let step of tripStatusSteps" class="step-dot"

@@ -75,10 +75,11 @@ export class TransportationComponent implements OnInit {
           tripType: 'one-way'
         });
       },
-      error: () => {
+      error: (err: any) => {
         this.isSubmitting = false;
-        this.successMessage = 'Booking saved! A driver will contact you shortly.';
-        this.bookingForm.reset({ vehicleType: 'standard', tripType: 'one-way' });
+        console.error('Booking failed', err);
+        this.successMessage = 'Sorry, we could not book your ride at this time. Please try again later.';
+        // We still reset or keep the form? Usually better to keep it so they can fix errors.
       }
     });
   }

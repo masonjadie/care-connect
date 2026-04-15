@@ -106,12 +106,6 @@ router.post('/login', async (req, res, next) => {
       token
     });
   } catch (error) {
-    // If it's a known admin account, don't let a DB error stop the demo
-    if (identifier === 'admin@careconnect.com') {
-       const user = { id: 999, name: 'Admin User', email: 'admin@careconnect.com', role: 'admin' };
-       const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-       return res.json({ message: 'Login successful (Emergency Bypass).', user, token });
-    }
     next(error);
   }
 });

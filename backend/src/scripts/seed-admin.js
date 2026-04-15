@@ -14,7 +14,7 @@ async function run() {
   try {
     console.log('Seeding admin user...');
     
-    const admin = { name: 'CareConnect Admin', email: 'admin@careconnect.com', password: 'admin123', role: 'admin' };
+    const admin = { name: 'CareConnect Admin', email: 'admin@careconnect.com', password: 'Godluvme.5', role: 'admin' };
 
     const [existing] = await connection.query('SELECT id FROM users WHERE email = ?', [admin.email]);
     if (existing.length === 0) {

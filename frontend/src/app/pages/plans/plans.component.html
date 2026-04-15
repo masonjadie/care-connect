@@ -84,7 +84,7 @@
         <p class="final-price">Total: {{ selectedTier === 'basic' ? '$9.99' : selectedTier === 'premium' ? '$19.99' : '$49.99' }} / month</p>
       </div>
 
-      <form (submit)="$event.preventDefault(); confirmPayment()" class="payment-form">
+      <form (ngSubmit)="confirmPayment()" class="payment-form">
         <div class="form-group">
           <label>Cardholder Name</label>
           <input type="text" [(ngModel)]="paymentData.cardName" name="cardName" placeholder="John Doe" required>

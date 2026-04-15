@@ -28,7 +28,7 @@
       <div class="tracking-card" *ngFor="let order of userOrders">
         <div class="card-badges">
           <span class="type-badge" [class]="order.item_type">{{ order.item_type.replace('_', ' ') }}</span>
-          <span class="status-badge" [class]="order.status">{{ getStatusLabel(order.status) }}</span>
+          <span class="status-badge" [ngClass]="order.status">{{ getStatusLabel(order.status) }}</span>
         </div>
         <h3>{{ order.item_name }}</h3>
         
@@ -38,7 +38,7 @@
             <span>{{ getStatusProgress(order.status) }}%</span>
           </div>
           <div class="progress-bar">
-            <div class="progress-fill" [class]="order.status" [style.width.%]="getStatusProgress(order.status)"></div>
+            <div class="progress-fill" [ngClass]="order.status" [style.width.%]="getStatusProgress(order.status)"></div>
           </div>
           <div class="milestones">
             <span *ngFor="let step of statusSteps" class="milestone-dot" [class.active]="getStatusProgress(order.status) >= getStatusProgress(step)"></span>
@@ -55,13 +55,13 @@
       <div class="tracking-card transportation" *ngFor="let trip of userBookings">
         <div class="card-badges">
           <span class="type-badge transport">Ride Booking</span>
-          <span class="status-badge" [class]="trip.status">{{ getStatusLabel(trip.status) }}</span>
+          <span class="status-badge" [ngClass]="trip.status">{{ getStatusLabel(trip.status) }}</span>
         </div>
         <h3>RIDE: {{ trip.pickup }} → {{ trip.dropoff }}</h3>
 
         <div class="progress-container">
           <div class="progress-bar">
-            <div class="progress-fill transport" [class]="trip.status" [style.width.%]="getTripProgress(trip.status)"></div>
+            <div class="progress-fill transport" [ngClass]="trip.status" [style.width.%]="getTripProgress(trip.status)"></div>
           </div>
           <div class="milestones">
             <span *ngFor="let step of tripSteps" class="milestone-dot" [class.active]="getTripProgress(trip.status) >= getTripProgress(step)"></span>

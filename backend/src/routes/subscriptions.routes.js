@@ -13,10 +13,6 @@ router.post('/update', async (req, res, next) => {
 
     if (!tier) return res.status(400).json({ error: 'Tier is required.' });
 
-    // FAIL-SAFE: If the user is the admin email, bypass everything and succeed
-    if (requestedUserId === 999) {
-       return res.json({ message: 'Plan updated (Bypass enabled)', tier: tier.toLowerCase() });
-    }
 
     const pool = await getPool();
     await pool.execute('UPDATE users SET subscription_tier = ? WHERE id = ?', [tier.toLowerCase(), userId])
