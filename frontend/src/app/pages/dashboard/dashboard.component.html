@@ -16,88 +16,144 @@
     </div>
   </header>
 
-  <!-- ACTIVE TRACKING: SERVICE REQUESTS -->
+  <!-- ACTIVE TRACKING: SERVICE REQUESTS ORGANIZED BY SERVICE -->
   <section class="tracking-summary" *ngIf="userOrders.length > 0 || userBookings.length > 0">
     <div class="section-header">
       <h2>🛤️ Active Service Tracking</h2>
-      <p>Real-time progress of your requested services</p>
+      <p>Real-time progress of your requested services, organized by category.</p>
     </div>
 
-    <div class="tracking-grid">
-      <!-- Orders (Meals, Prescriptions, Caregivers) -->
-      <div class="tracking-card" *ngFor="let order of userOrders">
-        <div class="card-badges">
-          <span class="type-badge" [class]="order.item_type">{{ order.item_type.replace('_', ' ') }}</span>
-          <span class="status-badge" [ngClass]="order.status">{{ getStatusLabel(order.status) }}</span>
-        </div>
-        <h3>{{ order.item_name }}</h3>
+    <!-- 1. Transportation Section -->
+    <div class="service-category" *ngIf="categorizedRideBookings.length > 0">
+        <h3 class="category-title">🚗 Transportation & Rides</h3>
+        <div class="tracking-grid">
+            <div class="tracking-card transportation" *ngFor="let trip of categorizedRideBookings">
+                <div class="card-badges">
+                  <span class="type-badge transport">Ride Booking</span>
+                  <span class="status-badge" [ngClass]="trip.status">{{ getStatusLabel(trip.status) }}</span>
+                </div>
+                <h3>RIDE: {{ trip.pickup | slice:0:20 }}... → {{ trip.dropoff | slice:0:20 }}...</h3>
         
-        <div class="progress-container">
-          <div class="progress-labels">
-            <span>Progress</span>
-            <span>{{ getStatusProgress(order.status) }}%</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" [ngClass]="order.status" [style.width.%]="getStatusProgress(order.status)"></div>
-          </div>
-          <div class="milestones">
-            <span *ngFor="let step of statusSteps" class="milestone-dot" [class.active]="getStatusProgress(order.status) >= getStatusProgress(step)"></span>
-          </div>
-        </div>
+                <div class="progress-container">
+                  <div class="progress-bar">
+                    <div class="progress-fill transport" [ngClass]="trip.status" [style.width.%]="getTripProgress(trip.status)"></div>
+                  </div>
+                  <div class="milestones">
+                    <span *ngFor="let step of tripSteps" class="milestone-dot" [class.active]="getTripProgress(trip.status) >= getTripProgress(step)"></span>
+                  </div>
+                </div>
+                
+                <div class="order-meta">
+                  <span>🕒 {{ trip.date }} at {{ trip.time }}</span>
+                  <span>🚗 {{ trip.vehicle_type | titlecase }}</span>
+                </div>
         
-        <div class="order-meta">
-          <span>📅 {{ order.created_at | date:'MMM d, h:mm a' }}</span>
-          <span *ngIf="order.request_location">📍 {{ order.request_location | slice:0:30 }}...</span>
-        </div>
-      </div>
-
-      <!-- Bookings (Transportation) -->
-      <div class="tracking-card transportation" *ngFor="let trip of userBookings">
-        <div class="card-badges">
-          <span class="type-badge transport">Ride Booking</span>
-          <span class="status-badge" [ngClass]="trip.status">{{ getStatusLabel(trip.status) }}</span>
-        </div>
-        <h3>RIDE: {{ trip.pickup }} → {{ trip.dropoff }}</h3>
-
-        <div class="progress-container">
-          <div class="progress-bar">
-            <div class="progress-fill transport" [ngClass]="trip.status" [style.width.%]="getTripProgress(trip.status)"></div>
-          </div>
-          <div class="milestones">
-            <span *ngFor="let step of tripSteps" class="milestone-dot" [class.active]="getTripProgress(trip.status) >= getTripProgress(step)"></span>
-          </div>
-        </div>
-        
-        <div class="order-meta">
-          <span>🕒 {{ trip.date }} at {{ trip.time }}</span>
-          <span>🚗 {{ trip.vehicle_type | titlecase }} ({{ trip.trip_type }})</span>
-        </div>
-
-        <!-- NEW: Driver Details for Safety -->
-        <div class="driver-info" *ngIf="trip.driver_name">
-          <div class="driver-divider"></div>
-          <div class="driver-header">
-            <div class="avatar">👤</div>
-            <div class="driver-text">
-              <p class="name">{{ trip.driver_name }}</p>
-              <p class="subtitle">Assigned Driver</p>
+                <div class="driver-info" *ngIf="trip.driver_name">
+                  <div class="driver-divider"></div>
+                  <div class="driver-header">
+                    <div class="avatar">👤</div>
+                    <div class="driver-text">
+                      <p class="name">{{ trip.driver_name }}</p>
+                      <p class="subtitle">Assigned Driver</p>
+                    </div>
+                  </div>
+                  <div class="car-details">
+                    <div class="detail-item">
+                      <span class="label">Vehicle:</span>
+                      <span class="data">{{ trip.car_model }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Plate:</span>
+                      <span class="data uppercase">{{ trip.license_plate }}</span>
+                    </div>
+                  </div>
+                  <a [href]="'tel:' + trip.driver_phone" class="btn-contact-driver" *ngIf="trip.driver_phone">
+                    📞 Contact Driver
+                  </a>
+                </div>
             </div>
-          </div>
-          <div class="car-details">
-            <div class="detail-item">
-              <span class="label">Vehicle:</span>
-              <span class="data">{{ trip.car_model }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Plate:</span>
-              <span class="data uppercase">{{ trip.license_plate }}</span>
-            </div>
-          </div>
-          <a [href]="'tel:' + trip.driver_phone" class="btn-contact-driver" *ngIf="trip.driver_phone">
-            📞 Contact Driver
-          </a>
         </div>
-      </div>
+    </div>
+
+    <!-- 2. Professional Care Section -->
+    <div class="service-category" *ngIf="categorizedProfessionalCare.length > 0">
+        <h3 class="category-title">🧑‍⚕️ Professional Care & Specialists</h3>
+        <div class="tracking-grid">
+            <div class="tracking-card" *ngFor="let order of categorizedProfessionalCare">
+                <div class="card-badges">
+                  <span class="type-badge" [class]="order.item_type">{{ order.item_type.replace('_', ' ') }}</span>
+                  <span class="status-badge" [ngClass]="order.status">{{ getStatusLabel(order.status) }}</span>
+                </div>
+                <h3>{{ order.item_name }}</h3>
+                
+                <div class="progress-container">
+                  <div class="progress-labels">
+                    <span>Progress</span>
+                    <span>{{ getStatusProgress(order.status) }}%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" [ngClass]="order.status" [style.width.%]="getStatusProgress(order.status)"></div>
+                  </div>
+                  <div class="milestones">
+                    <span *ngFor="let step of statusSteps" class="milestone-dot" [class.active]="getStatusProgress(order.status) >= getStatusProgress(step)"></span>
+                  </div>
+                </div>
+                <div class="order-meta">
+                  <span>📅 {{ order.created_at | date:'MMM d, h:mm a' }}</span>
+                  <span *ngIf="order.request_location">📍 {{ order.request_location | slice:0:30 }}...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Nutritional Meals Section -->
+    <div class="service-category" *ngIf="categorizedMealOrders.length > 0">
+        <h3 class="category-title">🥗 Nutritional Meal Deliveries</h3>
+        <div class="tracking-grid">
+            <div class="tracking-card" *ngFor="let order of categorizedMealOrders">
+                <div class="card-badges">
+                  <span class="type-badge meal">Meal Plan</span>
+                  <span class="status-badge" [ngClass]="order.status">{{ getStatusLabel(order.status) }}</span>
+                </div>
+                <h3>{{ order.item_name }}</h3>
+                <div class="progress-container">
+                  <div class="progress-bar">
+                    <div class="progress-fill meal" [ngClass]="order.status" [style.width.%]="getStatusProgress(order.status)"></div>
+                  </div>
+                  <div class="milestones">
+                    <span *ngFor="let step of statusSteps" class="milestone-dot" [class.active]="getStatusProgress(order.status) >= getStatusProgress(step)"></span>
+                  </div>
+                </div>
+                <div class="order-meta">
+                    <span>📅 {{ order.created_at | date:'MMM d, h:mm a' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Prescription Bundle Section -->
+    <div class="service-category" *ngIf="categorizedPrescriptionOrders.length > 0">
+        <h3 class="category-title">💊 Prescription & Medicine Bundles</h3>
+        <div class="tracking-grid">
+            <div class="tracking-card" *ngFor="let order of categorizedPrescriptionOrders">
+                <div class="card-badges">
+                  <span class="type-badge prescription">Medicine</span>
+                  <span class="status-badge" [ngClass]="order.status">{{ getStatusLabel(order.status) }}</span>
+                </div>
+                <h3>{{ order.item_name }}</h3>
+                <div class="progress-container">
+                  <div class="progress-bar">
+                    <div class="progress-fill prescription" [ngClass]="order.status" [style.width.%]="getStatusProgress(order.status)"></div>
+                  </div>
+                  <div class="milestones">
+                    <span *ngFor="let step of statusSteps" class="milestone-dot" [class.active]="getStatusProgress(order.status) >= getStatusProgress(step)"></span>
+                  </div>
+                </div>
+                <div class="order-meta">
+                    <span>📅 {{ order.created_at | date:'MMM d, h:mm a' }}</span>
+                </div>
+            </div>
+        </div>
     </div>
   </section>
 

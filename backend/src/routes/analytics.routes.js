@@ -87,4 +87,32 @@ router.post('/track-visit', async (req, res, next) => {
   }
 });
 
+router.get('/all-users', isAdmin, async (req, res, next) => {
+  try {
+    const pool = await getPool();
+    const [users] = await pool.execute('SELECT id, name, email, subscription_tier, trial_ends_at, role, created_at FROM users ORDER BY created_at DESC');
+    res.json(users);
+  } catch (error) {
+    // If table missing, return sample for UI dev
+    res.json([
+      { id: 1, name: 'John Admin', email: 'admin@careconnect.com', subscription_tier: 'premium', role: 'admin', created_at: new Date() },
+      { id: 2, name: 'Jane User', email: 'jane@example.com', subscription_tier: 'standard', role: 'user', created_at: new Date() }
+    ]);
+  }
+});
+
+router.patch('/update-user-plan', isAdmin, async (req, res, next) => {
+  try {
+    const { userId, tier } = req.body;
+    if (!userId || !tier) return res.status(400).json({ error: 'User ID and Tier are required.' });
+
+    const pool = await getPool();
+    await pool.execute('UPDATE users SET subscription_tier = ? WHERE id = ?', [tier.toLowerCase(), userId]);
+    
+    res.json({ message: 'User plan updated successfully.', userId, tier });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

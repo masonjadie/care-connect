@@ -105,4 +105,24 @@ export class DashboardComponent implements OnInit {
   getStatusLabel(status: string): string {
     return status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }
+
+  // Categorized Getters
+  get categorizedRideBookings(): any[] {
+    return this.userBookings || [];
+  }
+
+  get categorizedMealOrders(): any[] {
+    return this.userOrders.filter(o => o.item_type === 'meal');
+  }
+
+  get categorizedPrescriptionOrders(): any[] {
+    return this.userOrders.filter(o => o.item_type === 'prescription');
+  }
+
+  get categorizedProfessionalCare(): any[] {
+    return this.userOrders.filter(o => 
+      o.item_type === 'caregiver_request' || 
+      o.item_type === 'pet_specialist_request'
+    );
+  }
 }

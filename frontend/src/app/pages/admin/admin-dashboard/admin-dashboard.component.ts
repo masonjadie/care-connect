@@ -22,8 +22,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   verifiedCaregivers: any[] = [];
   verifiedSpecialists: any[] = [];
   allMeals: Meal[] = [];
+  allUsers: any[] = [];
 
-  activeTab: 'summary' | 'orders' | 'verification' | 'verified' | 'transport' | 'meals' = 'summary';
+  activeTab: 'summary' | 'orders' | 'verification' | 'verified' | 'transport' | 'meals' | 'users' = 'summary';
   transportationBookings: any[] = [];
 
   // Meal Form State
@@ -68,6 +69,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.loadVerifiedStaff();
     this.loadTransportation();
     this.loadMeals();
+    this.loadUsers();
   }
 
   loadStats(): void {
@@ -346,5 +348,26 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   updateTags(tagsString: string): void {
     this.currentMeal.tags = tagsString.split(',').map(tag => tag.trim()).filter(tag => !!tag);
+  }
+
+  // ── User Management ───────────────────────────────────────────────
+  loadUsers(): void {
+    this.analyticsService.getAllUsers().subscribe({
+      next: (users) => this.allUsers = users,
+      error: () => this.allUsers = []
+    });
+  }
+
+  changeUserPlan(userId: number, event: any): void {
+    const newTier = event.target.value;
+    if (!newTier) return;
+    
+    this.analyticsService.updateUserPlan(userId, newTier).subscribe({
+      next: () => {
+        const user = this.allUsers.find(u => u.id === userId);
+        if (user) user.subscription_tier = newTier;
+      },
+      error: (err) => console.error('Failed to update plan', err)
+    });
   }
 }

@@ -117,5 +117,14 @@ export class AnalyticsService {
     const payload = { status, ...driverData };
     return this.http.patch(`${this.transportUrl}/${id}/status`, payload);
   }
+
+  // ── User Management (Admin) ────────────────────────────────────────
+  getAllUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/all-users`);
+  }
+
+  updateUserPlan(userId: number, tier: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/update-user-plan`, { userId, tier });
+  }
 }
 
