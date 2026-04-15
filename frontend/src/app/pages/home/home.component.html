@@ -1,4 +1,82 @@
 <div class="home-container">
+  <section class="hero">
+      <!-- Zero-Weight Premium Hero Background -->
+      <div class="hero-visual-accent">
+        <div class="mesh-gradient"></div>
+        <div class="glass-orb"></div>
+      </div>
+
+    <div class="hero-content">
+      <div class="hero-text-panel">
+        <div class="hero-text">
+          <h1>Welcome to CareConnect Hub</h1>
+          <p>
+            Support and care at your fingertips. We connect seniors with the services they need to
+            live independently and safely.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn-service orange" routerLink="/plans">👩‍⚕️ Find a Caregiver</button>
+            <button class="btn-service green" routerLink="/pet-care">🦮 Find Service Animal</button>
+            <button class="btn-service teal" routerLink="/transportation">🚗 Book a Ride</button>
+            <button class="btn-service blue" routerLink="/meal-delivery">🍲 Nutritional Meals Delivery</button>
+            <button class="btn-service purple" routerLink="/medication-reminder">💊 Medication Reminder</button>
+            <button class="btn-service rose" routerLink="/prescription-delivery">💉 Prescription Fill & Delivery</button>
+          </div>
+
+          <!-- Relocated here for better visibility and hierarchy -->
+          <div class="hero-dashboard-mini">
+            <div class="appointment-card-mini">
+              <div class="card-header">
+                <h2>Upcoming Appointments</h2>
+                <span class="icon">📅</span>
+              </div>
+              <div class="appointment-item">
+                <p><strong>Doctor Visit</strong> • Mon, Aug 15</p>
+              </div>
+              <button class="btn-manage-mini" routerLink="/dashboard" aria-label="Manage all appointments">Manage All</button>
+            </div>
+            
+            <button class="btn-sos-main" routerLink="/emergency" aria-label="Emergency SOS Help - Get help immediately">
+              <span role="img" aria-label="Emergency Siren">🚨</span> Emergency SOS Help
+            </button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <section class="features-grid">
+    <div class="feature-card">
+      <div class="icon-circle blue">📚</div>
+      <h2>Health Tips and Articles</h2>
+      <p>Stay active and healthy with daily advice tailored for your wellbeing.</p>
+      <button class="btn-text" (click)="openArticle()" aria-label="Read more about health tips and articles">Read More <span aria-hidden="true">→</span></button>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-circle red">📞</div>
+      <h2>Emergency Contacts</h2>
+      <div class="contact-list">
+        <p *ngFor="let contact of contacts"><strong>{{ contact.name }}</strong> ({{ contact.relation }})</p>
+      </div>
+      <button class="btn-add" (click)="openAddContactModal()">+ Add Contact</button>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-circle purple">⏰</div>
+      <h2>Daily Reminders</h2>
+      <div class="reminder-list">
+        <p *ngFor="let reminder of reminders; let i = index">
+          <span>{{ reminder.icon }}</span> {{ reminder.text }} - {{ reminder.time }}
+          <button style="border:none;background:none;color: #ef4444;cursor:pointer;float:right;" (click)="deleteReminder(i)">✕</button>
+        </p>
+      </div>
+      <button class="btn-add" (click)="openAddReminderModal()">+ Add Reminder</button>
+    </div>
+  </section>
+
   <!-- Article View Modal Overlay -->
   <div class="custom-modal-overlay" *ngIf="showArticleModal">
     <div class="custom-modal" style="max-width: 600px; width: 95%;">
@@ -93,82 +171,4 @@
       </div>
     </div>
   </div>
-
-  <section class="hero">
-      <!-- Zero-Weight Premium Hero Background -->
-      <div class="hero-visual-accent">
-        <div class="mesh-gradient"></div>
-        <div class="glass-orb"></div>
-      </div>
-
-    <div class="hero-content">
-      <div class="hero-text-panel">
-        <div class="hero-text">
-          <h1>Welcome to CareConnect Hub</h1>
-          <p>
-            Support and care at your fingertips. We connect seniors with the services they need to
-            live independently and safely.
-          </p>
-
-          <div class="hero-actions">
-            <button class="btn-service orange" routerLink="/plans">👩‍⚕️ Find a Caregiver</button>
-            <button class="btn-service green" routerLink="/pet-care">🦮 Find Service Animal</button>
-            <button class="btn-service teal" routerLink="/transportation">🚗 Book a Ride</button>
-            <button class="btn-service blue" routerLink="/meal-delivery">🍲 Nutritional Meals Delivery</button>
-            <button class="btn-service purple" routerLink="/medication-reminder">💊 Medication Reminder</button>
-            <button class="btn-service rose" routerLink="/prescription-delivery">💉 Prescription Fill & Delivery</button>
-          </div>
-
-          <!-- Relocated here for better visibility and hierarchy -->
-          <div class="hero-dashboard-mini">
-            <div class="appointment-card-mini">
-              <div class="card-header">
-                <h3>Upcoming Appointments</h3>
-                <span class="icon">📅</span>
-              </div>
-              <div class="appointment-item">
-                <p><strong>Doctor Visit</strong> • Mon, Aug 15</p>
-              </div>
-              <button class="btn-manage-mini" routerLink="/dashboard" aria-label="Manage all appointments">Manage All</button>
-            </div>
-            
-            <button class="btn-sos-main" routerLink="/emergency" aria-label="Emergency SOS Help - Get help immediately">
-              <span role="img" aria-label="Emergency Siren">🚨</span> Emergency SOS Help
-            </button>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  </section>
-
-  <section class="features-grid">
-    <div class="feature-card">
-      <div class="icon-circle blue">📚</div>
-      <h3>Health Tips and Articles</h3>
-      <p>Stay active and healthy with daily advice tailored for your wellbeing.</p>
-      <button class="btn-text" (click)="openArticle()" aria-label="Read more about health tips and articles">Read More <span aria-hidden="true">→</span></button>
-    </div>
-
-    <div class="feature-card">
-      <div class="icon-circle red">📞</div>
-      <h3>Emergency Contacts</h3>
-      <div class="contact-list">
-        <p *ngFor="let contact of contacts"><strong>{{ contact.name }}</strong> ({{ contact.relation }})</p>
-      </div>
-      <button class="btn-add" (click)="openAddContactModal()">+ Add Contact</button>
-    </div>
-
-    <div class="feature-card">
-      <div class="icon-circle purple">⏰</div>
-      <h3>Daily Reminders</h3>
-      <div class="reminder-list">
-        <p *ngFor="let reminder of reminders; let i = index">
-          <span>{{ reminder.icon }}</span> {{ reminder.text }} - {{ reminder.time }}
-          <button style="border:none;background:none;color: #ef4444;cursor:pointer;float:right;" (click)="deleteReminder(i)">✕</button>
-        </p>
-      </div>
-      <button class="btn-add" (click)="openAddReminderModal()">+ Add Reminder</button>
-    </div>
-  </section>
 </div>

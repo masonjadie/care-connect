@@ -154,12 +154,33 @@ a {
   padding: 0 20px;
 }
 
-/* Modern Card Pattern */
-.accessible-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--card-shadow);
-  padding: 1.5rem;
-  transition: transform 0.2s ease;
+/* Performance Optimization: Reduce main-thread work for off-screen sections */
+.home-container,
+.pet-care-container,
+.meal-delivery-container,
+.transportation-container,
+.dashboard-container,
+.plans-container,
+.features-grid {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+}
+
+/* Accessibility: Seq-corrected heading styles */
+.h4-style {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

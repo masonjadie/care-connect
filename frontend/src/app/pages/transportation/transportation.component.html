@@ -1,13 +1,4 @@
 <div class="transportation-container">
-  <!-- Big modern success overlay -->
-  <div class="success-overlay" *ngIf="successMessage">
-    <div class="success-modal">
-      <div class="success-icon-large">✅</div>
-      <h2>Booking Confirmed</h2>
-      <p>{{ successMessage }}</p>
-      <button class="btn-close-modal" (click)="successMessage = ''">Close</button>
-    </div>
-  </div>
   <header class="page-header">
     <h1>Reliable Transportation</h1>
     <p>Safe, accessible, and comfortable rides for your medical appointments and daily errands.</p>
@@ -16,7 +7,7 @@
   <div class="layout-grid">
     <section class="info-section">
       <div class="info-card">
-        <h3>Our Services</h3>
+        <h2>Our Services</h2>
         <ul class="info-list">
           <li>
             <span class="icon">♿</span>
@@ -50,7 +41,7 @@
       </div>
 
       <div class="pricing-card">
-        <h3>Simple Pricing</h3>
+        <h2>Simple Pricing</h2>
         <p>Flat rates within the city. No hidden fees or surge pricing.</p>
         <div class="price-list">
           <div class="price-item">
@@ -128,5 +119,15 @@
         </form>
       </div>
     </section>
+  </div>
+
+  <!-- Big modern success overlay -->
+  <div class="success-overlay" *ngIf="successMessage">
+    <div class="success-modal">
+      <div class="success-icon-large">✅</div>
+      <h2>Booking Confirmed</h2>
+      <p>{{ successMessage }}</p>
+      <button class="btn-close-modal" (click)="successMessage = ''">Close</button>
+    </div>
   </div>
 </div>

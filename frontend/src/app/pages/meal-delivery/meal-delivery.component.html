@@ -1,4 +1,85 @@
 <div class="meal-delivery-container">
+  <!-- Status overlays at top for visual priority but defined logically in flow later or here if needed -->
+  
+  <header class="page-header">
+    <h1>Nutritious Meal Delivery</h1>
+    <p>Enjoy chef-prepared, balanced meals delivered straight to your door. Tailored to your health needs.</p>
+  </header>
+
+  <div class="content-layout">
+    <!-- Sidebar -->
+    <aside class="info-sidebar">
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🚛</span>
+        <div>
+          <h2 class="sidebar-heading">Daily Delivery</h2>
+          <p>Meals are delivered between 11:00 AM and 1:00 PM every day.</p>
+        </div>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🥗</span>
+        <div>
+          <h2 class="sidebar-heading">Fresh Ingredients</h2>
+          <p>We source local, organic produce and high-quality proteins.</p>
+        </div>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">📋</span>
+        <div>
+          <h2 class="sidebar-heading">Dietary Experts</h2>
+          <p>All menus are approved by certified nutritionists.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <section class="filter-section">
+        <h2 class="sr-only">Filter Meals</h2>
+        <div class="category-tabs">
+          <button 
+            *ngFor="let cat of categories" 
+            [class.active]="selectedCategory === cat"
+            (click)="filterByCategory(cat)">
+            {{ cat }}
+          </button>
+        </div>
+      </section>
+
+      <div class="meal-grid">
+        <article class="meal-card" *ngFor="let meal of filteredMeals">
+          <div class="meal-image">
+            <img [src]="'assets/images/' + meal.image" [alt]="meal.name" loading="lazy" width="400" height="250">
+            <div class="image-overlay"></div>
+          </div>
+          <div class="meal-badge" [ngClass]="meal.category ? meal.category.toLowerCase().replace(' ', '-') : ''">
+            {{ meal.category || 'Standard' }}
+          </div>
+          <div class="meal-content">
+            <div class="meal-main">
+              <h3>{{ meal.name }}</h3>
+              <p class="description">{{ meal.description }}</p>
+            </div>
+            
+            <div class="nutritional-info">
+              <span>🔥 {{ meal.calories }} kcal</span>
+              <span>💪 {{ meal.protein }} protein</span>
+            </div>
+
+            <div class="meal-tags" *ngIf="meal.tags && meal.tags.length">
+              <span class="tag" *ngFor="let tag of meal.tags">{{ tag }}</span>
+            </div>
+
+            <div class="meal-footer">
+              <span class="price">${{ meal.price | number:'1.2-2' }}</span>
+              <button class="btn-order" (click)="requestMeal(meal)">Order Now</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
   <!-- Order Confirmation Modal -->
   <div class="success-overlay" *ngIf="isConfirming">
     <div class="success-modal confirmation-modal">
@@ -14,8 +95,8 @@
 
       <div class="confirmation-form">
         <div class="form-group">
-          <label>Delivery Address</label>
-          <input type="text" [(ngModel)]="deliveryAddress" placeholder="Enter your address">
+          <label for="addressInput">Delivery Address</label>
+          <input id="addressInput" type="text" [(ngModel)]="deliveryAddress" placeholder="Enter your address">
         </div>
 
         <div class="form-group">
@@ -47,84 +128,6 @@
       <h2>Order Successful</h2>
       <p>{{ successMessage }}</p>
       <button class="btn-close-modal" (click)="successMessage = ''">Close</button>
-    </div>
-  </div>
-  <header class="page-header">
-    <h1>Nutritious Meal Delivery</h1>
-    <p>Enjoy chef-prepared, balanced meals delivered straight to your door. Tailored to your health needs.</p>
-  </header>
-
-  <div class="content-layout">
-    <!-- Sidebar -->
-    <aside class="info-sidebar">
-      <div class="sidebar-item">
-        <span class="sidebar-icon">🚛</span>
-        <div>
-          <h4>Daily Delivery</h4>
-          <p>Meals are delivered between 11:00 AM and 1:00 PM every day.</p>
-        </div>
-      </div>
-      <div class="sidebar-item">
-        <span class="sidebar-icon">🥗</span>
-        <div>
-          <h4>Fresh Ingredients</h4>
-          <p>We source local, organic produce and high-quality proteins.</p>
-        </div>
-      </div>
-      <div class="sidebar-item">
-        <span class="sidebar-icon">📋</span>
-        <div>
-          <h4>Dietary Experts</h4>
-          <p>All menus are approved by certified nutritionists.</p>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="main-content">
-      <section class="filter-section">
-        <div class="category-tabs">
-          <button 
-            *ngFor="let cat of categories" 
-            [class.active]="selectedCategory === cat"
-            (click)="filterByCategory(cat)">
-            {{ cat }}
-          </button>
-        </div>
-      </section>
-
-
-      <div class="meal-grid">
-        <div class="meal-card" *ngFor="let meal of filteredMeals">
-          <div class="meal-image">
-            <img [src]="'assets/images/' + meal.image" [alt]="meal.name" loading="lazy" width="400" height="250">
-            <div class="image-overlay"></div>
-          </div>
-          <div class="meal-badge" [ngClass]="meal.category ? meal.category.toLowerCase().replace(' ', '-') : ''">
-            {{ meal.category || 'Standard' }}
-          </div>
-          <div class="meal-content">
-            <div class="meal-main">
-              <h3>{{ meal.name }}</h3>
-              <p class="description">{{ meal.description }}</p>
-            </div>
-            
-            <div class="nutritional-info">
-              <span>🔥 {{ meal.calories }} kcal</span>
-              <span>💪 {{ meal.protein }} protein</span>
-            </div>
-
-            <div class="meal-tags" *ngIf="meal.tags && meal.tags.length">
-              <span class="tag" *ngFor="let tag of meal.tags">{{ tag }}</span>
-            </div>
-
-            <div class="meal-footer">
-              <span class="price">${{ meal.price | number:'1.2-2' }}</span>
-              <button class="btn-order" (click)="requestMeal(meal)">Order Now</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
