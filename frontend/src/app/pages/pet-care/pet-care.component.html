@@ -63,7 +63,10 @@
                         <span>📞 {{ sp.phone }}</span>
                     </div>
                 </div>
-                <div class="verified-badge">✅ Verified</div>
+                <div class="card-actions">
+                    <div class="verified-badge">✅ Verified</div>
+                    <button class="btn-book-specialist" (click)="bookSpecialist(sp)">Book Specialist</button>
+                </div>
             </div>
         </div>
 
@@ -113,6 +116,28 @@
                             <span class="check">✓</span> {{feature}}
                         </li>
                     </ul>
+
+                    <div class="payment-selection">
+                        <h3>Select Payment Method:</h3>
+                        <div class="payment-options">
+                            <label class="pay-option" [class.selected]="paymentMethod === 'cod'">
+                                <input type="radio" name="payment" value="cod" [(ngModel)]="paymentMethod">
+                                <span class="pay-icon">💵</span>
+                                <div class="pay-text">
+                                    <strong>Cash on Delivery</strong>
+                                    <small>Pay after service visit</small>
+                                </div>
+                            </label>
+                            <label class="pay-option" [class.selected]="paymentMethod === 'card'">
+                                <input type="radio" name="payment" value="card" [(ngModel)]="paymentMethod">
+                                <span class="pay-icon">💳</span>
+                                <div class="pay-text">
+                                    <strong>Card on Delivery</strong>
+                                    <small>Mobile POS at visit</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="modal-actions">

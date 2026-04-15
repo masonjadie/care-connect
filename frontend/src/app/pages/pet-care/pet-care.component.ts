@@ -78,8 +78,10 @@ export class PetCareComponent implements OnInit {
 
   toastMessage = '';
   selectedService: any = null;
+  selectedSpecialist: any = null;
   verifiedSpecialists: any[] = [];
   loadingSpecialists = true;
+  paymentMethod: 'cod' | 'card' | '' = '';
 
   constructor(private analyticsService: AnalyticsService) { }
 
@@ -113,11 +115,17 @@ export class PetCareComponent implements OnInit {
 
   closeModal(): void {
     this.selectedService = null;
+    this.selectedSpecialist = null;
+    this.paymentMethod = '';
     document.body.style.overflow = 'auto';
   }
 
   bookConsultation(): void {
     if (!this.selectedService) return;
+    if (!this.paymentMethod) {
+      this.showToast('💳 Please select a payment method.');
+      return;
+    }
     
     const serviceName = this.selectedService.title;
     const userStr = localStorage.getItem('careconnect_user');
@@ -126,8 +134,9 @@ export class PetCareComponent implements OnInit {
     const orderData = {
       userId: user?.id,
       itemName: `Pet Consultation: ${serviceName}`,
-      itemType: 'pet_consultation',
+      itemType: 'pet_specialist_request',
       amount: 0,
+      paymentMethod: this.paymentMethod,
       requestLocation: user?.location || 'Self-delivery/Visit'
     };
 
@@ -135,11 +144,23 @@ export class PetCareComponent implements OnInit {
       next: () => {
         this.closeModal();
         this.showToast(`📅 Consulting request for ${serviceName} sent!`);
-        // Scroll to specialists registration
         document.getElementById('specialist-registration')?.scrollIntoView({ behavior: 'smooth' });
       },
       error: () => this.showToast('❌ Failed to send request.')
     });
+  }
+
+  bookSpecialist(specialist: any): void {
+    this.selectedSpecialist = specialist;
+    this.selectedService = {
+      title: `Service with ${specialist.name}`,
+      details: `Book a specialized care session with our verified specialist ${specialist.name}. ${specialist.specialty} at ${specialist.location}.`,
+      price: specialist.price || 'Session rates apply',
+      icon: '🐾',
+      image: specialist.image || 'senior_pet_care.webp',
+      features: ['Certified Support', 'In-home Visit available', 'Direct Messaging']
+    };
+    document.body.style.overflow = 'hidden';
   }
 
   registerSpecialist(form: NgForm): void {
