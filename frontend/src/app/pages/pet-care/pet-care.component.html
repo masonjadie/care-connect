@@ -1,6 +1,23 @@
 <div class="pet-care-container">
     <div class="toast-message" *ngIf="toastMessage">{{ toastMessage }}</div>
 
+    <!-- Success Confirmation Overlay -->
+    <div class="success-overlay" *ngIf="showSuccessOverlay">
+        <div class="success-modal-large">
+            <div class="success-icon-container">
+                <span class="confetti">🎉</span>
+                <div class="check-circle">✓</div>
+            </div>
+            <h2>Booking Confirmed!</h2>
+            <p>{{ successModalMessage }}</p>
+            
+            <div class="success-actions">
+                <button class="btn-primary-large" routerLink="/dashboard" (click)="closeSuccessModal()">View My Dashboard</button>
+                <button class="btn-outline-text" (click)="closeSuccessModal()">Continue Browsing</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Detailed Service Modal - Moved to top for better stacking context -->
     <div class="modal-backdrop" *ngIf="selectedService" (click)="closeModal()">
         <div class="service-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">

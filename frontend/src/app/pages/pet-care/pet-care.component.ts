@@ -82,6 +82,8 @@ export class PetCareComponent implements OnInit {
   verifiedSpecialists: any[] = [];
   loadingSpecialists = true;
   paymentMethod: 'cod' | 'card' | '' = '';
+  showSuccessOverlay = false;
+  successModalMessage = '';
 
   getActionButtonLabel(): string {
     if (!this.selectedService) return 'Book Now';
@@ -148,11 +150,16 @@ export class PetCareComponent implements OnInit {
     this.analyticsService.placeOrder(orderData).subscribe({
       next: () => {
         this.closeModal();
-        this.showToast(`📅 Consulting request for ${serviceName} sent!`);
-        document.getElementById('specialist-registration')?.scrollIntoView({ behavior: 'smooth' });
+        this.successModalMessage = `Your request for ${serviceName} has been received! Our team will contact you shortly to coordinate the next steps.`;
+        this.showSuccessOverlay = true;
       },
       error: () => this.showToast('❌ Failed to send request.')
     });
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessOverlay = false;
+    this.successModalMessage = '';
   }
 
   bookSpecialist(specialist: any): void {
