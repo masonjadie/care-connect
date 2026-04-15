@@ -491,6 +491,12 @@
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 15px;
+            margin-top: 10px;
+
+            .btn-book-now {
+                background: #10b981;
+                &:hover { background: #059669; }
+            }
         }
     }
 }
@@ -507,14 +513,14 @@
 
 // Payment Selection Styles
 .payment-selection {
-    margin-top: 30px;
+    margin-bottom: 25px;
     border-top: 1px solid var(--border-color);
-    padding-top: 25px;
+    padding-top: 20px;
 
     h3 {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: var(--text-dark);
-        margin-bottom: 15px;
+        margin-bottom: 12px;
         font-weight: 700;
     }
 }

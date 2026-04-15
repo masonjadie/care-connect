@@ -23,33 +23,33 @@
                             <span class="check">✓</span> {{feature}}
                         </li>
                     </ul>
+                </div>
 
-                    <div class="payment-selection">
-                        <h3>Select Payment Method:</h3>
-                        <div class="payment-options">
-                            <label class="pay-option" [class.selected]="paymentMethod === 'cod'">
-                                <input type="radio" name="payment" value="cod" [(ngModel)]="paymentMethod">
-                                <span class="pay-icon">💵</span>
-                                <div class="pay-text">
-                                    <strong>Cash on Delivery</strong>
-                                    <small>Pay after service visit</small>
-                                </div>
-                            </label>
-                            <label class="pay-option" [class.selected]="paymentMethod === 'card'">
-                                <input type="radio" name="payment" value="card" [(ngModel)]="paymentMethod">
-                                <span class="pay-icon">💳</span>
-                                <div class="pay-text">
-                                    <strong>Card on Delivery</strong>
-                                    <small>Mobile POS at visit</small>
-                                </div>
-                            </label>
-                        </div>
+                <div class="payment-selection">
+                    <h3>Select Payment Method:</h3>
+                    <div class="payment-options">
+                        <label class="pay-option" [class.selected]="paymentMethod === 'cod'">
+                            <input type="radio" name="payment" value="cod" [(ngModel)]="paymentMethod">
+                            <span class="pay-icon">💵</span>
+                            <div class="pay-text">
+                                <strong>Cash on Delivery</strong>
+                                <small>Pay after visit</small>
+                            </div>
+                        </label>
+                        <label class="pay-option" [class.selected]="paymentMethod === 'card'">
+                            <input type="radio" name="payment" value="card" [(ngModel)]="paymentMethod">
+                            <span class="pay-icon">💳</span>
+                            <div class="pay-text">
+                                <strong>Card on Delivery</strong>
+                                <small>POS at visit</small>
+                            </div>
+                        </label>
                     </div>
                 </div>
                 
                 <div class="modal-actions">
                     <button type="button" class="btn-inquire" (click)="closeModal()">Later</button>
-                    <button type="button" class="btn-primary-large" (click)="bookConsultation()">Book Now</button>
+                    <button type="button" class="btn-primary-large btn-book-now" (click)="bookConsultation()">Book Now</button>
                 </div>
             </div>
         </div>
