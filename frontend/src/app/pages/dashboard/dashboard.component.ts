@@ -106,6 +106,11 @@ export class DashboardComponent implements OnInit {
     return status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }
 
+  get nextBillingDate(): Date {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+  }
+
   // Categorized Getters
   get categorizedRideBookings(): any[] {
     return this.userBookings || [];

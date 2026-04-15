@@ -172,9 +172,12 @@
           <p class="status-msg" *ngIf="user?.trial_ends_at">Trial expires: {{ user.trial_ends_at | date:'mediumDate' }}</p>
           <p class="status-msg" *ngIf="!user?.subscription_tier || user?.subscription_tier === 'free'">Limited access to features.</p>
         </div>
-        <button class="btn-upgrade" routerLink="/plans" *ngIf="user?.subscription_tier !== 'premium' && user?.subscription_tier !== 'family'">
-          {{ user?.trial_ends_at ? 'Level Up to Premium' : 'View Plans' }}
-        </button>
+        <div class="plan-actions">
+          <button class="btn-change-plan" routerLink="/plans">
+            {{ (user?.subscription_tier === 'premium' || user?.subscription_tier === 'family') ? 'Manage / Change Plan' : 'Upgrade My Plan' }}
+          </button>
+          <p class="billing-note" *ngIf="user?.subscription_tier !== 'free' && user?.subscription_tier !== 'none'">Next billing: {{ nextBillingDate | date:'mediumDate' }}</p>
+        </div>
       </div>
     </div>
 
