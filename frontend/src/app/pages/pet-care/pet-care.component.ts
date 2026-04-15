@@ -83,6 +83,11 @@ export class PetCareComponent implements OnInit {
   loadingSpecialists = true;
   paymentMethod: 'cod' | 'card' | '' = '';
 
+  getActionButtonLabel(): string {
+    if (!this.selectedService) return 'Book Now';
+    return this.selectedService.id === 'medical-alert' ? 'Adopt Now' : 'Book Now';
+  }
+
   constructor(private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
