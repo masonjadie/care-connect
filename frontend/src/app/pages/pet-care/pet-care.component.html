@@ -1,5 +1,60 @@
 <div class="pet-care-container">
     <div class="toast-message" *ngIf="toastMessage">{{ toastMessage }}</div>
+
+    <!-- Detailed Service Modal - Moved to top for better stacking context -->
+    <div class="modal-backdrop" *ngIf="selectedService" (click)="closeModal()">
+        <div class="service-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+            <button type="button" class="close-btn" (click)="closeModal()" aria-label="Close modal">×</button>
+            
+            <div class="modal-image">
+                <img [src]="'assets/images/' + selectedService.image" [alt]="selectedService.title">
+                <div class="modal-icon">{{selectedService.icon}}</div>
+            </div>
+            
+            <div class="modal-body">
+                <span class="modal-badge">{{selectedService.price}}</span>
+                <h2>{{selectedService.title}}</h2>
+                <div class="modal-scroll-area">
+                    <p class="long-description">{{selectedService.details}}</p>
+                    
+                    <h3>Key Program Features:</h3>
+                    <ul class="modal-feature-list">
+                        <li *ngFor="let feature of selectedService.features">
+                            <span class="check">✓</span> {{feature}}
+                        </li>
+                    </ul>
+
+                    <div class="payment-selection">
+                        <h3>Select Payment Method:</h3>
+                        <div class="payment-options">
+                            <label class="pay-option" [class.selected]="paymentMethod === 'cod'">
+                                <input type="radio" name="payment" value="cod" [(ngModel)]="paymentMethod">
+                                <span class="pay-icon">💵</span>
+                                <div class="pay-text">
+                                    <strong>Cash on Delivery</strong>
+                                    <small>Pay after service visit</small>
+                                </div>
+                            </label>
+                            <label class="pay-option" [class.selected]="paymentMethod === 'card'">
+                                <input type="radio" name="payment" value="card" [(ngModel)]="paymentMethod">
+                                <span class="pay-icon">💳</span>
+                                <div class="pay-text">
+                                    <strong>Card on Delivery</strong>
+                                    <small>Mobile POS at visit</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-inquire" (click)="closeModal()">Later</button>
+                    <button type="button" class="btn-primary-large" (click)="bookConsultation()">Inquire Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header class="section-header">
         <h1>Service Animal Care & Support</h1>
         <p>Enhancing quality of life through specialized therapeutic animal services and service animal care for seniors.</p>
@@ -65,7 +120,7 @@
                 </div>
                 <div class="card-actions">
                     <div class="verified-badge">✅ Verified</div>
-                    <button class="btn-book-specialist" (click)="bookSpecialist(sp)">Book Specialist</button>
+                    <button type="button" class="btn-book-specialist" (click)="bookSpecialist(sp); $event.stopPropagation()">Book Specialist</button>
                 </div>
             </div>
         </div>
@@ -94,59 +149,7 @@
         </form>
     </section>
 
-    <!-- Detailed Service Modal -->
-    <div class="modal-backdrop" *ngIf="selectedService" (click)="closeModal()">
-        <div class="service-modal" (click)="$event.stopPropagation()">
-            <button class="close-btn" (click)="closeModal()" aria-label="Close modal">×</button>
-            
-            <div class="modal-image">
-                <img [src]="'assets/images/' + selectedService.image" [alt]="selectedService.title">
-                <div class="modal-icon">{{selectedService.icon}}</div>
-            </div>
-            
-            <div class="modal-body">
-                <span class="modal-badge">{{selectedService.price}}</span>
-                <h2>{{selectedService.title}}</h2>
-                <div class="modal-scroll-area">
-                    <p class="long-description">{{selectedService.details}}</p>
-                    
-                    <h3>Key Program Features:</h3>
-                    <ul class="modal-feature-list">
-                        <li *ngFor="let feature of selectedService.features">
-                            <span class="check">✓</span> {{feature}}
-                        </li>
-                    </ul>
 
-                    <div class="payment-selection">
-                        <h3>Select Payment Method:</h3>
-                        <div class="payment-options">
-                            <label class="pay-option" [class.selected]="paymentMethod === 'cod'">
-                                <input type="radio" name="payment" value="cod" [(ngModel)]="paymentMethod">
-                                <span class="pay-icon">💵</span>
-                                <div class="pay-text">
-                                    <strong>Cash on Delivery</strong>
-                                    <small>Pay after service visit</small>
-                                </div>
-                            </label>
-                            <label class="pay-option" [class.selected]="paymentMethod === 'card'">
-                                <input type="radio" name="payment" value="card" [(ngModel)]="paymentMethod">
-                                <span class="pay-icon">💳</span>
-                                <div class="pay-text">
-                                    <strong>Card on Delivery</strong>
-                                    <small>Mobile POS at visit</small>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="modal-actions">
-                    <button class="btn-inquire" (click)="closeModal()">Later</button>
-                    <button class="btn-primary-large" (click)="bookConsultation()">Inquire Now</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <section class="info-banner">
         <div class="banner-content">
