@@ -48,26 +48,30 @@
                   <span>🚗 {{ trip.vehicle_type | titlecase }}</span>
                 </div>
         
-                <div class="driver-info" *ngIf="trip.driver_name">
+                <div class="driver-info" *ngIf="trip.driver_name || trip.driverName">
                   <div class="driver-divider"></div>
                   <div class="driver-header">
                     <div class="avatar">👤</div>
                     <div class="driver-text">
-                      <p class="name">{{ trip.driver_name }}</p>
+                      <p class="name">{{ trip.driver_name || trip.driverName }}</p>
                       <p class="subtitle">Assigned Driver</p>
                     </div>
                   </div>
                   <div class="car-details">
                     <div class="detail-item">
                       <span class="label">Vehicle:</span>
-                      <span class="data">{{ trip.car_model }}</span>
+                      <span class="data">{{ trip.car_model || trip.carModel }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Phone:</span>
+                      <span class="data">{{ trip.driver_phone || trip.driverPhone }}</span>
                     </div>
                     <div class="detail-item">
                       <span class="label">Plate:</span>
-                      <span class="data uppercase">{{ trip.license_plate }}</span>
+                      <span class="data uppercase">{{ trip.license_plate || trip.licensePlate }}</span>
                     </div>
                   </div>
-                  <a [href]="'tel:' + trip.driver_phone" class="btn-contact-driver" *ngIf="trip.driver_phone">
+                  <a [href]="'tel:' + (trip.driver_phone || trip.driverPhone)" class="btn-contact-driver" *ngIf="trip.driver_phone || trip.driverPhone">
                     📞 Contact Driver
                   </a>
                 </div>
