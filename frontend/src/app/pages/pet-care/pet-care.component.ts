@@ -168,6 +168,19 @@ export class PetCareComponent implements OnInit {
     document.body.style.overflow = 'hidden';
   }
 
+  adoptServiceAnimal(match: any): void {
+    this.selectedService = {
+      id: 'medical-alert',
+      title: match.petType,
+      details: `${match.benefit} This specialized service animal is matched to your specific medical condition (${match.condition}). We provide full certification and multi-month training to ensure a perfect fit for your lifestyle.`,
+      price: 'Grant assistance available',
+      icon: '🐕‍🦺',
+      image: 'service_dog_alert.webp',
+      features: ['Personalized Matching', 'Condition-specific Training', 'Life-time Support']
+    };
+    document.body.style.overflow = 'hidden';
+  }
+
   registerSpecialist(form: NgForm): void {
     if (form.invalid) {
       this.showToast('⚠️ Please fill in all required fields.');
