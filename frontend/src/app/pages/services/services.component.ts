@@ -69,7 +69,7 @@ export class ServicesComponent implements OnInit {
 
     this.api.getServices().subscribe({
       next: (data) => {
-        const finalData = data && data.length > 0 ? data : defaultServices;
+        const finalData = Array.isArray(data) && data.length > 0 ? data : defaultServices;
         this.services = finalData.map((service) => {
           const meta = this.serviceMeta[service.title] ?? {
             icon: '✅',
