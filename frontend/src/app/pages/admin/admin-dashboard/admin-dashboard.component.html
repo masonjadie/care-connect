@@ -107,10 +107,6 @@
           🥗 Meals
           <span class="tab-count">{{ allMeals.length }}</span>
         </button>
-        <button [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">
-          👥 Platform Users
-          <span class="tab-count">{{ allUsers.length || statsData.stats.totalUsers }}</span>
-        </button>
     </nav>
 
     <div class="dashboard-main-content">
@@ -505,6 +501,7 @@
             </div>
         </section>
       </ng-container>
+
       <!-- TAB 5: TRANSPORTATION BOOKINGS -->
       <ng-container *ngIf="activeTab === 'transport'">
         <section class="content-panel full-width">
@@ -569,8 +566,8 @@
                       </div>
                       <div class="progress-steps">
                         <span *ngFor="let step of tripStatusSteps" class="step-dot"
-                              [class.active]="tripProgress(b.status) >= tripProgress(step)"
-                              [title]="tripStatusLabel(step)"></span>
+                               [class.active]="tripProgress(b.status) >= tripProgress(step)"
+                               [title]="tripStatusLabel(step)"></span>
                       </div>
                     </div>
                   </td>
@@ -583,7 +580,7 @@
                   </td>
                 </tr>
                 <tr *ngIf="transportationBookings.length === 0">
-                  <td colspan="9" class="empty-state">No transportation bookings yet. They will appear here once users submit a ride request.</td>
+                  <td colspan="9" class="empty-state">No transportation bookings yet.</td>
                 </tr>
               </tbody>
             </table>
@@ -641,65 +638,11 @@
                   </td>
                 </tr>
                 <tr *ngIf="allMeals.length === 0">
-                  <td colspan="7" class="empty-state">No meals found. Start by adding your first nutritious dish!</td>
+                  <td colspan="7" class="empty-state">No meals found.</td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </section>
-      </ng-container>
-
-      <!-- TAB 7: USER MANAGEMENT -->
-      <ng-container *ngIf="activeTab === 'users'">
-        <section class="content-panel full-width">
-            <div class="panel-header">
-                <h3>👥 Registered Platform Users</h3>
-                <p>Manage access levels, subscription plans, and account status for all registered users.</p>
-            </div>
-            
-            <div class="table-wrapper">
-                <table class="data-table detailed">
-                    <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Name & Email</th>
-                            <th>Role</th>
-                            <th>Registration Date</th>
-                            <th>Current Plan</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let user of allUsers">
-                            <td>#{{ user.id }}</td>
-                            <td>
-                                <strong>{{ user.name }}</strong>
-                                <div style="font-size: 0.85rem; color: #718096;">{{ user.email }}</div>
-                            </td>
-                            <td><span class="badge" [class]="user.role">{{ user.role | uppercase }}</span></td>
-                            <td>{{ user.created_at | date:'mediumDate' }}</td>
-                            <td>
-                                <span class="badge plan-badge" [class]="user.subscription_tier || 'none'">
-                                    {{ (user.subscription_tier || 'No Plan') | uppercase }}
-                                </span>
-                            </td>
-                            <td>
-                                <select class="plan-selector" 
-                                        [value]="user.subscription_tier || ''"
-                                        (change)="changeUserPlan(user.id, $event)">
-                                    <option value="">No Plan</option>
-                                    <option value="basic">Basic (Free)</option>
-                                    <option value="standard">Standard ($29/mo)</option>
-                                    <option value="premium">Premium ($49/mo)</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr *ngIf="allUsers.length === 0">
-                            <td colspan="6" class="empty-state">No users found or loading...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </section>
       </ng-container>
 
