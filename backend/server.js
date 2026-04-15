@@ -74,7 +74,7 @@ if (fs.existsSync(distPath)) {
   }));
 
   // Angular Fallback for Deep Linking - Must be after all API routes
-  app.get('*', (req, res) => {
+  app.get(/^(.*)$/, (req, res) => {
     // If it's an API request that reached here, it's a 404 API error
     if (req.path.startsWith('/api/')) {
       return res.status(404).json({ error: 'API endpoint not found' });

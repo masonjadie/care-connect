@@ -81,7 +81,7 @@ router.post('/login', async (req, res, next) => {
       'SELECT id, name, email, subscription_tier, trial_ends_at, role, failed_login_attempts, lockout_until, password_hash AS passwordHash FROM users WHERE (email = ? OR name = ?) LIMIT 1',
       [identifier, identifier]
     );
-
+    if (rows.length === 0 || !verifyPassword(password, rows[0].passwordHash)) {
       // Log failed login attempt (wrapped in catch to prevent 500 errors)
       const logData = JSON.stringify({ email: identifier, method: 'password', ip: req.ip });
       await pool.execute('INSERT INTO site_analytics (event_type, event_data) VALUES (?, ?)', ['login_fail', logData])
@@ -89,7 +89,6 @@ router.post('/login', async (req, res, next) => {
         
       return res.status(401).json({ error: 'Incorrect username/email or password.' });
     }
-
     const user = {
       id: rows[0].id,
       name: rows[0].name,

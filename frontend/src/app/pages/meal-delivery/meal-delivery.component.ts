@@ -45,15 +45,24 @@ export class MealDeliveryComponent implements OnInit {
     ];
 
     this.mealService.getMeals().subscribe({
-      next: (meals: Meal[]) => {
-        const finalMeals = meals && meals.length > 0 ? meals : defaultMeals;
-        this.meals = finalMeals;
-        this.filteredMeals = finalMeals;
+      next: (meals: any) => {
+        let validMeals = Array.isArray(meals) ? meals : [];
+        if (validMeals.length === 0) {
+          validMeals = defaultMeals;
+        } else {
+          // Sanitize tags inside meals
+          validMeals = validMeals.map((m: any) => ({
+            ...m,
+            tags: Array.isArray(m.tags) ? m.tags : (typeof m.tags === 'string' ? m.tags.split(',').map((t: string) => t.trim()) : [])
+          }));
+        }
+        this.meals = validMeals;
+        this.filterByCategory(this.selectedCategory);
       },
       error: (err: any) => {
         console.error('Failed to load meals', err);
         this.meals = defaultMeals;
-        this.filteredMeals = defaultMeals;
+        this.filterByCategory(this.selectedCategory);
       }
     });
   }

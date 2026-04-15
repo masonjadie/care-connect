@@ -100,8 +100,8 @@
             <img [src]="'assets/images/' + meal.image" [alt]="meal.name" loading="lazy" width="400" height="250">
             <div class="image-overlay"></div>
           </div>
-          <div class="meal-badge" [ngClass]="meal.category.toLowerCase().replace(' ', '-')">
-            {{ meal.category }}
+          <div class="meal-badge" [ngClass]="meal.category ? meal.category.toLowerCase().replace(' ', '-') : ''">
+            {{ meal.category || 'Standard' }}
           </div>
           <div class="meal-content">
             <div class="meal-main">
@@ -114,7 +114,7 @@
               <span>💪 {{ meal.protein }} protein</span>
             </div>
 
-            <div class="meal-tags">
+            <div class="meal-tags" *ngIf="meal.tags && meal.tags.length">
               <span class="tag" *ngFor="let tag of meal.tags">{{ tag }}</span>
             </div>
 

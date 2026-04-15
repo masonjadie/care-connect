@@ -7,6 +7,7 @@ import {
 } from '../../services/api.service';
 
 import { AnalyticsService } from '../../services/analytics.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-caregivers',
