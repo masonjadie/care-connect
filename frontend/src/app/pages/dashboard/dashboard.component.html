@@ -72,6 +72,31 @@
           <span>🕒 {{ trip.date }} at {{ trip.time }}</span>
           <span>🚗 {{ trip.vehicle_type | titlecase }} ({{ trip.trip_type }})</span>
         </div>
+
+        <!-- NEW: Driver Details for Safety -->
+        <div class="driver-info" *ngIf="trip.driver_name">
+          <div class="driver-divider"></div>
+          <div class="driver-header">
+            <div class="avatar">👤</div>
+            <div class="driver-text">
+              <p class="name">{{ trip.driver_name }}</p>
+              <p class="subtitle">Assigned Driver</p>
+            </div>
+          </div>
+          <div class="car-details">
+            <div class="detail-item">
+              <span class="label">Vehicle:</span>
+              <span class="data">{{ trip.car_model }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Plate:</span>
+              <span class="data uppercase">{{ trip.license_plate }}</span>
+            </div>
+          </div>
+          <a [href]="'tel:' + trip.driver_phone" class="btn-contact-driver" *ngIf="trip.driver_phone">
+            📞 Contact Driver
+          </a>
+        </div>
       </div>
     </div>
   </section>

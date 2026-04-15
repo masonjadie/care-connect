@@ -113,8 +113,9 @@ export class AnalyticsService {
     return this.http.post(this.transportUrl, data);
   }
 
-  updateTripStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(`${this.transportUrl}/${id}/status`, { status });
+  updateTripStatus(id: number, status: string, driverData?: any): Observable<any> {
+    const payload = { status, ...driverData };
+    return this.http.patch(`${this.transportUrl}/${id}/status`, payload);
   }
 }
 

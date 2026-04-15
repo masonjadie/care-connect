@@ -30,6 +30,16 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   isMealModalOpen = false;
   currentMeal: Partial<Meal> = this.resetMealForm();
   isEditingMeal = false;
+  
+  // Driver Modal State
+  isDriverModalOpen = false;
+  activeBookingId: number | null = null;
+  driverDetails = {
+    driverName: '',
+    licensePlate: '',
+    carModel: '',
+    driverPhone: ''
+  };
 
   constructor(
     private analyticsService: AnalyticsService,
@@ -241,10 +251,35 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   updateTripStatus(bookingId: number, currentStatus: string): void {
     const next = this.nextTripStatus(currentStatus);
     if (!next) return;
-    this.analyticsService.updateTripStatus(bookingId, next).subscribe({
+    
+    // If we are moving to 'picked_up', ask for driver details first
+    if (next === 'picked_up') {
+      this.activeBookingId = bookingId;
+      this.driverDetails = { driverName: '', licensePlate: '', carModel: '', driverPhone: '' };
+      this.isDriverModalOpen = true;
+      return;
+    }
+
+    this.executeTripStatusUpdate(bookingId, next);
+  }
+
+  confirmDriverAssignment(): void {
+    if (!this.activeBookingId) return;
+    this.executeTripStatusUpdate(this.activeBookingId, 'picked_up', this.driverDetails);
+    this.isDriverModalOpen = false;
+    this.activeBookingId = null;
+  }
+
+  private executeTripStatusUpdate(id: number, status: string, driverData?: any): void {
+    this.analyticsService.updateTripStatus(id, status, driverData).subscribe({
       next: () => {
-        const booking = this.transportationBookings.find(b => b.id === bookingId);
-        if (booking) booking.status = next;
+        const booking = this.transportationBookings.find(b => b.id === id);
+        if (booking) {
+          booking.status = status;
+          if (driverData) {
+            Object.assign(booking, driverData);
+          }
+        }
       },
       error: (err: any) => console.error('Trip status update failed', err)
     });

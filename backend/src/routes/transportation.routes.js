@@ -70,16 +70,26 @@ router.get('/my-bookings/:userId', async (req, res, next) => {
 router.patch('/:id/status', async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, driverName, licensePlate, carModel, driverPhone } = req.body;
     const allowed = ['booked', 'picked_up', 'on_route', 'dropped_off'];
     if (!allowed.includes(status)) {
       return res.status(400).json({ error: 'Invalid trip status.' });
     }
     const pool = await getPool();
-    const [result] = await pool.execute(
-      'UPDATE transportation_bookings SET status = ? WHERE id = ?',
-      [status, id]
-    );
+
+    // If driver details are provided, update them too
+    let query = 'UPDATE transportation_bookings SET status = ?';
+    let params = [status];
+
+    if (driverName) {
+      query += ', driver_name = ?, license_plate = ?, car_model = ?, driver_phone = ?';
+      params.push(driverName, licensePlate, carModel, driverPhone);
+    }
+
+    query += ' WHERE id = ?';
+    params.push(id);
+
+    const [result] = await pool.execute(query, params);
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Booking not found.' });
     }

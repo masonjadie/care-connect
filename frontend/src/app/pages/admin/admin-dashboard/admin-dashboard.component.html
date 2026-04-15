@@ -648,6 +648,49 @@
     </div>
   </ng-container>
 
+  <!-- DRIVER ASSIGNMENT MODAL -->
+  <div class="modal-overlay" *ngIf="isDriverModalOpen" (click)="isDriverModalOpen = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>🚗 Assign Driver Details</h3>
+        <button class="close-btn" (click)="isDriverModalOpen = false">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <p class="modal-intro">Provide driver and vehicle details to notify the passenger of their pickup.</p>
+        <form class="driver-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Driver Name</label>
+              <input type="text" [(ngModel)]="driverDetails.driverName" name="driverName" placeholder="e.g. Robert Smith">
+            </div>
+            <div class="form-group">
+              <label>Driver Phone</label>
+              <input type="text" [(ngModel)]="driverDetails.driverPhone" name="driverPhone" placeholder="e.g. (876) 555-0101">
+            </div>
+            <div class="form-group">
+              <label>Vehicle Model / Type</label>
+              <input type="text" [(ngModel)]="driverDetails.carModel" name="carModel" placeholder="e.g. White Toyota Corolla">
+            </div>
+            <div class="form-group">
+              <label>License Plate</label>
+              <input type="text" [(ngModel)]="driverDetails.licensePlate" name="licensePlate" placeholder="e.g. 1234 AB">
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="isDriverModalOpen = false">Cancel</button>
+        <button class="btn-primary" 
+                (click)="confirmDriverAssignment()" 
+                [disabled]="!driverDetails.driverName || !driverDetails.licensePlate">
+          Confirm Pickup & Assign Driver
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MEAL ADD/EDIT MODAL -->
   <div class="modal-overlay" *ngIf="isMealModalOpen" (click)="closeMealModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">

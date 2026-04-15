@@ -125,7 +125,7 @@
     }
   }
 
-  .meal-form {
+  .meal-form, .driver-form {
     padding: 24px;
     
     .form-grid {
@@ -139,31 +139,18 @@
     }
     
     .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      display: flex; gap: 8px; flex-direction: column;
       
-      label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #4a5568;
-      }
+      label { font-size: 0.9rem; font-weight: 600; color: #4a5568; }
       
       input, select, textarea {
-        padding: 10px 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        
-        &:focus {
-          outline: none;
-          border-color: #4299e1;
-          box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
-        }
+        padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s;
+        &:focus { outline: none; border-color: #4299e1; box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15); }
       }
     }
   }
+
+  .modal-intro { margin-bottom: 20px; color: #4a5568; font-size: 0.95rem; line-height: 1.5; }
 
   .modal-footer {
     padding: 20px 24px;
