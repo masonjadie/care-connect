@@ -36,7 +36,7 @@
   border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
-  z-index: 9999;
+  z-index: 30000;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
   animation: fadeInUp 0.3s ease;
   white-space: nowrap;
@@ -441,10 +441,10 @@
         }
 
         .modal-scroll-area {
-            max-height: 300px;
+            max-height: 480px;
             overflow-y: auto;
-            margin-bottom: 30px;
-            padding-right: 10px;
+            margin-bottom: 25px;
+            padding-right: 12px;
 
             &::-webkit-scrollbar {
                 width: 6px;
