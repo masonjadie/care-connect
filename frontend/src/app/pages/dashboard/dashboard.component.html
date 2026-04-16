@@ -48,13 +48,12 @@
                   <span>🚗 {{ trip.vehicle_type | titlecase }}</span>
                 </div>
         
-                <div class="driver-info" *ngIf="trip.driver_name || trip.driverName">
-                  <div class="driver-divider"></div>
+                <div class="driver-info assigned" *ngIf="trip.driver_name || trip.driverName; else searchingDriver">
                   <div class="driver-header">
                     <div class="avatar">👤</div>
                     <div class="driver-text">
                       <p class="name">{{ trip.driver_name || trip.driverName }}</p>
-                      <p class="subtitle">Assigned Driver</p>
+                      <p class="subtitle">Assigned Professional Driver</p>
                     </div>
                   </div>
                   <div class="car-details">
@@ -68,13 +67,22 @@
                     </div>
                     <div class="detail-item">
                       <span class="label">Plate:</span>
-                      <span class="data uppercase">{{ trip.license_plate || trip.licensePlate }}</span>
+                      <span class="data uppercase highlight">{{ trip.license_plate || trip.licensePlate }}</span>
                     </div>
                   </div>
                   <a [href]="'tel:' + (trip.driver_phone || trip.driverPhone)" class="btn-contact-driver" *ngIf="trip.driver_phone || trip.driverPhone">
-                    📞 Contact Driver
+                    📞 Contact Your Driver
                   </a>
                 </div>
+
+                <ng-template #searchingDriver>
+                  <div class="driver-info searching" *ngIf="trip.status === 'picked_up' || trip.status === 'on_route'">
+                    <div class="searching-content">
+                      <span class="pulse-dot"></span>
+                      <span>Assigning your professional driver...</span>
+                    </div>
+                  </div>
+                </ng-template>
             </div>
         </div>
     </div>

@@ -555,8 +555,13 @@
                   <td>
                     <span class="trip-type-chip">{{ b.trip_type === 'round-trip' ? '🔄 Round-trip' : '➡️ One-way' }}</span>
                     <div *ngIf="b.driver_name || b.driverName" style="margin-top: 8px; font-size: 0.8rem; color: #4a5568;">
-                        👤 {{ b.driver_name || b.driverName }}<br>
-                        🚗 {{ b.car_model || b.carModel }}
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                           <div>
+                             👤 {{ b.driver_name || b.driverName }}<br>
+                             🚗 {{ b.car_model || b.carModel }}
+                           </div>
+                           <button class="edit-driver-link" (click)="openEditDriverModal(b)" title="Edit Driver Details">✏️</button>
+                        </div>
                     </div>
                   </td>
                   <td>

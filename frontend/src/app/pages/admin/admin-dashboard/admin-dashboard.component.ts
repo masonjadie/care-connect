@@ -265,9 +265,20 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   confirmDriverAssignment(): void {
     if (!this.activeBookingId) return;
-    this.executeTripStatusUpdate(this.activeBookingId, 'picked_up', this.driverDetails);
+    this.executeTripStatusUpdate(this.activeBookingId, 'picked_up', { ...this.driverDetails });
     this.isDriverModalOpen = false;
     this.activeBookingId = null;
+  }
+
+  openEditDriverModal(booking: any): void {
+    this.activeBookingId = booking.id;
+    this.driverDetails = {
+      driverName: booking.driver_name || booking.driverName || '',
+      licensePlate: booking.license_plate || booking.licensePlate || '',
+      carModel: booking.car_model || booking.carModel || '',
+      driverPhone: booking.driver_phone || booking.driverPhone || ''
+    };
+    this.isDriverModalOpen = true;
   }
 
   private executeTripStatusUpdate(id: number, status: string, driverData?: any): void {

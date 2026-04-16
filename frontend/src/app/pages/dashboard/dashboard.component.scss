@@ -220,6 +220,31 @@
     padding: 15px;
     border: 1px solid #edf2f7;
 
+    &.assigned {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+    }
+
+    &.searching {
+      background: #fdf2f7;
+      border: 1px solid #fbcfe8;
+      .searching-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #be185d;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .pulse-dot {
+        width: 10px;
+        height: 10px;
+        background: #db2777;
+        border-radius: 50%;
+        animation: pulse-sm 1.5s infinite;
+      }
+    }
+
     .driver-divider { height: 1px; background: #e2e8f0; margin-bottom: 15px; }
 
     .driver-header {
@@ -229,55 +254,67 @@
       margin-bottom: 15px;
 
       .avatar {
-        width: 40px;
-        height: 40px;
-        background: #3182ce;
+        width: 44px;
+        height: 44px;
+        background: #3b82f6;
         color: white;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
+        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
       }
 
       .driver-text {
-        .name { font-weight: 700; color: #2d3748; margin: 0; font-size: 1rem; }
-        .subtitle { font-size: 0.75rem; color: #718096; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .name { font-weight: 800; color: #1e3a8a; margin: 0; font-size: 1.1rem; }
+        .subtitle { font-size: 0.7rem; color: #64748b; margin: 0; text-transform: uppercase; font-weight: 600; }
       }
     }
 
     .car-details {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       margin-bottom: 15px;
 
       .detail-item {
         display: flex;
         justify-content: space-between;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
 
-        .label { color: #718096; }
-        .data { font-weight: 600; color: #2d3748; &.uppercase { text-transform: uppercase; } }
+        .label { color: #64748b; }
+        .data { 
+          font-weight: 700; color: #1e293b; 
+          &.uppercase { text-transform: uppercase; }
+          &.highlight { color: #2563eb; background: #dbeafe; padding: 2px 6px; border-radius: 4px; }
+        }
       }
     }
-
+    
     .btn-contact-driver {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      text-align: center;
-      background: #3182ce;
+      padding: 12px;
+      background: #1e40af;
       color: white;
       text-decoration: none;
-      padding: 10px;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: 700;
-      font-size: 0.85rem;
-      transition: background 0.2s;
-
-      &:hover { background: #2b6cb0; }
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      
+      &:hover { background: #1e3a8a; transform: translateY(-1px); }
     }
   }
+}
+
+@keyframes pulse-sm {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
 }
 
 // ── INFO SECTIONS ──
