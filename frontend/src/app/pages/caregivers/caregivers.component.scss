@@ -338,23 +338,23 @@
 .request-modal {
   background: #fff;
   width: 100%;
-  max-width: 500px;
-  border-radius: 24px;
-  padding: 40px;
+  max-width: 480px;
+  border-radius: 20px;
+  padding: 24px;
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   .close-btn {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
     background: #f1f5f9;
     border: none;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -365,29 +365,29 @@
 
   .modal-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 
-    .modal-icon { font-size: 3rem; display: block; margin-bottom: 15px; }
-    h2 { font-size: 1.8rem; color: #0f172a; margin-bottom: 8px; font-weight: 800; }
-    p { color: #64748b; font-size: 1.1rem; }
+    .modal-icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+    h2 { font-size: 1.5rem; color: #0f172a; margin-bottom: 4px; font-weight: 800; }
+    p { color: #64748b; font-size: 0.95rem; }
   }
 
   .modal-body {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-bottom: 30px;
+    gap: 12px;
+    margin-bottom: 20px;
 
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      label { font-weight: 600; color: #334155; font-size: 0.95rem; }
+      gap: 5px;
+      label { font-weight: 600; color: #334155; font-size: 0.85rem; }
       input {
-        padding: 14px;
+        padding: 10px 14px;
         border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        font-size: 1rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
         transition: all 0.2s;
         &:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
       }
@@ -396,34 +396,34 @@
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 15px;
     }
 
     .payment-section {
-      margin-top: 25px;
-      padding-top: 25px;
-      border-top: 2px dashed #e2e8f0;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #e2e8f0;
       text-align: left;
       
       .section-title {
         font-weight: 800;
         color: #1e293b;
-        margin-bottom: 15px;
-        font-size: 1.1rem;
+        margin-bottom: 10px;
+        font-size: 1rem;
       }
     }
   }
 
   .modal-footer {
     display: flex;
-    gap: 15px;
+    gap: 10px;
 
     button {
       flex: 1;
-      padding: 16px;
-      border-radius: 14px;
+      padding: 14px;
+      border-radius: 12px;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: all 0.2s;
     }
