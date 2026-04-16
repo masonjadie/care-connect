@@ -24,6 +24,9 @@ export class CaregiversComponent implements OnInit {
 
   // Request Form State
   showRequestForm = false;
+  showSuccessModal = false;
+  lastRequestedCaregiver = '';
+  lastRequestDetails: any = {};
   selectedCaregiver: Caregiver | null = null;
   get minDateTime(): string {
     const now = new Date();
@@ -121,6 +124,11 @@ export class CaregiversComponent implements OnInit {
     document.body.style.overflow = 'auto';
   }
 
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
   submitRequest(): void {
     if (this.requestDetailsForm.invalid || !this.selectedCaregiver) {
       this.requestDetailsForm.markAllAsTouched();
@@ -144,8 +152,11 @@ export class CaregiversComponent implements OnInit {
 
     this.analyticsService.placeOrder(orderData).subscribe({
       next: () => {
-        this.showToast(`✅ Detailed request for ${this.selectedCaregiver?.name} submitted!`);
+        this.lastRequestedCaregiver = this.selectedCaregiver?.name || 'Caregiving Service';
+        this.lastRequestDetails = { ...details };
+        this.showSuccessModal = true;
         this.closeRequestForm();
+        document.body.style.overflow = 'hidden';
         this.requestDetailsForm.reset({
           address: '123 My Current Street, Care District'
         });

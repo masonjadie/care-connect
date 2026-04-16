@@ -2,7 +2,9 @@
   <div class="toast-message" *ngIf="toastMessage">{{ toastMessage }}</div>
 
   <!-- Caregiver Request Modal -->
+  <!-- Caregiver Request Modal -->
   <div class="modal-backdrop" *ngIf="showRequestForm" (click)="closeRequestForm()">
+    <!-- ... same ... -->
     <div class="request-modal" (click)="$event.stopPropagation()" [formGroup]="requestDetailsForm">
         <button class="close-btn" (click)="closeRequestForm()">×</button>
         <div class="modal-header">
@@ -35,6 +37,44 @@
         <div class="modal-footer">
             <button class="btn-cancel" (click)="closeRequestForm()">Cancel</button>
             <button class="btn-submit" (click)="submitRequest()">Submit Request</button>
+        </div>
+    </div>
+  </div>
+
+  <!-- Success Confirmation Modal -->
+  <div class="modal-backdrop success-backdrop" *ngIf="showSuccessModal" (click)="closeSuccessModal()">
+    <div class="success-modal" (click)="$event.stopPropagation()">
+        <div class="success-confetti">
+          <div class="confetti-piece"></div><div class="confetti-piece"></div><div class="confetti-piece"></div>
+          <div class="confetti-piece"></div><div class="confetti-piece"></div><div class="confetti-piece"></div>
+        </div>
+        
+        <div class="success-icon-wrapper">
+            <div class="success-ring"></div>
+            <span class="main-icon">✨</span>
+        </div>
+
+        <div class="success-body">
+            <h2 class="success-title">Service Request Sent!</h2>
+            <p class="success-subtitle">Your request for <strong>{{lastRequestedCaregiver}}</strong> has been securely transmitted.</p>
+            
+            <div class="success-details-card">
+              <div class="detail-row">
+                <span class="dt-label">🗓️ Preferred Schedule</span>
+                <span class="dt-value">{{lastRequestDetails.time | date:'medium'}}</span>
+              </div>
+              <div class="detail-row">
+                <span class="dt-label">📍 Service Address</span>
+                <span class="dt-value">{{lastRequestDetails.address}}</span>
+              </div>
+            </div>
+
+            <p class="success-note">An administrator will review your details and confirm the caregiver's availability shortly.</p>
+        </div>
+
+        <div class="success-footer">
+            <button class="btn-primary-success" (click)="closeSuccessModal()" routerLink="/dashboard">View Dashboard</button>
+            <button class="btn-secondary-success" (click)="closeSuccessModal()">Continue Browsing</button>
         </div>
     </div>
   </div>
