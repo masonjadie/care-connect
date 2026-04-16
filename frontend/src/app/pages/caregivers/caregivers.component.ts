@@ -42,7 +42,9 @@ export class CaregiversComponent implements OnInit {
     time: ['', [Validators.required]],
     address: ['', [Validators.required]],
     duration: ['', [Validators.required]],
-    rate: ['', [Validators.required]]
+    cardNumber: ['', [Validators.required, Validators.minLength(16)]],
+    cardExpiry: ['', [Validators.required]],
+    cardCvv: ['', [Validators.required, Validators.minLength(3)]]
   });
 
   caregiverForm = this.fb.group({
@@ -139,21 +141,30 @@ export class CaregiversComponent implements OnInit {
     const userStr = localStorage.getItem('careconnect_user');
     const user = userStr ? JSON.parse(userStr) : null;
 
+    // Fixed rate calculation (e.g., $45/hr)
+    const fixedRate = 45;
+    const durationHours = parseInt(String(details.duration) || '0', 10) || 1;
+    const totalAmount = fixedRate * durationHours;
+
     const orderData = {
       userId: user?.id,
       itemName: `Caregiver Service: ${this.selectedCaregiver.name}`,
       itemType: 'caregiver_request',
-      amount: 0, // Rate is descriptive here
+      amount: totalAmount,
       requestTime: details.time ?? '',
       requestLocation: details.address ?? '',
-      requestDuration: details.duration ?? '',
-      requestRate: details.rate ?? ''
+      requestDuration: `${durationHours} hours`,
+      requestRate: `$${fixedRate}/hr`
     };
 
     this.analyticsService.placeOrder(orderData).subscribe({
       next: () => {
         this.lastRequestedCaregiver = this.selectedCaregiver?.name || 'Caregiving Service';
-        this.lastRequestDetails = { ...details };
+        this.lastRequestDetails = { 
+          ...details, 
+          rate: fixedRate, 
+          amount: totalAmount 
+        };
         this.showSuccessModal = true;
         this.closeRequestForm();
         document.body.style.overflow = 'hidden';
@@ -161,7 +172,7 @@ export class CaregiversComponent implements OnInit {
           address: '123 My Current Street, Care District'
         });
       },
-      error: () => this.showToast('❌ Failed to submit request. Please try again.')
+      error: () => this.showToast('❌ Payment failed or service unavailable. Please try again.')
     });
   }
 

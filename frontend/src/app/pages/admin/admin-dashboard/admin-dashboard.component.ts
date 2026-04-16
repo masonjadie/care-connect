@@ -170,9 +170,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   statusLabel(status: string): string {
     const labels: Record<string, string> = {
       pending: 'Pending',
-      fulfilled: 'Fulfilled',
+      fulfilled: 'Request Accepted',
       out_for_delivery: 'Out for Delivery',
-      delivered: 'Delivered'
+      delivered: 'Service Completed'
     };
     return labels[status] ?? status;
   }
@@ -186,9 +186,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     const next = this.nextStatus(status);
     if (!next) return '';
     const labels: Record<string, string> = {
-      fulfilled: '✔ Fulfill',
+      fulfilled: '✔ Accept Request',
       out_for_delivery: '🚚 Out for Delivery',
-      delivered: '📦 Delivered'
+      delivered: '📦 Service Finished'
     };
     return labels[next] ?? next;
   }
@@ -225,9 +225,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   tripStatusLabel(status: string): string {
     const labels: Record<string, string> = {
       booked:      'Booked',
-      picked_up:   'Picked Up',
+      picked_up:   'Request Accepted',
       on_route:    'On Route',
-      dropped_off: 'Dropped Off'
+      dropped_off: 'Service Completed'
     };
     return labels[status] ?? status;
   }
@@ -241,9 +241,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     const next = this.nextTripStatus(status);
     if (!next) return '';
     const labels: Record<string, string> = {
-      picked_up:   '🚗 Picked Up',
-      on_route:    '🛣️ On Route',
-      dropped_off: '📍 Dropped Off'
+      picked_up:   '🚗 Accept Trip',
+      on_route:    '🛣️ Start Trip',
+      dropped_off: '📍 Finish Service'
     };
     return labels[next] ?? next;
   }
