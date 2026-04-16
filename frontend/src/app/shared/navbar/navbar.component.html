@@ -15,9 +15,9 @@
 
   <nav class="nav-links" [class.open]="menuOpen">
     <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-    <a routerLink="/services" routerLinkActive="active">Services</a>
-    <a routerLink="/emergency" routerLinkActive="active" class="nav-emergency">🚨 SOS Help</a>
-    <a routerLink="/about" routerLinkActive="active">About Us</a>
+    <a routerLink="/services" routerLinkActive="active" *ngIf="!isAdmin">Services</a>
+    <a routerLink="/emergency" routerLinkActive="active" class="nav-emergency" *ngIf="!isAdmin">🚨 SOS Help</a>
+    <a routerLink="/about" routerLinkActive="active" *ngIf="!isAdmin">About Us</a>
     <a routerLink="/dashboard" routerLinkActive="active" *ngIf="userName && !isAdmin">Dashboard</a>
     <a routerLink="/admin" routerLinkActive="active" *ngIf="isAdmin" style="color: #6366f1; font-weight: 700;">⚙️ Admin</a>
     
