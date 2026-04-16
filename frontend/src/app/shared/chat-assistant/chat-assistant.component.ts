@@ -30,9 +30,27 @@ export class ChatAssistantComponent implements OnInit, AfterViewChecked {
     this.isOverlayActive$ = this.chatService.isOverlayActive$;
   }
 
+  toggleChat() {
+    this.isOpen = !this.isOpen;
+    if (this.isOpen && !this.isInitialized) {
+      this.initChatLogic();
+    }
+  }
+
+  private isInitialized = false;
+
   ngOnInit(): void {
-    this.scrollToBottom();
-    this.autoGreeting();
+    // Check if it should be open by default (e.g. from Emergency)
+    this.isOverlayActive$.subscribe(active => {
+      if (active && !this.isOpen) {
+        this.toggleChat();
+      }
+    });
+  }
+
+  private initChatLogic(): void {
+    if (this.isInitialized) return;
+    this.isInitialized = true;
 
     // Listen for voice results
     this.voiceSub = this.voiceService.voiceResult$.subscribe(text => {
@@ -54,6 +72,8 @@ export class ChatAssistantComponent implements OnInit, AfterViewChecked {
         this.voiceService.speak(lastMsg.text);
       }
     });
+
+    this.scrollToBottom();
   }
 
   ngOnDestroy(): void {
@@ -67,9 +87,7 @@ export class ChatAssistantComponent implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
-  toggleChat() {
-    this.isOpen = !this.isOpen;
-  }
+  // Removed toggleChat from here as it's defined above
 
   sendMessage() {
     if (this.userInput.trim()) {

@@ -29,7 +29,7 @@ export class AccessibilityService {
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.loadSettings();
-    this.initSpeechRecognition();
+    // Speech Recognition is now lazily initialized only when requested
   }
 
   toggleTheme(): void {
@@ -90,6 +90,9 @@ export class AccessibilityService {
     const newState = !this.voiceCommandsSubject.value;
     this.voiceCommandsSubject.next(newState);
     if (newState) {
+      if (!this.recognition) {
+        this.initSpeechRecognition();
+      }
       this.startListening();
     } else {
       this.stopListening();
