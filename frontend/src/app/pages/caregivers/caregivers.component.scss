@@ -319,6 +319,111 @@
   .success { color: var(--success-text); background: var(--success-bg); padding: 10px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; }
 }
 
+/* REQUEST MODAL STYLES */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.request-modal {
+  background: #fff;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #f1f5f9;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    &:hover { background: #e2e8f0; transform: rotate(90deg); }
+  }
+
+  .modal-header {
+    text-align: center;
+    margin-bottom: 30px;
+
+    .modal-icon { font-size: 3rem; display: block; margin-bottom: 15px; }
+    h2 { font-size: 1.8rem; color: #0f172a; margin-bottom: 8px; font-weight: 800; }
+    p { color: #64748b; font-size: 1.1rem; }
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      label { font-weight: 600; color: #334155; font-size: 0.95rem; }
+      input {
+        padding: 14px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.2s;
+        &:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+      }
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 15px;
+
+    button {
+      flex: 1;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-cancel { background: #f8fafc; border: 1px solid #e2e8f0; color: #64748b; &:hover { background: #f1f5f9; } }
+    .btn-submit { background: #3b82f6; border: none; color: white; &:hover { background: #2563eb; transform: translateY(-2px); } }
+  }
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @media (max-width: 768px) {
   .caregivers-page {
     padding: 20px 10px;
