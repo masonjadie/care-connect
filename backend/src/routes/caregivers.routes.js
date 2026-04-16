@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
     const pool = await getPool();
     const [rows] = await pool.query(
       `SELECT id, name, specialty, experience_years AS experienceYears, rating, availability, 
-              phone, bio, certification, location, email
+              phone, bio, certification, location, email, verified
        FROM caregivers
        ORDER BY created_at DESC`
     );
