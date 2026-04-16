@@ -22,7 +22,7 @@
     <a routerLink="/admin" routerLinkActive="active" *ngIf="isAdmin" style="color: #6366f1; font-weight: 700;">⚙️ Admin</a>
     
     <!-- Mobile-only A11y Controls -->
-    <div class="mobile-a11y nav-mobile-only">
+    <div class="mobile-a11y nav-mobile-only" *ngIf="showA11yControls">
       <div class="a11y-controls">
         <button class="a11y-btn" (click)="decreaseFont()" aria-label="Decrease Font Size">A-</button>
         <button class="a11y-btn" (click)="increaseFont()" aria-label="Increase Font Size">A+</button>
@@ -39,7 +39,7 @@
   <!-- LOGIN / USER BUBBLE -->
   <div class="nav-right">
     <!-- Accessibility Controls (Hidden on mobile) -->
-    <div class="a11y-controls nav-desktop-only">
+    <div class="a11y-controls nav-desktop-only" *ngIf="showA11yControls">
       <button class="a11y-btn" (click)="decreaseFont()" title="Decrease Font Size" aria-label="Decrease Font Size">A-</button>
       <button class="a11y-btn" (click)="increaseFont()" title="Increase Font Size" aria-label="Increase Font Size">A+</button>
       

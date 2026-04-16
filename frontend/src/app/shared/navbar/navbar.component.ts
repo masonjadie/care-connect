@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccessibilityService } from 'src/app/core/services/accessibility.service';
 import { Subscription } from 'rxjs';
@@ -17,21 +17,35 @@ export class NavbarComponent implements OnInit {
   isSpeaking$ = this.accessibilityService.isSpeaking$;
   isSpeaking = false;
   voiceActive = false;
+  showA11yControls = false; // Defer rendering of complex controls
   private speaksSub?: Subscription;
   private voiceSub?: Subscription;
 
   constructor(
     public router: Router,
-    private accessibilityService: AccessibilityService
+    private accessibilityService: AccessibilityService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.router.events.subscribe(() => {
       this.menuOpen = false;
+      this.cdr.markForCheck();
     });
 
-    this.speaksSub = this.isSpeaking$.subscribe(val => this.isSpeaking = val);
-    this.voiceSub = this.voiceActive$.subscribe(val => this.voiceActive = val);
+    // Subscriptions only if needed later
+    setTimeout(() => {
+      this.speaksSub = this.isSpeaking$.subscribe(val => {
+        this.isSpeaking = val;
+        this.cdr.markForCheck();
+      });
+      this.voiceSub = this.voiceActive$.subscribe(val => {
+        this.voiceActive = val;
+        this.cdr.markForCheck();
+      });
+      this.showA11yControls = true;
+      this.cdr.markForCheck();
+    }, 2000); // Wait for LCP to pass
   }
 
   toggleMenu(): void {
