@@ -26,7 +26,7 @@ export class ChatAssistantComponent implements OnInit, AfterViewChecked {
     private chatService: ChatService,
     private voiceService: VoiceService
   ) {
-    this.messages$ = this.chatService.messages$;
+    this.messages$ = new Observable<Message[]>(); // Initialized later
     this.isOverlayActive$ = this.chatService.isOverlayActive$;
   }
 
@@ -51,6 +51,9 @@ export class ChatAssistantComponent implements OnInit, AfterViewChecked {
   private initChatLogic(): void {
     if (this.isInitialized) return;
     this.isInitialized = true;
+
+    // Load messages stream only now
+    this.messages$ = this.chatService.messages$;
 
     // Listen for voice results
     this.voiceSub = this.voiceService.voiceResult$.subscribe(text => {
