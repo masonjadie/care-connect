@@ -155,14 +155,22 @@ export class ApiService {
       // Admin bypass
       if (user.role === 'admin' || user.email === 'admin@careconnect.com') return 'authorized';
       
-      const tier = user.subscription_tier;
-      const trialEndsAt = user.trial_ends_at;
+      const tier = user.subscription_tier || user.subscriptionTier;
+      const trialEndsAt = user.trial_ends_at || user.trialEndsAt;
 
-      // Check if user has a paid plan or an active trial
-      const hasPlan = (tier && tier !== 'free' && tier !== 'none');
-      const hasActiveTrial = !!trialEndsAt; // Assume trial started means active for this check
+      // Robust check for any plan selection
+      const hasPaidPlan = tier && !['none', 'free', ''].includes(tier.toLowerCase());
+      
+      // Check for active trial
+      let hasActiveTrial = false;
+      if (trialEndsAt) {
+        const expiry = new Date(trialEndsAt).getTime();
+        hasActiveTrial = expiry > Date.now();
+      }
 
-      if (hasPlan || hasActiveTrial) return 'authorized';
+      if (hasPaidPlan || hasActiveTrial || tier === 'trial') return 'authorized';
+      
+      // If none of the above, they need to select a plan (or are on free tier and trying a paid feature)
       return 'no-plan';
     } catch (e) {
       return 'no-login';
