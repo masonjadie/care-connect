@@ -24,7 +24,10 @@ export class AppComponent implements OnInit {
       filter(event => event instanceof NavigationEnd),
       tap((event: any) => {
         const url = event.urlAfterRedirects || event.url;
-        this.analyticsService.trackVisit(url).subscribe();
+        // Defer tracking slightly to avoid blocking main thread on boot
+        setTimeout(() => {
+          this.analyticsService.trackVisit(url).subscribe();
+        }, 3000);
       }),
       map(() => this.activatedRoute),
       map(route => {
