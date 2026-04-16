@@ -13,8 +13,8 @@
         
         <div class="modal-body">
             <div class="form-group">
-                <label>Preferred Time</label>
-                <input type="text" formControlName="time" placeholder="e.g., Tomorrow at 10 AM">
+                <label>Preferred Date & Time</label>
+                <input type="datetime-local" formControlName="time" [min]="minDateTime">
             </div>
             <div class="form-group">
                 <label>Service Address</label>

@@ -25,6 +25,16 @@ export class CaregiversComponent implements OnInit {
   // Request Form State
   showRequestForm = false;
   selectedCaregiver: Caregiver | null = null;
+  get minDateTime(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
   requestDetailsForm = this.fb.group({
     time: ['', [Validators.required]],
     address: ['', [Validators.required]],
