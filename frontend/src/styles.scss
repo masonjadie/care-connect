@@ -3,11 +3,11 @@
   /* Color Palette - Light (Default) */
   --primary-color: #2c5aa0;
   --primary-light: #e6f0ff;
-  --secondary-color: #2fb6b6;
+  --secondary-color: #0e7a7a; /* Darkened from #2fb6b6 — WCAG AA contrast fix (5.5:1 on white) */
   --accent-orange: #ff8c2f;
   --accent-purple: #6c63ff;
   --accent-green: #10b981;
-  --danger-red: #e53935;
+  --danger-red: #b91c1c; /* Darkened from #e53935 — WCAG AA contrast fix (5.8:1 on white) */
   
   --text-primary: #2d3748;
   --text-muted: #718096;

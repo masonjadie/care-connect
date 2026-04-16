@@ -1,10 +1,10 @@
 <header class="navbar">
 
   <!-- LOGO -->
-  <div class="logo" routerLink="/home" style="cursor: pointer;" aria-label="CareConnect Hub Home">
+  <a class="logo" routerLink="/home" aria-label="CareConnect Hub Home">
     <span class="logo-icon" role="img" aria-label="Caregiving Heart Icon">💙</span>
     CareConnect <span class="hub">Hub</span>
-  </div>
+  </a>
 
   <!-- NAV LINKS -->
   <button class="mobile-toggle" (click)="toggleMenu()" [class.active]="menuOpen" aria-label="Toggle Navigation Menu">
@@ -66,10 +66,10 @@
     </div>
 
     <ng-container *ngIf="userName; else loginBtn">
-      <div class="user-greeting" [routerLink]="isAdmin ? '/admin' : '/dashboard'" style="cursor: pointer;">
-        <span class="avatar">👤</span>
+      <a class="user-greeting" [routerLink]="isAdmin ? '/admin' : '/dashboard'" [attr.aria-label]="'Go to ' + (isAdmin ? 'Admin Panel' : 'Dashboard') + ' for ' + userName">
+        <span class="avatar" aria-hidden="true">👤</span>
         <span class="user-name">{{ userName }}</span>
-      </div>
+      </a>
       <button class="logout-btn" (click)="logout()">Logout</button>
     </ng-container>
     <ng-template #loginBtn>
