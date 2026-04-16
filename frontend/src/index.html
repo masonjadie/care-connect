@@ -17,7 +17,8 @@
   <link rel="dns-prefetch" href="https://care-connect-production-b10d.up.railway.app">
   
   <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrX2iLw1RrbaEdfRMDV16Y.woff2" as="font" type="font/woff2" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     :root {
@@ -75,6 +76,17 @@
       0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
       50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
       100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    }
+
+    /* CRITICAL LCP STYLES */
+    .hero-text h1 {
+      font-size: 3.2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 800;
+      color: #2c5aa0;
+      margin-top: 0;
+      line-height: 1.1;
+      visibility: visible !important;
     }
   </style>
   <script>
